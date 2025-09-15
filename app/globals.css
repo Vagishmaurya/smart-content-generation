@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 248, 250, 252;
+  --background-rgb: 15, 23, 42;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-rgb));
+}
+
+.subject-card {
+  @apply relative flex flex-col items-center justify-center w-full h-64 p-6 
+         transition-all duration-500 rounded-xl overflow-hidden 
+         bg-gradient-to-br shadow-lg hover:shadow-2xl
+         transform hover:scale-105 cursor-pointer;
+}
+
+.subject-card.biology {
+  @apply from-primary-biology/50 to-primary-biology/20 hover:from-primary-biology/60 hover:to-primary-biology/30;
+}
+
+.subject-card.english {
+  @apply from-primary-english/50 to-primary-english/20 hover:from-primary-english/60 hover:to-primary-english/30;
+}
+
+.subject-card.physics {
+  @apply from-primary-physics/50 to-primary-physics/20 hover:from-primary-physics/60 hover:to-primary-physics/30;
+}
+
+.chapter-card {
+  @apply relative flex flex-col items-center justify-center w-full h-40 p-4 
+         transition-all duration-300 rounded-lg overflow-hidden 
+         bg-gradient-to-br from-white/10 to-white/5
+         shadow-lg hover:shadow-xl border border-white/10
+         transform hover:scale-105 cursor-pointer;
+}
+
+.chapter-card.biology {
+  @apply hover:border-primary-biology/50;
+}
+
+.chapter-card.english {
+  @apply hover:border-primary-english/50;
+}
+
+.chapter-card.physics {
+  @apply hover:border-primary-physics/50;
+}
