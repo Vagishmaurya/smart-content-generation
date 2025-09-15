@@ -1,6 +1,6 @@
 import { useRef, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { useSpring, animated } from '@react-three/drei';
+
 import * as THREE from 'three';
 import { useThree } from '@react-three/fiber';
 
