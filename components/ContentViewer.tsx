@@ -11,7 +11,7 @@ type ContentViewerProps = {
 export default function ContentViewer({ chapter, file, onClose }: ContentViewerProps) {
   const [loading, setLoading] = useState(true);
   
-  const filePath = `/${chapter.path}/${file}`;
+  const filePath = `/${chapter.path}/${file}`.replace(/ /g, '%20');
   
   useEffect(() => {
     // Reset loading state when file changes
@@ -59,6 +59,12 @@ export default function ContentViewer({ chapter, file, onClose }: ContentViewerP
             src={filePath} 
             className="w-full h-full"
             title={file}
+            onError={(e) => {
+              console.error('Failed to load content:', filePath, e);
+            }}
+            onLoad={() => {
+              console.log('Content loaded successfully:', filePath);
+            }}
           />
         )}
       </div>

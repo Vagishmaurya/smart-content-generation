@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Letter to God - Interactive English Lesson</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <meta name="description" content="Interactive English lesson based on 'A Letter to God' by G.L. Fuentes">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav-menu" role="navigation" aria-label="Main navigation">
+        <div class="nav-items">
+            <button class="nav-item active" onclick="showModule('intro')" aria-pressed="true">📚 Introduction</button>
+            <button class="nav-item" onclick="showModule('prereading')" aria-pressed="false">✉️ Before You Read</button>
+            <button class="nav-item" onclick="showModule('story')" aria-pressed="false">📖 The Story</button>
+            <button class="nav-item" onclick="showModule('thinking-text')" aria-pressed="false">❓ Thinking About the Text</button>
+            <button class="nav-item" onclick="showModule('thinking-language')" aria-pressed="false">🔤 Thinking About Language</button>
+            <button class="nav-item" onclick="showModule('poetry')" aria-pressed="false">🎭 Poetry</button>
+            <button class="nav-item" onclick="showModule('activities')" aria-pressed="false">🎯 Activities</button>
+        </div>
+    </nav>
+
+    <!-- Audio Control -->
+    <div class="audio-control">
+        <button id="audioBtn" class="audio-btn" onclick="toggleAudio()" aria-label="Toggle audio narration">🔊</button>
+    </div>
+
+    <!-- Achievement Popup -->
+    <div id="achievementPopup" class="achievement-popup" aria-live="polite">
+        <div class="achievement-title">🏆 Achievement Unlocked!</div>
+        <div class="achievement-desc" id="achievementDesc">You've completed a module!</div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title">📚 A Letter to God</h1>
+            <p class="subtitle">by G.L. Fuentes</p>
+            <p class="reprint">Reprint 2025-26</p>
+        </header>
+
+        <!-- Progress Tracker -->
+        <div class="progress-container">
+            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-fill" id="progressBar">0%</div>
+            </div>
+            <div class="progress-stats">
+                <span>📖 Modules: <span id="modulesComplete">0</span>/7</span>
+                <span>⭐ Score: <span id="totalScore">0</span></span>
+                <span>⏱️ Time: <span id="timeSpent">0:00</span></span>
+            </div>
+        </div>
+
+        <!-- Introduction Module -->
+        <div class="module active" id="intro">
+            <div class="exercise-card">
+                <h2 class="exercise-title">
+                    <span class="exercise-icon">🌟</span>
+                    Welcome to "A Letter to God"
+                </h2>
+                <div class="content-block">
+                    <p>They say faith can move mountains. But what should we put our faith in? This is the question this story delicately poses.</p>
+                    <p>In this lesson, you'll meet Lencho, a farmer who writes a letter to God when his crops are ruined, asking for a hundred pesos. Does his letter reach God? Does God send him the money? Let's explore this touching story together!</p>
+                </div>
+                <div class="button-container">
+                    <button class="interactive-btn" onclick="startJourney()" aria-label="Begin the lesson">
+                        🚀 Start Your Learning Journey
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Before You Read Module -->
+        <div class="module" id="prereading">
+            <div class="exercise-card">
+                <h2 class="exercise-title">
+                    <span class="exercise-icon">✉️</span>
+                    Before You Read
+                </h2>
+                <div class="content-block">
+                    <p>Lencho is a farmer who writes a letter to God when his crops are ruined, asking for a hundred pesos. Does Lencho's letter reach God? Does God send him the money? Think what your answers to these questions would be, and guess how the story continues, before you begin to read it.</p>
+                </div>
+                
+                <h3 class="activity-title">Activity: Money Order Process</h3>
+                <div class="content-block">
+                    <p>One of the cheapest ways to send money to someone is through the post office. Have you ever sent or received money in this way? Here's what you have to do. (As you read the instructions, discuss the meanings of these words: counter, counter clerk, appropriate, acknowledgement, counterfoil, record. Consult a dictionary if necessary.)</p>
+                </div>
+                
+                <div class="process-diagram">
+                    <div class="process-step">
+                        <div class="step-box">Inside the post office, go to the counter marked 'Money Order'</div>
+                        <div class="step-arrow">↓</div>
+                    </div>
+                    <div class="process-step">
+                        <div class="step-box">Buy a Money Order (MO) form by paying 50 paise to the person behind the counter</div>
+                        <div class="step-arrow">↓</div>
+                    </div>
+                    <div class="process-step">
+                        <div class="step-box">Fill in the appropriate boxes in the form (preferably in BLOCK letters)</div>
+                        <div class="step-arrow">↓</div>
+                    </div>
+                    <div class="process-step">
+                        <div class="step-box">Pay the counter clerk the amount of money to be sent along with the charges</div>
+                        <div class="step-arrow">↓</div>
+                    </div>
+                    <div class="process-step">
+                        <div class="step-box">Take back the MO acknowledgement counterfoil for your record</div>
+                    </div>
+                </div>
+                
+                <div class="money-order-form">
+                    <h3>DEPARTMENT OF POSTS, INDIA<br>MONEY ORDER FORM</h3>
+                    
+                    <div class="form-group">
+                        <label for="recipientName">Pay Rupees to:</label>
+                        <input type="text" id="recipientName" placeholder="Enter recipient's name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="recipientAddress">Address:</label>
+                        <textarea id="recipientAddress" rows="3" placeholder="Enter complete address"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="pinCode">PIN Code:</label>
+                        <input type="text" id="pinCode" maxlength="6" placeholder="6-digit PIN">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="amount">Amount (Rs.):</label>
+                        <input type="number" id="amount" placeholder="Enter amount">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="senderName">Your Name (Sender):</label>
+                        <input type="text" id="senderName" placeholder="Your name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Message (Space for Communication):</label>
+                        <textarea id="message" rows="2" placeholder="Optional message to recipient"></textarea>
+                    </div>
+                    
+                    <button class="form-submit" onclick="submitMoneyOrder()">
+                        Submit Money Order
+                    </button>
+                    
+                    <div id="moFeedback" class="feedback-message" aria-live="polite"></div>
+                </div>
+                
+                <div class="content-block">
+                    <h4>Now complete the following statements:</h4>
+                    <div class="completion-exercise">
+                        <p>(i) In addition to the sender, the form has to be signed by the <input type="text" class="completion-input" data-answer="counter clerk"></p>
+                        <p>(ii) The 'Acknowledgement' section of the form is sent back by the post office to the <input type="text" class="completion-input" data-answer="sender"> after the <input type="text" class="completion-input" data-answer="receiver"> signs it.</p>
+                        <p>(iii) The 'Space for Communication' section is used for <input type="text" class="completion-input" data-answer="writing a short message"></p>
+                        <p>(iv) The form has six sections. The sender needs to fill out <input type="text" class="completion-input" data-answer="five"> sections and the receiver <input type="text" class="completion-input" data-answer="one"></p>
+                    </div>
+                    <button class="interactive-btn" onclick="checkCompletion()">Check Answers</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Story Module -->
+        <div class="module" id="story">
+            <div class="story-reader">
+                <h2 class="section-title">THE STORY: A LETTER TO GOD</h2>
+                
+                <div class="story-controls">
+                    <button class="reading-mode-btn" onclick="toggleReadAloud()" aria-label="Read the story aloud">
+                        🔊 Read Aloud
+                    </button>
+                    <button class="reading-mode-btn" onclick="highlightVocabulary()" aria-label="Highlight vocabulary words">
+                        ✨ Highlight Vocabulary
+                    </button>
+                    <button class="reading-mode-btn" onclick="togglePrintMode()" aria-label="Toggle print-friendly mode">
+                        🖨️ Print Mode
+                    </button>
+                </div>
+                
+                <div class="story-navigation">
+                    <button class="story-nav-btn active" onclick="showStoryPart(1)" aria-pressed="true">Part 1</button>
+                    <button class="story-nav-btn" onclick="showStoryPart(2)" aria-pressed="false">Part 2</button>
+                    <button class="story-nav-btn" onclick="showStoryPart(3)" aria-pressed="false">Part 3</button>
+                </div>
+                
+                <div class="story-content" id="storyContent">
+                    <!-- Story content will be loaded dynamically via JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Thinking About the Text Module -->
+        <div class="module" id="thinking-text">
+            <div class="exercise-card">
+                <h2 class="exercise-title">
+                    <span class="exercise-icon">❓</span>
+                    Thinking About the Text
+                </h2>
+                
+                <div id="textQuestions" class="question-section">
+                    <!-- Questions will be loaded dynamically -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Thinking About Language Module -->
+        <div class="module" id="thinking-language">
+            <div class="exercise-card">
+                <h2 class="exercise-title">
+                    <span class="exercise-icon">🌪️</span>
+                    Storm Vocabulary
+                </h2>
+                <div class="content-block">
+                    <p>Look at the following sentence from the story:</p>
+                    <blockquote>Suddenly a strong wind began to blow and along with the rain very large hailstones began to fall.</blockquote>
+                    <p>'Hailstones' are small balls of ice that fall like rain. A storm in which hailstones fall is a 'hailstorm'. You know that a storm is bad weather with strong winds, rain, thunder and lightning.</p>
+                    <p>There are different names in different parts of the world for storms, depending on their nature. Can you match the names in the box with their descriptions below, and fill in the blanks?</p>
+                </div>
+                
+                <div class="storm-words">
+                    <span class="storm-word">gale</span>
+                    <span class="storm-word">whirlwind</span>
+                    <span class="storm-word">cyclone</span>
+                    <span class="storm-word">hurricane</span>
+                    <span class="storm-word">tornado</span>
+                    <span class="storm-word">typhoon</span>
+                </div>
+                
+                <div class="matching-game">
+                    <div class="match-column">
+                        <h3>Storm Types</h3>
+                        <div class="match-item" data-match="cyclone" onclick="selectMatch(this, 'term')">Cyclone</div>
+                        <div class="match-item" data-match="gale" onclick="selectMatch(this, 'term')">Gale</div>
+                        <div class="match-item" data-match="typhoon" onclick="selectMatch(this, 'term')">Typhoon</div>
+                        <div class="match-item" data-match="tornado" onclick="selectMatch(this, 'term')">Tornado</div>
+                        <div class="match-item" data-match="hurricane" onclick="selectMatch(this, 'term')">Hurricane</div>
+                        <div class="match-item" data-match="whirlwind" onclick="selectMatch(this, 'term')">Whirlwind</div>
+                    </div>
+                    
+                    <div class="match-column">
+                        <h3>Descriptions</h3>
+                        <div class="match-item" data-match="cyclone" onclick="selectMatch(this, 'def')">
+                            A violent tropical storm in which strong winds move in a circle
+                        </div>
+                        <div class="match-item" data-match="gale" onclick="selectMatch(this, 'def')">
+                            An extremely strong wind
+                        </div>
+                        <div class="match-item" data-match="typhoon" onclick="selectMatch(this, 'def')">
+                            A violent tropical storm with very strong winds
+                        </div>
+                        <div class="match-item" data-match="tornado" onclick="selectMatch(this, 'def')">
+                            A violent storm with a funnel-shaped cloud
+                        </div>
+                        <div class="match-item" data-match="hurricane" onclick="selectMatch(this, 'def')">
+                            A violent storm in the western Atlantic Ocean
+                        </div>
+                        <div class="match-item" data-match="whirlwind" onclick="selectMatch(this, 'def')">
+                            A very fast spinning wind causing damage
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="matchFeedback" class="feedback-message" aria-live="polite"></div>
+            </div>
+
+            <div class="exercise-card">
+                <h2 class="exercise-title">
+                    <span class="exercise-icon">🔍</span>
+                    Using 'Hope'
+                </h2>
+                <div class="content-block">
+                    <p>Notice how the word 'hope' is used in these sentences from the story:</p>
+                    <blockquote>(a) I hope it (the hailstorm) passes quickly.</blockquote>
+                    <blockquote>(b) There was a single hope: help from God.</blockquote>
+                    <p>In the first example, 'hope' is a verb which means you wish for something to happen. In the second example it is a noun meaning a chance for something to happen.</p>
+                </div>
+                
+                <div id="hopeExercise" class="hope-exercise">
+                    <!-- Hope exercise will be loaded dynamically -->
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <h2 class="exercise-title">
+                    <span class="exercise-icon">🔗</span>
+                    Relative Clauses
+                </h2>
+                <div class="content-block">
+                    <p>Look at these sentences:</p>
+                    <blockquote>(a) All morning Lencho — who knew his fields intimately — looked at the sky.</blockquote>
+                    <blockquote>(b) The woman, who was preparing supper, replied, "Yes, God willing."</blockquote>
+                    <p>The italicised parts of the sentences give us more information about Lencho and the woman. We call them relative clauses. Notice that they begin with a relative pronoun who. Other common relative pronouns are whom, whose, and which.</p>
+                </div>
+                
+                <div id="relativeClauseExercise" class="relative-clause-exercise">
+                    <!-- Relative clause exercise will be loaded dynamically -->
+                </div>
+            </div>
+
+            <div class="metaphor-explorer">
+                <h2 class="exercise-title">
+                    <span class="exercise-icon">🎨</span>
+                    Metaphor Explorer
+                </h2>
+                <div class="content-block">
+                    <p>The word metaphor comes from a Greek word meaning 'transfer'. Metaphors compare two things or ideas: a quality or feature of one thing is transferred to another thing.</p>
+                    <p>Click on each metaphor to understand the comparison!</p>
+                </div>
+                
+                <div class="metaphor-item" onclick="toggleMetaphor(this)">
+                    <strong>Raindrops → "New coins"</strong>
+                    <div class="metaphor-explanation">
+                        The raindrops are compared to coins because they are valuable to the farmer. 
+                        Just as coins represent wealth, the rain represents prosperity for his crops.
+                    </div>
+                </div>
+                
+                <div class="metaphor-item" onclick="toggleMetaphor(this)">
+                    <strong>Clouds → "Huge mountains"</strong>
+                    <div class="metaphor-explanation">
+                        The massive size and imposing presence of the clouds are compared to mountains, 
+                        emphasizing their enormous scale and power.
+                    </div>
+                </div>
+                
+                <div class="metaphor-item" onclick="toggleMetaphor(this)">
+                    <strong>Hailstones → "Frozen pearls" / "Silver coins"</strong>
+                    <div class="metaphor-explanation">
+                        Initially beautiful like pearls but ultimately destructive, the hailstones' 
+                        round, white appearance is compared to precious objects, showing irony.
+                    </div>
+                </div>
+                
+                <div class="metaphor-item" onclick="toggleMetaphor(this)">
+                    <strong>Lencho → "An ox of a man"</strong>
+                    <div class="metaphor-explanation">
+                        Lencho's strength and hard-working nature are compared to an ox, 
+                        a strong animal known for laboring in fields.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Poetry Module -->
+        <div class="module" id="poetry">
+            <div class="poem-container">
+                <h2 class="poem-title">Dust of Snow</h2>
+                <p class="poem-author">by Robert Frost</p>
+                
+                <div class="poem-text">
+                    The way a crow<br>
+                    Shook down on me<br>
+                    The dust of snow<br>
+                    From a hemlock tree<br><br>
+                    
+                    Has given my heart<br>
+                    A change of mood<br>
+                    And saved some part<br>
+                    Of a day I had rued.
+                </div>
+                
+                <div class="poem-glossary">
+                    <h3>Glossary</h3>
+                    <dl>
+                        <dt>hemlock</dt>
+                        <dd>A poisonous plant (tree) with small white flowers</dd>
+                        <dt>rued</dt>
+                        <dd>held in regret</dd>
+                    </dl>
+                </div>
+                
+                <div class="poem-analysis">
+                    <h3>Thinking about the Poem</h3>
+                    <p>This poem presents a moment that seems simple, but has a larger significance. [Compare this other quotation from Robert Frost: "Always, always a larger significance... A little thing touches a larger thing."]</p>
+                    
+                    <div id="dustOfSnowQuestions" class="poem-questions">
+                        <!-- Questions will be loaded dynamically -->
+                    </div>
+                    
+                    <div class="button-container">
+                        <button class="interactive-btn" onclick="readAloudPoem('dust')">
+                            🔊 Listen to Poem
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="poem-container">
+                <h2 class="poem-title">Fire and Ice</h2>
+                <p class="poem-author">by Robert Frost</p>
+                
+                <div class="poem-text">
+                    Some say the world will end in fire<br>
+                    Some say in ice.<br>
+                    From what I've tasted of desire<br>
+                    I hold with those who favour fire.<br><br>
+                    
+                    But if it had to perish twice,<br>
+                    I think I know enough of hate<br>
+                    To say that for destruction ice<br>
+                    Is also great<br>
+                    And would suffice.
+                </div>
+                
+                <div class="poem-glossary">
+                    <h3>Glossary</h3>
+                    <dl>
+                        <dt>perish</dt>
+                        <dd>die</dd>
+                        <dt>suffice</dt>
+                        <dd>be sufficient</dd>
+                    </dl>
+                </div>
+                
+                <div class="poem-analysis">
+                    <h3>Thinking about the Poem</h3>
+                    
+                    <div id="fireAndIceQuestions" class="poem-questions">
+                        <!-- Questions will be loaded dynamically -->
+                    </div>
+                    
+                    <div class="button-container">
+                        <button class="interactive-btn" onclick="readAloudPoem('fire')">
+                            🔊 Listen to Poem
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activities Module -->
+        <div class="module" id="activities">
+            <div class="exercise-card">
+                <h2 class="exercise-title">
+                    <span class="exercise-icon">🎯</span>
+                    Activities
+                </h2>
+                
+                <div class="activity-section speaking-activity">
+                    <h3>📢 Speaking Activity</h3>
+                    <div class="content-block">
+                        <p>Have you ever been in great difficulty, and felt that only a miracle could help you? How was your problem solved?</p>
+                    </div>
+                    <button class="interactive-btn" onclick="recordSpeaking()">
+                        🎤 Record Your Story
+                    </button>
+                </div>
+                
+                <div class="activity-section listening-activity">
+                    <h3>🎧 Listening Activity</h3>
+                    <div class="content-block">
+                        <p>Listen to the letter (given below) read out by your teacher/on the audio tape. As you listen fill in the table.</p>
+                    </div>
+                    <button class="interactive-btn" onclick="playListeningActivity()">
+                        🔊 Play Audio
+                    </button>
+                    <div class="listening-table">
+                        <table>
+                            <tr>
+                                <td>The writer apologises (says sorry) because</td>
+                                <td><input type="text" class="table-input"></td>
+                            </tr>
+                            <tr>
+                                <td>The writer has sent this to the reader</td>
+                                <td><input type="text" class="table-input"></td>
+                            </tr>
+                            <tr>
+                                <td>The writer sent it in the month of</td>
+                                <td><input type="text" class="table-input"></td>
+                            </tr>
+                            <tr>
+                                <td>The reason for not writing earlier</td>
+                                <td><input type="text" class="table-input"></td>
+                            </tr>
+                            <tr>
+                                <td>Sarah goes to</td>
+                                <td><input type="text" class="table-input"></td>
+                            </tr>
+                            <tr>
+                                <td>Who is writing to whom?</td>
+                                <td><input type="text" class="table-input"></td>
+                            </tr>
+                            <tr>
+                                <td>Where and when were they last together?</td>
+                                <td><input type="text" class="table-input"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="activity-section writing-activity">
+                    <h3>✍️ Writing Activity</h3>
+                    <div class="content-block">
+                        <p>Lencho suffered first due to drought and then by floods. Our country is also facing such situations in the recent years. There is flood and there is drought. There is a need to save water through water harvesting. Design a poster for your area on how to save water during summer and when it is available in excess.</p>
+                    </div>
+                    <button class="interactive-btn" onclick="openWritingPad()">
+                        ✏️ Start Writing
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Interactive English Lesson - A Letter to God</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/story.js"></script>
+    <script src="js/questions.js"></script>
+    <script src="js/activities.js"></script>
+</body>
+</html>
