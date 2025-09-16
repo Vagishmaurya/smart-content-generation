@@ -240,8 +240,18 @@
         }
 
         .demo-btn.active {
-            background: linear-gradient(135deg, #ff00ff, #ff0088);
-            box-shadow: 0 8px 25px rgba(255, 0, 255, 0.4);
+            background: linear-gradient(135deg, #10b981, #059669);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+            animation: activePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes activePulse {
+            0%, 100% { 
+                box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+            }
+            50% { 
+                box-shadow: 0 12px 35px rgba(16, 185, 129, 0.6);
+            }
         }
 
         /* Educational Content Section - SIMPLIFIED */
@@ -408,6 +418,9 @@
             box-shadow: 0 12px 30px rgba(0, 212, 255, 0.5);
         }
 
+        .audio-btn.muted .unmute-icon { display: none; }
+        .audio-btn:not(.muted) .mute-icon { display: none; }
+
         /* Responsive adjustments */
         @media (max-width: 768px) {
             .canvas-container {
@@ -454,7 +467,8 @@
     <!-- Audio Control -->
     <div id="audio-control">
         <button id="mute-btn" class="audio-btn" title="Toggle Audio">
-            <span id="audio-icon">🔊</span>
+            <span class="unmute-icon">🔊</span>
+            <span class="mute-icon">🔇</span>
         </button>
     </div>
 
@@ -474,21 +488,18 @@
                 <!-- Labels will be added dynamically -->
             </div>
             
-            <!-- Comparison Display -->
-            <div class="comparison-display" id="comparisonDisplay">
-                <!-- Content added dynamically -->
-            </div>
+            <!-- Comparison Display - Removed -->
         </div>
 
         <!-- Control Panel -->
         <div class="controls">
             <div class="controls-title">Interactive Demonstrations</div>
             <div class="demo-buttons">
-                <button class="demo-btn" onclick="playCompleteStory()">📖 Complete Story</button>
-                <button class="demo-btn" onclick="exploreIsotopes()">⚛️ Explore Isotopes</button>
-                <button class="demo-btn" onclick="exploreIsobars()">🔄 Explore Isobars</button>
-                <button class="demo-btn" onclick="buildIsotope()">🔧 Build Isotope</button>
-                <button class="demo-btn" onclick="resetView()">↺ Reset</button>
+                <button class="demo-btn" id="btn-complete" onclick="playCompleteStory()">📖 Complete Story</button>
+                <button class="demo-btn" id="btn-isotopes" onclick="exploreIsotopes()">⚛️ Explore Isotopes</button>
+                <button class="demo-btn" id="btn-isobars" onclick="exploreIsobars()">🔄 Explore Isobars</button>
+                <button class="demo-btn" id="btn-build" onclick="buildIsotope()">🔧 Build Isotope</button>
+                <button class="demo-btn" id="btn-reset" onclick="resetView()">↺ Reset</button>
             </div>
         </div>
 
@@ -544,6 +555,7 @@
         let audioEnabled = true;
         let currentNarrator = null;
         let isPlaying = false;
+        let currentActiveButton = null;
 
         // Atom Data
         const atomData = {
@@ -567,21 +579,34 @@
             constructor() {
                 this.isEnabled = audioEnabled;
                 this.currentUtterance = null;
+                this.isDestroyed = false;
+                this.isSpeaking = false;
             }
 
             async speak(text, delay = 0) {
-                if (!this.isEnabled || !text) return;
+                if (!this.isEnabled || !text || this.isDestroyed) return;
                 
                 return new Promise((resolve) => {
                     setTimeout(() => {
+                        if (this.isDestroyed) {
+                            resolve();
+                            return;
+                        }
                         this.stop();
                         const utterance = new SpeechSynthesisUtterance(text);
                         utterance.rate = 0.9;
                         utterance.pitch = 1.0;
                         utterance.volume = 0.8;
                         
-                        utterance.onend = resolve;
-                        utterance.onerror = resolve;
+                        this.isSpeaking = true;
+                        utterance.onend = () => {
+                            this.isSpeaking = false;
+                            resolve();
+                        };
+                        utterance.onerror = () => {
+                            this.isSpeaking = false;
+                            resolve();
+                        };
                         
                         this.currentUtterance = utterance;
                         speechSynthesis.speak(utterance);
@@ -590,9 +615,47 @@
             }
 
             stop() {
+                this.isSpeaking = false;
                 speechSynthesis.cancel();
                 this.currentUtterance = null;
             }
+
+            destroy() {
+                this.isDestroyed = true;
+                this.stop();
+                this.currentUtterance = null;
+            }
+        }
+
+        // Button management functions
+        function setActiveButton(buttonId) {
+            // Remove active class from all buttons
+            document.querySelectorAll('.demo-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Add active class to the specified button
+            if (buttonId) {
+                const btn = document.getElementById(buttonId);
+                if (btn) {
+                    btn.classList.add('active');
+                    currentActiveButton = buttonId;
+                }
+            }
+        }
+
+        function stopAllAnimations() {
+            // Stop current narrator
+            if (currentNarrator) {
+                currentNarrator.destroy();
+                currentNarrator = null;
+            }
+            
+            // Set animation flag to false
+            isPlaying = false;
+            
+            // Hide progress indicator
+            hideProgress();
         }
 
         // Initialize Three.js
@@ -794,37 +857,14 @@
             atomLabels = [];
         }
 
-        // Show comparison display
+        // Show comparison display - removed to prevent overlap
         function showComparisonDisplay(type, atoms) {
-            const display = document.getElementById('comparisonDisplay');
-            
-            if (type === 'isotopes') {
-                display.innerHTML = `
-                    <div class="comparison-title">Isotopes: Same Element, Different Mass</div>
-                    <div class="comparison-row">
-                        <div class="comparison-item">
-                            <div class="name">All Hydrogen (Z=1)</div>
-                            <div class="value">Same protons, different neutrons</div>
-                        </div>
-                    </div>
-                `;
-            } else if (type === 'isobars') {
-                display.innerHTML = `
-                    <div class="comparison-title">Isobars: Different Elements, Same Mass</div>
-                    <div class="comparison-row">
-                        <div class="comparison-item">
-                            <div class="name">Both Mass 40</div>
-                            <div class="value">Different protons, same total nucleons</div>
-                        </div>
-                    </div>
-                `;
-            }
-            
-            display.classList.add('active');
+            // Comparison info is now shown only in the atom labels below each atom
+            // This prevents overlap with the 3D visualization
         }
 
         function hideComparisonDisplay() {
-            document.getElementById('comparisonDisplay').classList.remove('active');
+            // No longer needed since we're not showing the overlay
         }
 
         // Setup mouse controls
@@ -910,13 +950,15 @@
 
         // Complete Story
         async function playCompleteStory() {
-            if (isPlaying) return;
-            isPlaying = true;
+            // Stop any current animations/narration
+            stopAllAnimations();
             
-            stopCurrentDemo();
+            // Set active button
+            setActiveButton('btn-complete');
+            
+            isPlaying = true;
             clearAtoms();
             showProgress();
-            setActiveButton(0);
             
             currentNarrator = new Narrator();
             
@@ -924,21 +966,27 @@
             updateProgress(1);
             await currentNarrator.speak("Welcome to the fascinating world of isotopes and isobars! Let's explore how atoms can have variations.");
             
+            if (!isPlaying) return;
+            
             // Chapter 2: Hydrogen Isotopes
             updateProgress(2);
             clearAtoms();
             showAtom(atomData.hydrogen.protium);
             await currentNarrator.speak("This is Protium, the most common hydrogen isotope. One proton, no neutrons.");
             
+            if (!isPlaying) return;
             await wait(3000);
             clearAtoms();
             showAtom(atomData.hydrogen.deuterium);
             await currentNarrator.speak("Deuterium has one proton and one neutron. Still hydrogen!");
             
+            if (!isPlaying) return;
             await wait(3000);
             clearAtoms();
             showAtom(atomData.hydrogen.tritium);
             await currentNarrator.speak("Tritium has one proton and two neutrons. All three are hydrogen isotopes.");
+            
+            if (!isPlaying) return;
             
             // Chapter 3: Comparing Isotopes
             updateProgress(3);
@@ -950,6 +998,8 @@
             showComparisonDisplay('isotopes');
             await currentNarrator.speak("All three hydrogen isotopes together. Same atomic number, different mass numbers!");
             
+            if (!isPlaying) return;
+            
             // Chapter 4: Chlorine Isotopes
             updateProgress(4);
             await wait(4000);
@@ -957,6 +1007,8 @@
             showAtom(atomData.chlorine.cl35, { x: -4, y: 0, z: 0 });
             showAtom(atomData.chlorine.cl37, { x: 4, y: 0, z: 0 });
             await currentNarrator.speak("Chlorine also has isotopes. Chlorine-35 and Chlorine-37.");
+            
+            if (!isPlaying) return;
             
             // Chapter 5: Isobars
             updateProgress(5);
@@ -967,21 +1019,26 @@
             showComparisonDisplay('isobars');
             await currentNarrator.speak("These are isobars. Calcium-40 and Argon-40 have the same mass but are different elements!");
             
+            if (!isPlaying) return;
             await wait(3000);
             await currentNarrator.speak("You've learned about isotopes and isobars!");
             
             hideProgress();
             isPlaying = false;
+            // Remove active state after completion
+            setTimeout(() => setActiveButton(null), 2000);
         }
 
         // Explore Isotopes
         async function exploreIsotopes() {
-            if (isPlaying) return;
-            isPlaying = true;
+            // Stop any current animations/narration
+            stopAllAnimations();
             
-            stopCurrentDemo();
+            // Set active button
+            setActiveButton('btn-isotopes');
+            
+            isPlaying = true;
             clearAtoms();
-            setActiveButton(1);
             
             currentNarrator = new Narrator();
             
@@ -998,12 +1055,14 @@
 
         // Explore Isobars
         async function exploreIsobars() {
-            if (isPlaying) return;
-            isPlaying = true;
+            // Stop any current animations/narration
+            stopAllAnimations();
             
-            stopCurrentDemo();
+            // Set active button
+            setActiveButton('btn-isobars');
+            
+            isPlaying = true;
             clearAtoms();
-            setActiveButton(2);
             
             currentNarrator = new Narrator();
             
@@ -1019,12 +1078,14 @@
 
         // Build Isotope Mode
         async function buildIsotope() {
-            if (isPlaying) return;
-            isPlaying = true;
+            // Stop any current animations/narration
+            stopAllAnimations();
             
-            stopCurrentDemo();
+            // Set active button
+            setActiveButton('btn-build');
+            
+            isPlaying = true;
             clearAtoms();
-            setActiveButton(3);
             
             currentNarrator = new Narrator();
             
@@ -1032,6 +1093,7 @@
             showAtom(atomData.hydrogen.protium);
             await currentNarrator.speak("Starting with protium. Let's add neutrons!");
             
+            if (!isPlaying) return;
             await wait(2000);
             
             // Transform to deuterium
@@ -1039,6 +1101,7 @@
             showAtom(atomData.hydrogen.deuterium);
             await currentNarrator.speak("Added one neutron. Now we have Deuterium!");
             
+            if (!isPlaying) return;
             await wait(2000);
             
             // Transform to tritium
@@ -1050,26 +1113,18 @@
         }
 
         // Helper functions
-        function stopCurrentDemo() {
-            if (currentNarrator) {
-                currentNarrator.stop();
-                currentNarrator = null;
-            }
-        }
-
         function resetView() {
-            stopCurrentDemo();
+            // Stop all animations
+            stopAllAnimations();
+            
+            // Remove active button state
+            setActiveButton(null);
+            
             clearAtoms();
             hideProgress();
             scene.rotation.set(0, 0, 0);
             camera.position.set(0, 5, 25);
             isPlaying = false;
-        }
-
-        function setActiveButton(index) {
-            document.querySelectorAll('.demo-btn').forEach((btn, i) => {
-                btn.classList.toggle('active', i === index);
-            });
         }
 
         function showProgress() {
@@ -1100,7 +1155,7 @@
         // Audio control
         document.getElementById('mute-btn').addEventListener('click', () => {
             audioEnabled = !audioEnabled;
-            document.getElementById('audio-icon').textContent = audioEnabled ? '🔊' : '🔇';
+            document.getElementById('mute-btn').classList.toggle('muted', !audioEnabled);
             
             if (!audioEnabled && currentNarrator) {
                 currentNarrator.stop();

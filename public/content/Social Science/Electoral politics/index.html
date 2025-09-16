@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electoral Politics - Interactive Lesson</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <meta name="description" content="Interactive lesson on Electoral Politics based on NCERT Chapter 3">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav-menu" role="navigation" aria-label="Main navigation">
+        <div class="nav-items">
+            <button class="nav-item active" onclick="showModule('intro')" aria-pressed="true">📚 Introduction</button>
+            <button class="nav-item" onclick="showModule('why-elections')" aria-pressed="false">❓ Why Elections?</button>
+            <button class="nav-item" onclick="showModule('election-system')" aria-pressed="false">🗳️ Election System</button>
+            <button class="nav-item" onclick="showModule('democratic-elections')" aria-pressed="false">🏛️ Democratic Elections</button>
+            <button class="nav-item" onclick="showModule('election-commission')" aria-pressed="false">⚖️ Election Commission</button>
+            <button class="nav-item" onclick="showModule('participation')" aria-pressed="false">👥 Participation</button>
+            <button class="nav-item" onclick="showModule('activities')" aria-pressed="false">🎯 Activities</button>
+        </div>
+    </nav>
+
+    <!-- Audio Control -->
+    <div class="audio-control">
+        <button id="audioBtn" class="audio-btn" onclick="toggleAudio()" aria-label="Toggle audio narration">🔊</button>
+    </div>
+
+    <!-- Achievement Popup -->
+    <div id="achievementPopup" class="achievement-popup" aria-live="polite">
+        <div class="achievement-title" id="achievementTitle">🏆 Achievement Unlocked!</div>
+        <div class="achievement-desc" id="achievementDesc">You've completed a module!</div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title">📚 Electoral Politics</h1>
+            <p class="subtitle">Chapter 3: Democratic Politics</p>
+            <p class="reprint">Interactive Edition 2025</p>
+        </header>
+
+        <!-- Progress Tracker -->
+        <div class="progress-container">
+            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-fill" id="progressBar">0%</div>
+            </div>
+            <div class="progress-stats">
+                <span>📖 Modules: <span id="modulesComplete">0</span>/7</span>
+                <span>⭐ Score: <span id="totalScore">0</span></span>
+                <span>⏱️ Time: <span id="timeSpent">0:00</span></span>
+            </div>
+        </div>
+
+        <!-- Introduction Module -->
+        <div class="module active" id="intro">
+            <div class="exercise-card">
+                <h2 class="exercise-title">
+                    <span class="exercise-icon">🌟</span>
+                    Welcome to "Electoral Politics"
+                </h2>
+                <div class="content-block">
+                    <p>How do we choose our representatives in a democracy? What makes elections democratic? Why are elections so important?</p>
+                    <p>In this interactive lesson, we'll explore the fascinating world of electoral politics in India. You'll learn about the election system, the role of the Election Commission, and what makes Indian elections democratic. Let's begin this journey to understand the foundation of our democratic process!</p>
+                </div>
+                <div class="button-container">
+                    <button class="interactive-btn" onclick="startJourney()" aria-label="Begin the lesson">
+                        🚀 Start Your Learning Journey
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Why Elections Module -->
+        <div class="module" id="why-elections">
+            <div class="exercise-card">
+                <h2 class="exercise-title">
+                    <span class="exercise-icon">❓</span>
+                    Why Elections?
+                </h2>
+                <div class="content-block">
+                    <p>In a democracy, it is neither possible nor necessary for people to govern directly. The most common form of democracy in our times is for the people to govern through their representatives. Let's understand why elections are necessary and useful in a democracy.</p>
+                </div>
+                
+                <h3 class="activity-title">Assembly Election in Haryana: A Case Study</h3>
+                <div class="content-block" id="haryana-case-study">
+                    <!-- Content will be loaded dynamically -->
+                </div>
+                
+                <div class="comprehension-check">
+                    <h3>📝 Check Your Progress</h3>
+                    <p>Jagdeep and Navpreet read this story and drew the following conclusions. Can you say which of these are right or wrong?</p>
+                    <div id="case-study-questions">
+                        <!-- Questions will be loaded dynamically -->
+                    </div>
+                </div>
+                
+                <h3 class="activity-title">Why Do We Need Elections?</h3>
+                <div class="content-block" id="need-for-elections">
+                    <!-- Content will be loaded dynamically -->
+                </div>
+                
+                <div class="content-block">
+                    <h4>In an election the voters make many choices:</h4>
+                    <ul>
+                        <li>They can choose who will make laws for them.</li>
+                        <li>They can choose who will form the government and take major decisions.</li>
+                        <li>They can choose the party whose policies will guide the government and law making.</li>
+                    </ul>
+                </div>
+                
+                <h3 class="activity-title">Political Competition: Good or Bad?</h3>
+                <div class="content-block" id="political-competition">
+                    <!-- Content will be loaded dynamically -->
+                </div>
+                
+                <div class="button-container">
+                    <button class="interactive-btn" onclick="readText('why-elections-content')">
+                        🔊 Read Section Aloud
+                    </button>
+                    <button class="interactive-btn" onclick="showModule('election-system')">
+                        Continue to Election System
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Election System Module -->
+        <div class="module" id="election-system">
+            <div class="exercise-card">
+                <h2 class="exercise-title">
+                    <span class="exercise-icon">🗳️</span>
+                    What is Our System of Elections?
+                </h2>
+                
+                <div class="content-block" id="election-system-intro">
+                    <!-- Content will be loaded dynamically -->
+                </div>
+                
+                <h3 class="activity-title">Electoral Constituencies</h3>
+                <div class="content-block" id="constituencies-content">
+                    <!-- Content will be loaded dynamically -->
+                </div>
+                
+                <div class="constituency-map">
+                    <h4>Lok Sabha Constituencies Map</h4>
+                    <div id="map-container">
+                        <!-- Map will be loaded dynamically -->
+                    </div>
+                    <div class="map-caption">
+                        <p>TOTAL CONSTITUENCIES: 543</p>
+                        <p>GENERAL: 412</p>
+                        <p>RESERVED (SC): 84</p>
+                        <p>RESERVED (ST): 47</p>
+                    </div>
+                </div>
+                
+                <h3 class="activity-title">Reserved Constituencies</h3>
+                <div class="content-block" id="reserved-constituencies">
+                    <!-- Content will be loaded dynamically -->
+                </div>
+                
+                <h3 class="activity-title">Voters' List</h3>
+                <div class="content-block" id="voters-list">
+                    <!-- Content will be loaded dynamically -->
+                </div>
+                
+                <div class="voter-id-sample">
+                    <h4>Sample Voter ID Card (EPIC)</h4>
+                    <div id="voter-id-container">
+                        <!-- Voter ID sample will be loaded dynamically -->
+                    </div>
+                </div>
+                
+                <h3 class="activity-title">Nomination of Candidates</h3>
+                <div class="content-block" id="nomination-content">
+                    <!-- Content will be loaded dynamically -->
+                </div>
+                
+                <h3 class="activity-title">Election Campaign</h3>
+                <div class="content-block" id="campaign-content">
+                    <!-- Content will be loaded dynamically -->
+                </div>
+                
+                <div class="campaign-slogans">
+                    <h4>Famous Election Slogans in India</h4>
+                    <div class="slogan-container" id="slogan-container">
+                        <!-- Slogans will be loaded dynamically -->
+                    </div>
+                </div>
+                
+                <h3 class="activity-title">Polling and Counting of Votes</h3>
+                <div class="content-block" id="polling-content">
+                    <!-- Content will be loaded dynamically -->
+                </div>
+                
+                <div class="evm-demo">
+                    <h4>How Electronic Voting Machine (EVM) Works</h4>
+                    <div id="evm-container">
+                        <!-- EVM demo will be loaded dynamically -->
+                    </div>
+                </div>
+                
+                <div class="content-block">
+                    <h4>Election Result Example: Gulbarga Constituency (2014)</h4>
+                    <div class="election-result-table" id="election-result">
+                        <!-- Election results will be loaded dynamically -->
+                    </div>
+                </div>
+                
+                <div class="button-container">
+                    <button class="interactive-btn" onclick="readText('election-system-content')">
+                        🔊 Read Section Aloud
+                    </button>
+                    <button class="interactive-btn" onclick="showModule('democratic-elections')">
+                        Continue to Democratic Elections
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Democratic Elections Module -->
+        <div class="module" id="democratic-elections">
+            <div class="exercise-card">
+                <h2 class="exercise-title">
+                    <span class="exercise-icon">🏛️</span>
+                    What Makes Elections Democratic?
+                </h2>
+                
+                <div class="content-block" id="democratic-elections-intro">
+                    <!-- Content will be loaded dynamically -->
+                </div>
+                
+                <div class="conditions-container">
+                    <h3>Minimum Conditions for Democratic Elections</h3>
+                    <div class="condition-card">
+                        <div class="condition-icon">1️⃣</div>
+                        <div class="condition-text">Everyone should be able to choose. This means that everyone should have one vote and every vote should have equal value.</div>
+                    </div>
+                    <div class="condition-card">
+                        <div class="condition-icon">2️⃣</div>
+                        <div class="condition-text">There should be something to choose from. Parties and candidates should be free to contest elections and should offer some real choice to the voters.</div>
+                    </div>
+                    <div class="condition-card">
+                        <div class="condition-icon">3️⃣</div>
+                        <div class="condition-text">The choice should be offered at regular intervals. Elections must be held regularly after every few years.</div>
+                    </div>
+                    <div class="condition-card">
+                        <div class="condition-icon">4️⃣</div>
+                        <div class="condition-text">The candidate preferred by the people should get elected.</div>
+                    </div>
+                    <div class="condition-card">
+                        <div class="condition-icon">5️⃣</div>
+                        <div class="condition-text">Elections should be conducted in a free and fair manner where people can choose as they really wish.</div>
+                    </div>
+                </div>
+                
+                <h3 class="activity-title">Challenges to Free and Fair Elections</h3>
+                <div class="content-block" id="challenges-content">
+                    <!-- Content will be loaded dynamically -->
+                </div>
+                
+                <div class="matching-game">
+                    <h3>🔄 Matching Activity: Electoral System Features</h3>
+                    <p>Match the following features of our electoral system with the principles they reflect:</p>
+                    <div class="match-column">
+                        <h4>Principles</h4>
+                        <div id="match-principles">
+                            <!-- Principles will be loaded dynamically -->
+                        </div>
+                    </div>
+                    <div class="match-column">
+                        <h4>Features</h4>
+                        <div id="match-features">
+                            <!-- Features will be loaded dynamically -->
+                        </div>
+                    </div>
+                    <div id="match-feedback" class="feedback-message"></div>
+                </div>
+                
+                <div class="button-container">
+                    <button class="interactive-btn" onclick="readText('democratic-elections-content')">
+                        🔊 Read Section Aloud
+                    </button>
+                    <button class="interactive-btn" onclick="showModule('election-commission')">
+                        Continue to Election Commission
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Election Commission Module -->
+        <div class="module" id="election-commission">
+            <div class="exercise-card">
+                <h2 class="exercise-title">
+                    <span class="exercise-icon">⚖️</span>
+                    Independent Election Commission
+                </h2>
+                
+                <div class="content-block" id="ec-intro">
+                    <!-- Content will be loaded dynamically -->
+                </div>
+                
+                <div class="ec-powers">
+                    <h3>Powers of the Election Commission of India</h3>
+                    <div id="ec-powers-container">
+                        <!-- EC powers will be loaded dynamically -->
+                    </div>
+                </div>
+                
+                <div class="content-block">
+                    <blockquote class="quote-block">
+                        <p class="quote-text">"The Election Commission of India is one of the most powerful election management bodies in the world. Its independence and powers ensure that elections in India remain free and fair despite the challenges of conducting elections in the world's largest democracy."</p>
+                        <button class="interactive-btn" onclick="readQuote(this.parentNode)">🔊 Listen to Quote</button>
+                    </blockquote>
+                </div>
+                
+                <div class="content-block">
+                    <h4>Did You Know?</h4>
+                    <p>The Election Commission of India was established on January 25, 1950, a day before India became a republic. That's why January 25 is celebrated as National Voters' Day in India.</p>
+                </div>
+                
+                <div class="nvd-pledge">
+                    <h3>National Voters' Day (NVD) Pledge</h3>
+                    <div class="pledge-text" id="nvd-pledge">
+                        <!-- NVD pledge will be loaded dynamically -->
+                    </div>
+                    <button class="interactive-btn" onclick="takePledge()">Take the Pledge</button>
+                </div>
+                
+                <div class="button-container">
+                    <button class="interactive-btn" onclick="readText('ec-content')">
+                        🔊 Read Section Aloud
+                    </button>
+                    <button class="interactive-btn" onclick="showModule('participation')">
+                        Continue to Popular Participation
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Participation Module -->
+        <div class="module" id="participation">
+            <div class="exercise-card">
+                <h2 class="exercise-title">
+                    <span class="exercise-icon">👥</span>
+                    Popular Participation
+                </h2>
+                
+                <div class="content-block" id="participation-intro">
+                    <!-- Content will be loaded dynamically -->
+                </div>
+                
+                <div class="chart-container">
+                    <h3>Voter Turnout in India and the UK</h3>
+                    <div id="turnout-chart">
+                        <!-- Chart will be loaded dynamically -->
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <h3>Voter Turnout by Social Groups (2004)</h3>
+                    <div id="social-groups-chart">
+                        <!-- Chart will be loaded dynamically -->
+                    </div>
+                </div>
+                
+                <div class="opinion-poll">
+                    <h3>Do You Think Your Vote Makes a Difference?</h3>
+                    <div class="poll-results">
+                        <div class="poll-bar" style="width: 67%;">Has effect (67%)</div>
+                        <div class="poll-bar" style="width: 15%;">Has no effect (15%)</div>
+                        <div class="poll-bar" style="width: 18%;">Don't know (18%)</div>
+                    </div>
+                </div>
+                
+                <h3 class="activity-title">Acceptance of Election Outcome</h3>
+                <div class="content-block" id="outcome-content">
+                    <!-- Content will be loaded dynamically -->
+                </div>
+                
+                <div class="content-block">
+                    <h4>The outcome of India's elections speaks for itself:</h4>
+                    <ul>
+                        <li>The ruling parties routinely lose elections in India both at the national and state level.</li>
+                        <li>In India about half of the sitting MPs or MLAs lose elections.</li>
+                        <li>Candidates who are known to have spent a lot of money on 'buying votes' and those with known criminal connections often lose elections.</li>
+                        <li>Electoral outcomes are usually accepted as 'people's verdict' by the defeated party.</li>
+                    </ul>
+                </div>
+                
+                <div class="button-container">
+                    <button class="interactive-btn" onclick="readText('participation-content')">
+                        🔊 Read Section Aloud
+                    </button>
+                    <button class="interactive-btn" onclick="showModule('activities')">
+                        Continue to Activities
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activities Module -->
+        <div class="module" id="activities">
+            <div class="exercise-card">
+                <h2 class="exercise-title">
+                    <span class="exercise-icon">🎯</span>
+                    Activities
+                </h2>
+                
+                <div class="activity-section">
+                    <h3>📝 Quiz: Test Your Knowledge</h3>
+                    <div class="content-block">
+                        <p>Answer the following questions to test your understanding of electoral politics:</p>
+                        <div id="quiz-container">
+                            <!-- Quiz questions will be loaded dynamically -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="activity-section">
+                    <h3>🔄 Fair or Unfair: Electoral Practices</h3>
+                    <div class="content-block">
+                        <p>Identify whether the following electoral practices are fair or unfair:</p>
+                        <div id="fair-unfair-container">
+                            <!-- Fair/unfair activities will be loaded dynamically -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="activity-section">
+                    <h3>🔍 Research Activity: Election Timeline</h3>
+                    <div class="content-block">
+                        <p>List all the different election-related activities and arrange them in a time sequence, beginning with the first activity and ending with the last.</p>
+                        <div class="timeline-activity" id="timeline-activity">
+                            <!-- Timeline activity will be loaded dynamically -->
+                        </div>
+                        <button class="interactive-btn" onclick="checkTimeline()">
+                            Check Timeline
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="activity-section">
+                    <h3>💬 Discussion Activity: Electoral Reforms</h3>
+                    <div class="content-block">
+                        <p>What reforms would you suggest to make elections in India more free and fair? Discuss the challenges to free and fair elections and possible solutions.</p>
+                        <button class="interactive-btn" onclick="openDiscussionActivity()">
+                            Start Discussion Activity
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="activity-section">
+                    <h3>🎮 Interactive EVM Simulation</h3>
+                    <div class="content-block">
+                        <p>Experience how Electronic Voting Machines work with this interactive simulation.</p>
+                        <button class="interactive-btn" onclick="startEVMSimulation()">
+                            Start EVM Simulation
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Interactive Lesson - Electoral Politics</p>
+    </footer>
+
+    <script src="js/placeholder.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/content.js"></script>
+    <script src="js/activities.js"></script>
+    <script src="js/charts.js"></script>
+</body>
+</html>
+

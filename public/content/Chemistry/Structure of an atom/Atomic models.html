@@ -69,6 +69,9 @@
             box-shadow: 0 12px 30px rgba(233, 69, 96, 0.5);
         }
 
+        .control-btn.muted .unmute-icon { display: none; }
+        .control-btn:not(.muted) .mute-icon { display: none; }
+
         /* Container */
         .container {
             max-width: 1400px;
@@ -204,7 +207,18 @@
         }
 
         .action-btn.active {
-            background: linear-gradient(135deg, #f093fb, #f5576c);
+            background: linear-gradient(135deg, #10b981, #059669);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { 
+                box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+            }
+            50% { 
+                box-shadow: 0 10px 30px rgba(16, 185, 129, 0.6);
+            }
         }
 
         /* Model Description */
@@ -395,11 +409,11 @@
         <!-- Control Panel -->
         <div class="controls">
             <div class="control-buttons">
-                <button class="action-btn" onclick="playCompleteStory()">📖 Complete Story</button>
-                <button class="action-btn" onclick="showThomsonModel()">🍰 Thomson's Model</button>
-                <button class="action-btn" onclick="showRutherfordModel()">☢️ Rutherford's Model</button>
-                <button class="action-btn" onclick="showBohrModel()">🌀 Bohr's Model</button>
-                <button class="action-btn" onclick="resetView()">🔄 Reset</button>
+                <button class="action-btn" id="btn-complete" onclick="playCompleteStory()">📖 Complete Story</button>
+                <button class="action-btn" id="btn-thomson" onclick="showThomsonModel()">🍰 Thomson's Model</button>
+                <button class="action-btn" id="btn-rutherford" onclick="showRutherfordModel()">☢️ Rutherford's Model</button>
+                <button class="action-btn" id="btn-bohr" onclick="showBohrModel()">🌀 Bohr's Model</button>
+                <button class="action-btn" id="btn-reset" onclick="resetView()">🔄 Reset</button>
             </div>
         </div>
 
@@ -460,12 +474,14 @@
         // Voice Narrator
         class AtomicNarrator {
             constructor() {
-                this.isEnabled = true;
+                this.isEnabled = globalAudioEnabled;
                 this.currentUtterance = null;
+                this.isDestroyed = false;
+                this.isSpeaking = false;
             }
 
             speak(text) {
-                if (!this.isEnabled) return Promise.resolve();
+                if (!this.isEnabled || !text || this.isDestroyed) return Promise.resolve();
                 
                 return new Promise((resolve) => {
                     this.stop();
@@ -473,24 +489,82 @@
                     utterance.rate = 0.95;
                     utterance.pitch = 1.0;
                     utterance.volume = 0.85;
-                    utterance.onend = resolve;
-                    utterance.onerror = resolve;
+                    
+                    this.isSpeaking = true;
+                    utterance.onend = () => {
+                        this.isSpeaking = false;
+                        resolve();
+                    };
+                    utterance.onerror = () => {
+                        this.isSpeaking = false;
+                        resolve();
+                    };
+                    
                     this.currentUtterance = utterance;
                     speechSynthesis.speak(utterance);
                 });
             }
 
             stop() {
+                this.isSpeaking = false;
                 speechSynthesis.cancel();
+                this.currentUtterance = null;
+            }
+
+            destroy() {
+                this.isDestroyed = true;
+                this.stop();
+                this.currentUtterance = null;
             }
         }
 
         // Global variables
-        const narrator = new AtomicNarrator();
+        let globalAudioEnabled = true;
+        let narrator = null;
         let scene, camera, renderer;
         let currentModel = null;
         let animationId;
         let particles = [];
+        let isPlaying = false;
+        let currentActiveButton = null;
+        let storyInterval = null;
+
+        // Button management functions
+        function setActiveButton(buttonId) {
+            // Remove active class from all buttons
+            document.querySelectorAll('.action-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Add active class to the specified button
+            if (buttonId) {
+                const btn = document.getElementById(buttonId);
+                if (btn) {
+                    btn.classList.add('active');
+                    currentActiveButton = buttonId;
+                }
+            }
+        }
+
+        function stopAllAnimations() {
+            // Stop current narrator
+            if (narrator) {
+                narrator.destroy();
+                narrator = null;
+            }
+            
+            // Clear any story interval
+            if (storyInterval) {
+                clearInterval(storyInterval);
+                storyInterval = null;
+            }
+            
+            // Hide progress bar
+            hideProgress();
+            
+            // Set playing flag to false
+            isPlaying = false;
+        }
 
         // Initialize Three.js
         function initThreeJS() {
@@ -697,7 +771,9 @@
             // Create multiple alpha particles
             for (let i = 0; i < 6; i++) {
                 setTimeout(() => {
-                    createAlphaParticle(i);
+                    if (currentModel) {
+                        createAlphaParticle(i);
+                    }
                 }, i * 500);
             }
             
@@ -812,6 +888,13 @@
 
         // Show Thomson's Model
         function showThomsonModel() {
+            // Stop any current animations/narration
+            stopAllAnimations();
+            
+            // Set active button
+            setActiveButton('btn-thomson');
+            
+            isPlaying = true;
             createThomsonModel();
             updateModelInfo(
                 "Thomson's Plum Pudding Model (1897)",
@@ -823,11 +906,22 @@
                 "Total charge is neutral - equal positive and negative",
                 "Could not explain Rutherford's gold foil results"
             ]);
+            
+            narrator = new AtomicNarrator();
             narrator.speak("Thomson's plum pudding model showed electrons embedded in positive matter, like raisins in a pudding.");
+            
+            isPlaying = false;
         }
 
         // Show Rutherford's Model
         function showRutherfordModel() {
+            // Stop any current animations/narration
+            stopAllAnimations();
+            
+            // Set active button
+            setActiveButton('btn-rutherford');
+            
+            isPlaying = true;
             createRutherfordModel();
             updateModelInfo(
                 "Rutherford's Gold Foil Experiment (1911)",
@@ -840,11 +934,22 @@
                 "1 in 12,000 rebounded - nucleus is extremely small but dense",
                 "Nucleus is 10,000 times smaller than the atom itself"
             ]);
+            
+            narrator = new AtomicNarrator();
             narrator.speak("Watch Rutherford's gold foil experiment! Most alpha particles pass through, but some deflect or even rebound, revealing the tiny nucleus.");
+            
+            isPlaying = false;
         }
 
         // Show Bohr's Model
         function showBohrModel() {
+            // Stop any current animations/narration
+            stopAllAnimations();
+            
+            // Set active button
+            setActiveButton('btn-bohr');
+            
+            isPlaying = true;
             createBohrModel();
             updateModelInfo(
                 "Bohr's Energy Level Model (1913)",
@@ -857,41 +962,93 @@
                 "Can jump between levels by absorbing/emitting energy",
                 "Solved the stability problem of Rutherford's model"
             ]);
+            
+            narrator = new AtomicNarrator();
             narrator.speak("Bohr's model introduced quantum theory. Electrons orbit in fixed energy levels without losing energy.");
+            
+            isPlaying = false;
         }
 
         // Play Complete Story
         async function playCompleteStory() {
+            // Stop any current animations/narration
+            stopAllAnimations();
+            
+            // Set active button
+            setActiveButton('btn-complete');
+            
+            isPlaying = true;
             showProgress("Starting journey through atomic models...");
             
             // Thomson
             showProgress("Thomson's Model - 1897", 20);
-            showThomsonModel();
-            await wait(5000);
+            createThomsonModel();
+            updateModelInfo(
+                "Thomson's Plum Pudding Model (1897)",
+                "Electrons embedded uniformly in a sphere of positive charge."
+            );
+            
+            narrator = new AtomicNarrator();
+            await narrator.speak("Thomson's plum pudding model showed electrons embedded in positive matter.");
+            if (!isPlaying) return;
+            
+            await wait(3000);
+            if (!isPlaying) return;
             
             // Rutherford
             showProgress("Rutherford's Model - 1911", 50);
-            showRutherfordModel();
-            await wait(5000);
+            createRutherfordModel();
+            updateModelInfo(
+                "Rutherford's Gold Foil Experiment (1911)",
+                "Discovering the tiny, dense atomic nucleus."
+            );
+            
+            narrator = new AtomicNarrator();
+            await narrator.speak("Rutherford's experiment revealed atoms are mostly empty space with a tiny nucleus.");
+            if (!isPlaying) return;
+            
+            await wait(3000);
+            if (!isPlaying) return;
             
             // Bohr
             showProgress("Bohr's Model - 1913", 80);
-            showBohrModel();
-            await wait(5000);
+            createBohrModel();
+            updateModelInfo(
+                "Bohr's Energy Level Model (1913)",
+                "Electrons in fixed energy levels, solving the stability problem."
+            );
+            
+            narrator = new AtomicNarrator();
+            await narrator.speak("Bohr introduced quantum theory with electrons in stable energy levels.");
+            if (!isPlaying) return;
+            
+            await wait(3000);
             
             showProgress("Journey complete!", 100);
             await wait(2000);
             hideProgress();
             
+            narrator = new AtomicNarrator();
             narrator.speak("The evolution of atomic models shows how science builds upon discoveries to reveal nature's secrets!");
+            
+            isPlaying = false;
+            // Remove active state after completion
+            setTimeout(() => setActiveButton(null), 2000);
         }
 
         // Reset View
         function resetView() {
+            // Stop all animations
+            stopAllAnimations();
+            
+            // Remove active button state
+            setActiveButton(null);
+            
             clearScene();
             camera.position.set(0, 0, 25);
             camera.rotation.set(0, 0, 0);
             if(currentModel) currentModel.rotation.set(0, 0, 0);
+            
             updateModelInfo(
                 "Welcome to Atomic Models",
                 "Select a model to explore how scientists discovered the structure of atoms"
@@ -901,6 +1058,8 @@
                 "Scientists proposed various models to explain how electrons and protons are arranged within atoms",
                 "Each model built upon previous discoveries, gradually revealing the true nature of atomic structure"
             ]);
+            
+            narrator = new AtomicNarrator();
             narrator.speak("View reset. Select a model to explore.");
         }
 
@@ -1049,14 +1208,22 @@
 
         // Audio Control
         document.getElementById('mute-btn').addEventListener('click', () => {
-            narrator.isEnabled = !narrator.isEnabled;
-            document.getElementById('mute-btn').textContent = narrator.isEnabled ? '🔊' : '🔇';
-            if (!narrator.isEnabled) narrator.stop();
+            globalAudioEnabled = !globalAudioEnabled;
+            document.getElementById('mute-btn').classList.toggle('muted', !globalAudioEnabled);
+            
+            if (!globalAudioEnabled && narrator) {
+                narrator.stop();
+            }
+            
+            if (narrator) {
+                narrator.isEnabled = globalAudioEnabled;
+            }
         });
 
         // Initialize
         window.addEventListener('DOMContentLoaded', () => {
             initThreeJS();
+            narrator = new AtomicNarrator();
             narrator.speak("Welcome! Explore the evolution of atomic models from Thomson to Bohr. Select any model to begin.");
         });
 

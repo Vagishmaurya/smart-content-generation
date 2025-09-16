@@ -329,8 +329,18 @@
         }
 
         .demo-btn.active {
-            background: linear-gradient(135deg, #a78bfa, #8b5cf6);
-            box-shadow: 0 8px 25px rgba(167, 139, 250, 0.4);
+            background: linear-gradient(135deg, #10b981, #059669);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+            animation: activePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes activePulse {
+            0%, 100% { 
+                box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+            }
+            50% { 
+                box-shadow: 0 12px 35px rgba(16, 185, 129, 0.6);
+            }
         }
 
         /* Element Selector */
@@ -525,11 +535,11 @@
             <div class="controls-title" id="lesson-title">Explore Atomic Structure</div>
             
             <div class="demo-buttons">
-                <button class="demo-btn" onclick="playCompleteStory()">📖 Complete Story</button>
-                <button class="demo-btn" onclick="exploreAtomicNumber()">⚡ Atomic Number</button>
-                <button class="demo-btn" onclick="exploreMassNumber()">⚖️ Mass Number</button>
-                <button class="demo-btn" onclick="compareElements()">🔄 Compare Elements</button>
-                <button class="demo-btn" onclick="resetAll()">🔄 Reset</button>
+                <button class="demo-btn" id="btn-complete" onclick="playCompleteStory()">📖 Complete Story</button>
+                <button class="demo-btn" id="btn-atomic" onclick="exploreAtomicNumber()">⚡ Atomic Number</button>
+                <button class="demo-btn" id="btn-mass" onclick="exploreMassNumber()">⚖️ Mass Number</button>
+                <button class="demo-btn" id="btn-compare" onclick="compareElements()">🔄 Compare Elements</button>
+                <button class="demo-btn" id="btn-reset" onclick="resetAll()">🔄 Reset</button>
             </div>
 
             <div class="element-selector">
@@ -566,19 +576,32 @@
                 this.isEnabled = globalAudioEnabled;
                 this.currentUtterance = null;
                 this.settings = { rate: 0.9, pitch: 1.0, volume: 0.85 };
+                this.isDestroyed = false;
+                this.isSpeaking = false;
             }
 
             async speak(text, delay = 0) {
-                if (!this.isEnabled || !text) return;
+                if (!this.isEnabled || !text || this.isDestroyed) return;
                 
                 return new Promise((resolve) => {
                     setTimeout(() => {
+                        if (this.isDestroyed) {
+                            resolve();
+                            return;
+                        }
                         this.stop();
                         const utterance = new SpeechSynthesisUtterance(text);
                         Object.assign(utterance, this.settings);
                         
-                        utterance.onend = resolve;
-                        utterance.onerror = resolve;
+                        this.isSpeaking = true;
+                        utterance.onend = () => {
+                            this.isSpeaking = false;
+                            resolve();
+                        };
+                        utterance.onerror = () => {
+                            this.isSpeaking = false;
+                            resolve();
+                        };
                         
                         this.currentUtterance = utterance;
                         speechSynthesis.speak(utterance);
@@ -587,16 +610,25 @@
             }
 
             stop() {
+                this.isSpeaking = false;
                 speechSynthesis.cancel();
                 this.currentUtterance = null;
+            }
+
+            destroy() {
+                this.isDestroyed = true;
+                this.stop();
+                this.currentUtterance = null;
+                this.settings = null;
             }
         }
 
         // Global State
         let globalAudioEnabled = true;
-        let narrator = new AtomicNarrator();
+        let narrator = null;
         let currentElement = 'H';
         let isAnimating = false;
+        let currentActiveButton = null;
 
         // Three.js variables
         let scene, camera, renderer;
@@ -647,6 +679,37 @@
                 color: 0x94a3b8
             }
         };
+
+        // Button management functions
+        function setActiveButton(buttonId) {
+            // Remove active class from all buttons
+            document.querySelectorAll('.demo-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Add active class to the specified button
+            if (buttonId) {
+                const btn = document.getElementById(buttonId);
+                if (btn) {
+                    btn.classList.add('active');
+                    currentActiveButton = buttonId;
+                }
+            }
+        }
+
+        function stopAllAnimations() {
+            // Stop current narrator
+            if (narrator) {
+                narrator.destroy();
+                narrator = null;
+            }
+            
+            // Set animation flag to false
+            isAnimating = false;
+            
+            // Hide progress indicator
+            hideProgress();
+        }
 
         // Initialize Three.js
         function initThreeJS() {
@@ -863,11 +926,16 @@
 
         // Complete Story
         async function playCompleteStory() {
-            if (isAnimating) return;
+            // Stop any current animations/narration
+            stopAllAnimations();
+            
+            // Set active button
+            setActiveButton('btn-complete');
+            
             isAnimating = true;
+            narrator = new AtomicNarrator();
             
             showProgress();
-            setActiveButton(0);
             updateTitle("📖 The Complete Story of Atomic Structure");
             
             // Chapter 1: Introduction
@@ -876,9 +944,13 @@
             createAtom('H', true);
             
             await narrator.speak("Welcome to the fascinating world of atoms! Today, we'll explore two fundamental properties that define every element: atomic number and mass number.");
+            
+            if (!isAnimating) return;
             await wait(2000);
             
             await narrator.speak("Let's start with hydrogen, the simplest atom. It has just one proton in its nucleus.");
+            
+            if (!isAnimating) return;
             await wait(2000);
             
             // Chapter 2: Atomic Number
@@ -886,10 +958,14 @@
             updateStageInfo("Chapter 2: Atomic Number", "The identity of elements");
             
             await narrator.speak("The atomic number, represented by Z, is the number of protons in an atom's nucleus. For hydrogen, Z equals 1 because it has one proton.");
+            
+            if (!isAnimating) return;
             await wait(2000);
             
             createAtom('C', true);
             await narrator.speak("Now let's look at carbon. Carbon has 6 protons, so its atomic number Z equals 6. This is what makes carbon different from hydrogen!");
+            
+            if (!isAnimating) return;
             await wait(3000);
             
             // Chapter 3: Mass Number
@@ -897,10 +973,14 @@
             updateStageInfo("Chapter 3: Mass Number", "The mass of atoms");
             
             await narrator.speak("The mass number, represented by A, is the sum of protons and neutrons in the nucleus. These particles are called nucleons.");
+            
+            if (!isAnimating) return;
             await wait(2000);
             
             await narrator.speak("Carbon has 6 protons and 6 neutrons. Therefore, its mass number A equals 12.");
             updateExplanation("Mass Number (A) = Protons + Neutrons<br>For Carbon: A = 6 + 6 = 12");
+            
+            if (!isAnimating) return;
             await wait(3000);
             
             // Chapter 4: Notation
@@ -908,9 +988,13 @@
             updateStageInfo("Chapter 4: Atomic Notation", "How we write atoms");
             
             await narrator.speak("We write atoms using a special notation. The mass number goes on top, the atomic number on bottom, and the element symbol to the right.");
+            
+            if (!isAnimating) return;
             await wait(2000);
             
             await narrator.speak("Carbon is written as 12 over 6, followed by C. This tells us everything about carbon's nucleus!");
+            
+            if (!isAnimating) return;
             await wait(3000);
             
             // Chapter 5: Comparison
@@ -919,31 +1003,44 @@
             
             createAtom('Al', true);
             await narrator.speak("Let's look at aluminum. It has 13 protons and 14 neutrons, giving it an atomic number of 13 and a mass number of 27.");
+            
+            if (!isAnimating) return;
             await wait(3000);
             
             await narrator.speak("Remember: the atomic number defines the element, while the mass number tells us about its mass. Together, they give us the complete nuclear picture!");
             
             hideProgress();
             isAnimating = false;
+            // Remove active state after completion
+            setTimeout(() => setActiveButton(null), 2000);
         }
 
         // Explore Atomic Number
         async function exploreAtomicNumber() {
-            if (isAnimating) return;
-            isAnimating = true;
+            // Stop any current animations/narration
+            stopAllAnimations();
             
-            setActiveButton(1);
+            // Set active button
+            setActiveButton('btn-atomic');
+            
+            isAnimating = true;
             updateTitle("⚡ Exploring Atomic Number");
             updateStageInfo("Atomic Number (Z)", "The number of protons defines the element");
+            
+            narrator = new AtomicNarrator();
             
             // Show hydrogen
             createAtom('H', true);
             await narrator.speak("The atomic number Z is the number of protons. Hydrogen has 1 proton, so Z equals 1.");
+            
+            if (!isAnimating) return;
             await wait(2000);
             
             // Show carbon
             createAtom('C', true);
             await narrator.speak("Carbon has 6 protons, so its atomic number is 6. The atomic number is unique for each element!");
+            
+            if (!isAnimating) return;
             await wait(2000);
             
             // Show oxygen
@@ -957,19 +1054,28 @@
 
         // Explore Mass Number
         async function exploreMassNumber() {
-            if (isAnimating) return;
-            isAnimating = true;
+            // Stop any current animations/narration
+            stopAllAnimations();
             
-            setActiveButton(2);
+            // Set active button
+            setActiveButton('btn-mass');
+            
+            isAnimating = true;
             updateTitle("⚖️ Exploring Mass Number");
             updateStageInfo("Mass Number (A)", "Protons + Neutrons = Mass");
+            
+            narrator = new AtomicNarrator();
             
             // Show carbon
             createAtom('C', true);
             await narrator.speak("The mass number A is the sum of protons and neutrons. Carbon has 6 protons and 6 neutrons.");
+            
+            if (!isAnimating) return;
             await wait(2000);
             
             await narrator.speak("6 plus 6 equals 12, so carbon's mass number is 12. We write this as carbon-12.");
+            
+            if (!isAnimating) return;
             await wait(2000);
             
             // Show aluminum
@@ -983,17 +1089,24 @@
 
         // Compare Elements
         async function compareElements() {
-            if (isAnimating) return;
-            isAnimating = true;
+            // Stop any current animations/narration
+            stopAllAnimations();
             
-            setActiveButton(3);
+            // Set active button
+            setActiveButton('btn-compare');
+            
+            isAnimating = true;
             updateTitle("🔄 Comparing Elements");
             updateStageInfo("Element Comparison", "See how elements differ");
+            
+            narrator = new AtomicNarrator();
             
             // Cycle through elements
             const elementKeys = ['H', 'C', 'O', 'Al'];
             
             for (const key of elementKeys) {
+                if (!isAnimating) return;
+                
                 createAtom(key, true);
                 const element = elements[key];
                 await narrator.speak(`${element.name}: ${element.protons} protons, ${element.neutrons} neutrons. Atomic number ${element.atomicNumber}, mass number ${element.massNumber}.`);
@@ -1014,21 +1127,23 @@
                 btn.classList.toggle('selected', btn.textContent.includes(elements[elementKey].symbol));
             });
             
+            if (narrator) narrator.destroy();
+            narrator = new AtomicNarrator();
             narrator.speak(`Selected ${elements[elementKey].name}. Atomic number ${elements[elementKey].atomicNumber}, mass number ${elements[elementKey].massNumber}.`);
         }
 
         function resetAll() {
-            stopAnimation();
+            // Stop all animations
+            stopAllAnimations();
+            
+            // Remove active button state
+            setActiveButton(null);
+            
             createAtom('H', false);
             updateTitle("Explore Atomic Structure");
             updateStageInfo("Ready to Begin", "Select a demonstration to explore atomic structure");
             updateExplanation("<strong>Atomic Number (Z):</strong> The number of protons in an atom's nucleus. This defines the element.<br><br><strong>Mass Number (A):</strong> The sum of protons and neutrons (nucleons) in the nucleus. This determines the atom's mass.");
             hideProgress();
-        }
-
-        function stopAnimation() {
-            isAnimating = false;
-            narrator.stop();
         }
 
         function updateTitle(title) {
@@ -1042,12 +1157,6 @@
 
         function updateExplanation(html) {
             document.getElementById('explanationText').innerHTML = html;
-        }
-
-        function setActiveButton(index) {
-            document.querySelectorAll('.demo-btn').forEach((btn, i) => {
-                btn.classList.toggle('active', i === index);
-            });
         }
 
         function showProgress() {
@@ -1138,17 +1247,20 @@
         // Audio Control
         document.getElementById('mute-btn').addEventListener('click', () => {
             globalAudioEnabled = !globalAudioEnabled;
-            narrator.isEnabled = globalAudioEnabled;
             document.getElementById('mute-btn').classList.toggle('muted', !globalAudioEnabled);
             
-            if (!globalAudioEnabled) {
-                narrator.stop();
+            if (narrator) {
+                narrator.isEnabled = globalAudioEnabled;
+                if (!globalAudioEnabled) {
+                    narrator.stop();
+                }
             }
         });
 
         // Initialize
         window.addEventListener('DOMContentLoaded', () => {
             initThreeJS();
+            narrator = new AtomicNarrator();
             narrator.speak("Welcome to Atomic Number and Mass Number! Discover how protons define elements and how nucleons determine atomic mass. Select a demonstration to begin!");
         });
 

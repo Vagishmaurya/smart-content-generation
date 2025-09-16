@@ -365,8 +365,18 @@
         }
 
         .demo-btn.active {
-            background: linear-gradient(135deg, #a78bfa, #8b5cf6);
-            box-shadow: 0 8px 25px rgba(167, 139, 250, 0.4);
+            background: linear-gradient(135deg, #10b981, #059669);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+            animation: activePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes activePulse {
+            0%, 100% { 
+                box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+            }
+            50% { 
+                box-shadow: 0 12px 35px rgba(16, 185, 129, 0.6);
+            }
         }
 
         /* Element Grid */
@@ -617,11 +627,11 @@
             <div class="controls-title" id="lesson-title">Explore Valency</div>
             
             <div class="demo-buttons">
-                <button class="demo-btn" onclick="playCompleteStory()">📖 Complete Story</button>
-                <button class="demo-btn" onclick="exploreElements()">🔬 Explore Elements</button>
-                <button class="demo-btn" onclick="showValencyRules()">📏 Valency Rules</button>
-                <button class="demo-btn" onclick="openCalculator()">🧮 Valency Calculator</button>
-                <button class="demo-btn" onclick="resetAll()">🔄 Reset</button>
+                <button class="demo-btn" id="btn-complete" onclick="playCompleteStory()">📖 Complete Story</button>
+                <button class="demo-btn" id="btn-explore" onclick="exploreElements()">🔬 Explore Elements</button>
+                <button class="demo-btn" id="btn-rules" onclick="showValencyRules()">📋 Valency Rules</button>
+                <button class="demo-btn" id="btn-calculator" onclick="openCalculator()">🧮 Valency Calculator</button>
+                <button class="demo-btn" id="btn-reset" onclick="resetAll()">🔄 Reset</button>
             </div>
 
             <!-- Element Grid -->
@@ -662,19 +672,32 @@
                 this.isEnabled = globalAudioEnabled;
                 this.currentUtterance = null;
                 this.settings = { rate: 0.9, pitch: 1.0, volume: 0.85 };
+                this.isDestroyed = false;
+                this.isSpeaking = false;
             }
 
             async speak(text, delay = 0) {
-                if (!this.isEnabled || !text) return;
+                if (!this.isEnabled || !text || this.isDestroyed) return;
                 
                 return new Promise((resolve) => {
                     setTimeout(() => {
+                        if (this.isDestroyed) {
+                            resolve();
+                            return;
+                        }
                         this.stop();
                         const utterance = new SpeechSynthesisUtterance(text);
                         Object.assign(utterance, this.settings);
                         
-                        utterance.onend = resolve;
-                        utterance.onerror = resolve;
+                        this.isSpeaking = true;
+                        utterance.onend = () => {
+                            this.isSpeaking = false;
+                            resolve();
+                        };
+                        utterance.onerror = () => {
+                            this.isSpeaking = false;
+                            resolve();
+                        };
                         
                         this.currentUtterance = utterance;
                         speechSynthesis.speak(utterance);
@@ -683,16 +706,25 @@
             }
 
             stop() {
+                this.isSpeaking = false;
                 speechSynthesis.cancel();
                 this.currentUtterance = null;
+            }
+
+            destroy() {
+                this.isDestroyed = true;
+                this.stop();
+                this.currentUtterance = null;
+                this.settings = null;
             }
         }
 
         // Global State
         let globalAudioEnabled = true;
-        let narrator = new ValencyNarrator();
+        let narrator = null;
         let currentElement = 'Na';
         let isAnimating = false;
+        let currentActiveButton = null;
 
         // Three.js variables
         let scene, camera, renderer;
@@ -722,6 +754,40 @@
             'Cl': { symbol: 'Cl', name: 'Chlorine', atomicNumber: 17, config: [2, 8, 7], valency: 1, explanation: 'Gains 1 electron to complete octet (8-7=1)' },
             'Ar': { symbol: 'Ar', name: 'Argon', atomicNumber: 18, config: [2, 8, 8], valency: 0, explanation: 'Stable octet - chemically inert' }
         };
+
+        // Button management functions
+        function setActiveButton(buttonId) {
+            // Remove active class from all buttons
+            document.querySelectorAll('.demo-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Add active class to the specified button
+            if (buttonId) {
+                const btn = document.getElementById(buttonId);
+                if (btn) {
+                    btn.classList.add('active');
+                    currentActiveButton = buttonId;
+                }
+            }
+        }
+
+        function stopAllAnimations() {
+            // Stop current narrator
+            if (narrator) {
+                narrator.destroy();
+                narrator = null;
+            }
+            
+            // Set animation flag to false
+            isAnimating = false;
+            
+            // Hide progress indicator
+            hideProgress();
+            
+            // Remove stage states
+            document.getElementById('stage').classList.remove('losing-state', 'gaining-state', 'stable-state');
+        }
 
         // Initialize Three.js
         function initThreeJS() {
@@ -1001,11 +1067,16 @@
 
         // Complete Story
         async function playCompleteStory() {
-            if (isAnimating) return;
+            // Stop any current animations/narration
+            stopAllAnimations();
+            
+            // Set active button
+            setActiveButton('btn-complete');
+            
             isAnimating = true;
+            narrator = new ValencyNarrator();
             
             showProgress();
-            setActiveButton(0);
             updateTitle("📖 The Complete Story of Valency");
             
             // Chapter 1: Introduction
@@ -1014,10 +1085,13 @@
             createAtom('Ne', true);
             
             await narrator.speak("Welcome to the world of valency! Let's discover how atoms combine with each other. We'll start with neon, a noble gas.");
+            
+            if (!isAnimating) return;
             await wait(2000);
             
             await narrator.speak("Notice how neon has 8 electrons in its outermost shell. This is called a stable octet. Atoms with 8 valence electrons are chemically inert.");
             
+            if (!isAnimating) return;
             document.getElementById('stage').classList.add('stable-state');
             await wait(3000);
             document.getElementById('stage').classList.remove('stable-state');
@@ -1028,12 +1102,16 @@
             createAtom('Na', true);
             
             await narrator.speak("Now let's look at sodium. It has 1 electron in its outermost shell. To achieve stability, it will lose this electron.");
+            
+            if (!isAnimating) return;
             await wait(2000);
             
             document.getElementById('stage').classList.add('losing-state');
             await animateElectronTransfer('lose');
             
             await narrator.speak("Sodium loses 1 electron to achieve a stable octet in its new outermost shell. Therefore, sodium has a valency of 1.");
+            
+            if (!isAnimating) return;
             await wait(2000);
             document.getElementById('stage').classList.remove('losing-state');
             
@@ -1043,10 +1121,14 @@
             createAtom('Mg', true);
             
             await narrator.speak("Magnesium has 2 valence electrons. It loses both to achieve stability, giving it a valency of 2.");
+            
+            if (!isAnimating) return;
             await wait(2000);
             
             createAtom('Al', true);
             await narrator.speak("Aluminum has 3 valence electrons, so its valency is 3. It loses all three to achieve a stable configuration.");
+            
+            if (!isAnimating) return;
             await wait(3000);
             
             // Chapter 4: Valency by Gaining
@@ -1055,12 +1137,16 @@
             createAtom('F', true);
             
             await narrator.speak("Now let's look at fluorine. It has 7 valence electrons. It's easier to gain 1 electron than to lose 7!");
+            
+            if (!isAnimating) return;
             await wait(2000);
             
             document.getElementById('stage').classList.add('gaining-state');
             await animateElectronTransfer('gain');
             
             await narrator.speak("Fluorine gains 1 electron to complete its octet. We calculate: 8 minus 7 equals 1. So fluorine's valency is 1.");
+            
+            if (!isAnimating) return;
             await wait(2000);
             document.getElementById('stage').classList.remove('gaining-state');
             
@@ -1070,6 +1156,8 @@
             createAtom('O', true);
             
             await narrator.speak("Oxygen has 6 valence electrons. Using the 8 minus x rule: 8 minus 6 equals 2. Oxygen's valency is 2.");
+            
+            if (!isAnimating) return;
             await wait(3000);
             
             // Chapter 6: Summary
@@ -1078,23 +1166,31 @@
             createAtom('C', true);
             
             await narrator.speak("Carbon is special with 4 valence electrons. It can share 4 electrons, giving it a valency of 4. This makes carbon the basis of organic chemistry!");
+            
+            if (!isAnimating) return;
             await wait(3000);
             
             await narrator.speak("Remember: valency is the combining capacity of an atom, determined by how it achieves a stable electron configuration!");
             
             hideProgress();
             isAnimating = false;
+            // Remove active state after completion
+            setTimeout(() => setActiveButton(null), 2000);
         }
 
         // Explore Elements
         async function exploreElements() {
-            if (isAnimating) return;
-            isAnimating = true;
+            // Stop any current animations/narration
+            stopAllAnimations();
             
-            setActiveButton(1);
+            // Set active button
+            setActiveButton('btn-explore');
+            
+            isAnimating = true;
             updateTitle("🔬 Exploring Elements");
             updateStageInfo("Interactive Exploration", "Click any element to explore");
             
+            narrator = new ValencyNarrator();
             await narrator.speak("Explore any of the first 18 elements! Click on an element to see its electronic configuration and valency.");
             
             document.getElementById('elementGrid').style.display = 'grid';
@@ -1103,26 +1199,37 @@
 
         // Show Valency Rules
         async function showValencyRules() {
-            if (isAnimating) return;
-            isAnimating = true;
+            // Stop any current animations/narration
+            stopAllAnimations();
             
-            setActiveButton(2);
-            updateTitle("📏 Understanding Valency Rules");
+            // Set active button
+            setActiveButton('btn-rules');
+            
+            isAnimating = true;
+            updateTitle("📋 Understanding Valency Rules");
             updateStageInfo("Valency Rules", "How to determine valency");
+            
+            narrator = new ValencyNarrator();
             
             // Rule 1: Elements with 1-3 electrons
             createAtom('Li', true);
             await narrator.speak("Rule 1: Elements with 1 to 3 valence electrons lose them all. Their valency equals the number of valence electrons.");
+            
+            if (!isAnimating) return;
             await wait(3000);
             
             // Rule 2: Elements with 5-7 electrons
             createAtom('Cl', true);
             await narrator.speak("Rule 2: Elements with 5 to 7 valence electrons gain electrons. Their valency equals 8 minus the number of valence electrons.");
+            
+            if (!isAnimating) return;
             await wait(3000);
             
             // Rule 3: Elements with 4 electrons
             createAtom('C', true);
             await narrator.speak("Rule 3: Elements with 4 valence electrons can share. Carbon shares 4 electrons, giving it a valency of 4.");
+            
+            if (!isAnimating) return;
             await wait(3000);
             
             // Rule 4: Noble gases
@@ -1134,11 +1241,17 @@
 
         // Open Calculator
         function openCalculator() {
-            setActiveButton(3);
+            // Stop any current animations/narration
+            stopAllAnimations();
+            
+            // Set active button
+            setActiveButton('btn-calculator');
+            
             updateTitle("🧮 Valency Calculator");
             document.getElementById('calculatorPanel').style.display = 'block';
             document.getElementById('elementGrid').style.display = 'none';
             
+            narrator = new ValencyNarrator();
             narrator.speak("Use the calculator to determine valency based on the number of valence electrons!");
         }
 
@@ -1182,6 +1295,8 @@
                 </div>
             `;
             
+            if (narrator) narrator.destroy();
+            narrator = new ValencyNarrator();
             narrator.speak(`The valency is ${valency}. ${explanation}`);
         }
 
@@ -1196,11 +1311,19 @@
             event.target.closest('.element-btn').classList.add('selected');
             
             const element = elements[elementKey];
+            
+            if (narrator) narrator.destroy();
+            narrator = new ValencyNarrator();
             narrator.speak(`${element.name}: ${element.config[element.config.length - 1]} valence electrons, valency ${element.valency}. ${element.explanation}`);
         }
 
         function resetAll() {
-            stopAnimation();
+            // Stop all animations
+            stopAllAnimations();
+            
+            // Remove active button state
+            setActiveButton(null);
+            
             createAtom('Na', false);
             updateTitle("Explore Valency");
             updateStageInfo("Ready to Begin", "Select a demonstration to explore valency");
@@ -1210,11 +1333,6 @@
             document.getElementById('stage').classList.remove('losing-state', 'gaining-state', 'stable-state');
         }
 
-        function stopAnimation() {
-            isAnimating = false;
-            narrator.stop();
-        }
-
         function updateTitle(title) {
             document.getElementById('lesson-title').textContent = title;
         }
@@ -1222,12 +1340,6 @@
         function updateStageInfo(title, text) {
             document.getElementById('infoTitle').textContent = title;
             document.getElementById('infoText').textContent = text;
-        }
-
-        function setActiveButton(index) {
-            document.querySelectorAll('.demo-btn').forEach((btn, i) => {
-                btn.classList.toggle('active', i === index);
-            });
         }
 
         function showProgress() {
@@ -1328,17 +1440,20 @@
         // Audio Control
         document.getElementById('mute-btn').addEventListener('click', () => {
             globalAudioEnabled = !globalAudioEnabled;
-            narrator.isEnabled = globalAudioEnabled;
             document.getElementById('mute-btn').classList.toggle('muted', !globalAudioEnabled);
             
-            if (!globalAudioEnabled) {
-                narrator.stop();
+            if (narrator) {
+                narrator.isEnabled = globalAudioEnabled;
+                if (!globalAudioEnabled) {
+                    narrator.stop();
+                }
             }
         });
 
         // Initialize
         window.addEventListener('DOMContentLoaded', () => {
             initThreeJS();
+            narrator = new ValencyNarrator();
             narrator.speak("Welcome to Valency and Electronic Configuration! Discover how valence electrons determine the combining capacity of atoms. Select a demonstration to begin!");
         });
 

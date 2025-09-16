@@ -230,8 +230,18 @@
         }
 
         .nav-btn.active {
-            background: linear-gradient(135deg, #f093fb, #f5576c);
-            box-shadow: 0 8px 25px rgba(240, 147, 251, 0.4);
+            background: linear-gradient(135deg, #10b981, #059669);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { 
+                box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+            }
+            50% { 
+                box-shadow: 0 12px 35px rgba(16, 185, 129, 0.6);
+            }
         }
 
         /* Text Content Panel */
@@ -387,11 +397,11 @@
         <!-- Control Panel -->
         <div class="controls">
             <div class="nav-buttons">
-                <button class="nav-btn" onclick="playCompleteStory()">📖 Complete Story</button>
-                <button class="nav-btn" onclick="showDaltonAtom()">⚫ Dalton's Atom</button>
-                <button class="nav-btn" onclick="showCanalRays()">⚡ Canal Rays</button>
-                <button class="nav-btn" onclick="showAtomComposition()">⚛️ Atom Composition</button>
-                <button class="nav-btn" onclick="resetScene()">🔄 Reset</button>
+                <button class="nav-btn" id="btn-complete" onclick="playCompleteStory()">📖 Complete Story</button>
+                <button class="nav-btn" id="btn-dalton" onclick="showDaltonAtom()">⚫ Dalton's Atom</button>
+                <button class="nav-btn" id="btn-canal" onclick="showCanalRays()">⚡ Canal Rays</button>
+                <button class="nav-btn" id="btn-composition" onclick="showAtomComposition()">⚛️ Atom Composition</button>
+                <button class="nav-btn" id="btn-reset" onclick="resetScene()">🔄 Reset</button>
             </div>
         </div>
 
@@ -438,6 +448,7 @@
                 this.currentUtterance = null;
                 this.settings = { rate: 0.9, pitch: 1.0, volume: 0.85 };
                 this.isDestroyed = false;
+                this.isSpeaking = false;
             }
 
             async speak(text, delay = 0) {
@@ -453,8 +464,15 @@
                         const utterance = new SpeechSynthesisUtterance(text);
                         Object.assign(utterance, this.settings);
                         
-                        utterance.onend = resolve;
-                        utterance.onerror = resolve;
+                        this.isSpeaking = true;
+                        utterance.onend = () => {
+                            this.isSpeaking = false;
+                            resolve();
+                        };
+                        utterance.onerror = () => {
+                            this.isSpeaking = false;
+                            resolve();
+                        };
                         
                         this.currentUtterance = utterance;
                         speechSynthesis.speak(utterance);
@@ -463,6 +481,7 @@
             }
 
             stop() {
+                this.isSpeaking = false;
                 speechSynthesis.cancel();
                 this.currentUtterance = null;
             }
@@ -480,6 +499,7 @@
         let currentNarrator = null;
         let currentScene = 0;
         let isPlaying = false;
+        let currentActiveButton = null;
 
         // Three.js variables
         let scene, camera, renderer;
@@ -507,6 +527,44 @@
                 content: "Atoms contain protons (p⁺) in the nucleus and electrons (e⁻) in outer regions, mutually balancing their charges."
             }
         ];
+
+        // Button management functions
+        function setActiveButton(buttonId) {
+            // Remove active class from all buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Add active class to the specified button
+            if (buttonId) {
+                const btn = document.getElementById(buttonId);
+                if (btn) {
+                    btn.classList.add('active');
+                    currentActiveButton = buttonId;
+                }
+            }
+        }
+
+        function stopAllAnimations() {
+            // Stop current narrator
+            if (currentNarrator) {
+                currentNarrator.destroy();
+                currentNarrator = null;
+            }
+            
+            // Clear interval animations
+            if (canalRayAnimation) {
+                clearInterval(canalRayAnimation);
+                canalRayAnimation = null;
+            }
+            if (cathodeRayAnimation) {
+                clearInterval(cathodeRayAnimation);
+                cathodeRayAnimation = null;
+            }
+            
+            // Set playing flag to false
+            isPlaying = false;
+        }
 
         // Initialize Three.js
         function initThreeJS() {
@@ -737,6 +795,8 @@
             if (canalRayAnimation) clearInterval(canalRayAnimation);
             
             canalRayAnimation = setInterval(() => {
+                if (!gasTube) return;
+                
                 const proton = new THREE.Mesh(
                     new THREE.SphereGeometry(0.1, 16, 16),
                     new THREE.MeshPhongMaterial({
@@ -750,6 +810,7 @@
                 gasTube.add(proton);
                 
                 const animateProton = () => {
+                    if (!gasTube || !proton.parent) return;
                     proton.position.x -= 0.1;
                     if (proton.position.x < -6) {
                         gasTube.remove(proton);
@@ -766,6 +827,8 @@
             if (cathodeRayAnimation) clearInterval(cathodeRayAnimation);
             
             cathodeRayAnimation = setInterval(() => {
+                if (!gasTube) return;
+                
                 const electron = new THREE.Mesh(
                     new THREE.SphereGeometry(0.08, 16, 16),
                     new THREE.MeshPhongMaterial({
@@ -779,6 +842,7 @@
                 gasTube.add(electron);
                 
                 const animateElectron = () => {
+                    if (!gasTube || !electron.parent) return;
                     electron.position.x += 0.12;
                     if (electron.position.x > 6) {
                         gasTube.remove(electron);
@@ -897,19 +961,26 @@
 
         // Demo Control Functions
         async function playCompleteStory() {
-            if (isPlaying) return;
-            isPlaying = true;
+            // Stop any current animations/narration
+            stopAllAnimations();
             
-            if (currentNarrator) currentNarrator.destroy();
+            // Set active button
+            setActiveButton('btn-complete');
+            
+            isPlaying = true;
             currentNarrator = new AtomicNarrator();
             
             // Scene 1: Dalton's Atom
             currentScene = 0;
             updateScene();
             await currentNarrator.speak("Our story begins with John Dalton's atomic theory, which proposed that atoms were solid, indivisible spheres.");
+            
+            if (!isPlaying) return; // Check if stopped
             await wait(2000);
             
             await currentNarrator.speak("But experiments with static electricity, like combing hair or rubbing objects together, suggested atoms contained charged particles.");
+            
+            if (!isPlaying) return;
             await wait(3000);
             
             // Scene 2: Canal Rays
@@ -917,9 +988,13 @@
             updateScene();
             await wait(1000);
             await currentNarrator.speak("In 1886, Goldstein discovered canal rays - positive particles streaming toward the cathode in gas discharge tubes.");
+            
+            if (!isPlaying) return;
             await wait(3000);
             
             await currentNarrator.speak("J.J. Thomson later identified electrons - negative particles with negligible mass moving toward the positive electrode.");
+            
+            if (!isPlaying) return;
             await wait(3000);
             
             // Scene 3: Modern Atom
@@ -927,64 +1002,78 @@
             updateScene();
             await wait(1000);
             await currentNarrator.speak("We now understand that atoms contain a nucleus with positive protons, surrounded by negative electrons in orbital shells.");
+            
+            if (!isPlaying) return;
             await wait(3000);
             
             await currentNarrator.speak("These particles balance each other's charges, making atoms electrically neutral. This discovery revolutionized our understanding of matter!");
             
             isPlaying = false;
+            // Remove active state after completion
+            setTimeout(() => setActiveButton(null), 2000);
         }
 
         async function showDaltonAtom() {
-            if (isPlaying) return;
-            isPlaying = true;
+            // Stop any current animations/narration
+            stopAllAnimations();
             
+            // Set active button
+            setActiveButton('btn-dalton');
+            
+            isPlaying = true;
             currentScene = 0;
             updateScene();
             
-            if (currentNarrator) currentNarrator.destroy();
             currentNarrator = new AtomicNarrator();
-            
             await currentNarrator.speak("Dalton's model: atoms as solid, indivisible spheres. This model couldn't explain electrical phenomena or why objects become charged when rubbed together.");
             
             isPlaying = false;
+            // Keep button active until another is pressed
         }
 
         async function showCanalRays() {
-            if (isPlaying) return;
-            isPlaying = true;
+            // Stop any current animations/narration
+            stopAllAnimations();
             
+            // Set active button
+            setActiveButton('btn-canal');
+            
+            isPlaying = true;
             currentScene = 1;
             updateScene();
             
-            if (currentNarrator) currentNarrator.destroy();
             currentNarrator = new AtomicNarrator();
-            
             await currentNarrator.speak("Watch the gas discharge tube experiment. Red particles are positive protons moving toward the negative cathode. Blue particles are negative electrons moving toward the positive anode.");
             
             isPlaying = false;
+            // Keep button active until another is pressed
         }
 
         async function showAtomComposition() {
-            if (isPlaying) return;
-            isPlaying = true;
+            // Stop any current animations/narration
+            stopAllAnimations();
             
+            // Set active button
+            setActiveButton('btn-composition');
+            
+            isPlaying = true;
             currentScene = 2;
             updateScene();
             
-            if (currentNarrator) currentNarrator.destroy();
             currentNarrator = new AtomicNarrator();
-            
             await currentNarrator.speak("The modern atom: a dense nucleus containing protons, with electrons orbiting in shells. The number of protons determines the element's identity.");
             
             isPlaying = false;
+            // Keep button active until another is pressed
         }
 
         function resetScene() {
-            isPlaying = false;
-            if (currentNarrator) {
-                currentNarrator.destroy();
-                currentNarrator = null;
-            }
+            // Stop all animations
+            stopAllAnimations();
+            
+            // Remove active button state
+            setActiveButton(null);
+            
             currentScene = 0;
             createIntroductionScene();
             document.getElementById('infoTitle').textContent = "Welcome to Atomic Discovery";

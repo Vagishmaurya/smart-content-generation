@@ -77,6 +77,12 @@ export const subjects: Subject[] = [
         path: '',
         files: [],
         youtube: 'https://youtu.be/tYnkfIadmKI?si=puUtnWHJBQANRSl9'
+      },
+      {
+        id: 'electoral-politics',
+        name: 'Electoral Politics',
+        path: 'content/Social Science/Electoral politics',
+        files: ['index.html']
       }
     ]
   },
