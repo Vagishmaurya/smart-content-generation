@@ -84,6 +84,19 @@ export const subjects: Subject[] = [
           'Important_carbon_compund.html',
           'Versatile_nature_of_Carbon.html'
         ]
+      },
+      {
+        id: 'structure-of-an-atom',
+        name: 'Structure of an Atom',
+        path: 'content/Chemistry/Structure of an atom',
+        files: [
+          'Atomic models.html',
+          'Charged particles.html',
+          'Isotopes and Isobars.html',
+          'Electron distribution.html',
+          'Valency.html',
+          'Atomic number and mass.html'
+        ]
       }
     ]
   },
