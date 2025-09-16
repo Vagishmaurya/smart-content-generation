@@ -23,8 +23,12 @@ export default function Home() {
   
   const handleChapterClick = (chapter: Chapter) => {
     setSelectedChapter(chapter);
+    // If chapter has a youtube link, automatically select it
+    if (chapter.youtube) {
+      setSelectedTopic('youtube');
+    }
     // If chapter has only one file, automatically select it
-    if (chapter.files.length === 1) {
+    else if (chapter.files.length === 1) {
       setSelectedTopic(chapter.files[0]);
     } else {
       setSelectedTopic(null);
@@ -108,8 +112,8 @@ export default function Home() {
   const handleBackFromContent = () => {
     stopAllAudio();
     const currentChapter = currentSubject?.chapters.find(chapter => chapter.id === selectedChapter?.id);
-    // If it's a single-file chapter, go back to chapters list
-    if (currentChapter && currentChapter.files.length === 1) {
+    // If it's a YouTube chapter or a single-file chapter, go back to chapters list
+    if ((currentChapter && currentChapter.youtube) || (currentChapter && currentChapter.files.length === 1)) {
       setSelectedChapter(null);
       setSelectedTopic(null);
     } else {
@@ -136,6 +140,8 @@ export default function Home() {
         return 'bg-emerald-500/10 border-emerald-400/30';
       case 'socialscience':
         return 'bg-blue-500/10 border-blue-400/30';
+      case 'mathematics':
+        return 'bg-pink-500/10 border-pink-400/30';
       default:
         return 'bg-white/5 border-white/20';
     }
@@ -155,6 +161,8 @@ export default function Home() {
         return 'bg-emerald-500/20 hover:bg-emerald-500/30 border-emerald-400/40 hover:border-emerald-400/60';
       case 'socialscience':
         return 'bg-blue-500/20 hover:bg-blue-500/30 border-blue-400/40 hover:border-blue-400/60';
+      case 'mathematics':
+        return 'bg-pink-500/20 hover:bg-pink-500/30 border-pink-400/40 hover:border-pink-400/60';
       default:
         return 'bg-white/10 hover:bg-white/20 border-white/30 hover:border-white/50';
     }
@@ -174,6 +182,8 @@ export default function Home() {
         return 'from-emerald-500/30 to-teal-500/30';
       case 'socialscience':
         return 'from-blue-500/30 to-indigo-500/30';
+      case 'mathematics':
+        return 'from-pink-500/30 to-rose-500/30';
       default:
         return 'from-blue-500/20 to-purple-500/20';
     }
@@ -387,7 +397,8 @@ export default function Home() {
                 {selectedSubject === 'physics' ? '⚛️' : 
                  selectedSubject === 'biology' ? '🧬' : 
                  selectedSubject === 'chemistry' ? '🧪' : 
-                 selectedSubject === 'socialscience' ? '🌍' : '📚'}
+                 selectedSubject === 'socialscience' ? '🌍' :
+                 selectedSubject === 'mathematics' ? '🧮' : '📚'}
               </div>
               <p className="text-xl text-white/70 text-center max-w-md">
                 {selectedSubject === 'physics' ? 
@@ -396,6 +407,8 @@ export default function Home() {
                   'Chemistry content is coming soon! Check back later for exciting chapters on chemical reactions, elements, and more.' :
                   selectedSubject === 'socialscience' ?
                   'Social Science content is coming soon! Check back later for exciting chapters on history, geography, and civics.' :
+                  selectedSubject === 'mathematics' ?
+                  'Mathematics content is coming soon! Check back later for exciting chapters on algebra, calculus, and more.' :
                   'No chapters available yet'}
               </p>
               <button 
@@ -405,6 +418,7 @@ export default function Home() {
                   selectedSubject === 'biology' ? 'bg-primary-biology/40 hover:bg-primary-biology/60' :
                   selectedSubject === 'chemistry' ? 'bg-primary-chemistry/40 hover:bg-primary-chemistry/60' :
                   selectedSubject === 'socialscience' ? 'bg-primary-socialscience/40 hover:bg-primary-socialscience/60' :
+                  selectedSubject === 'mathematics' ? 'bg-primary-mathematics/40 hover:bg-primary-mathematics/60' :
                   'bg-primary-english/40 hover:bg-primary-english/60'
                 }`}
               >
@@ -471,12 +485,23 @@ export default function Home() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            <iframe 
-              ref={iframeRef}
-              src={`/${selectedChapter.path}/${selectedTopic}`}
-              className="w-full h-full border-0"
-              title={formatFileName(selectedTopic)}
-            />
+            {selectedTopic === 'youtube' && selectedChapter.youtube ? (
+              <iframe
+                ref={iframeRef}
+                src={selectedChapter.youtube.replace('https://youtu.be/', 'https://www.youtube.com/embed/').split('?')[0]}
+                className="w-full h-full border-0"
+                title={selectedChapter.name}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              />
+            ) : (
+              <iframe 
+                ref={iframeRef}
+                src={`/${selectedChapter.path}/${selectedTopic}`}
+                className="w-full h-full border-0"
+                title={formatFileName(selectedTopic)}
+              />
+            )}
           </motion.div>
         </>
       )}

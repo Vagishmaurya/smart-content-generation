@@ -15,6 +15,7 @@ const config: Config = {
           physics: '#f97316', // orange
           chemistry: '#10b981', // emerald
           socialscience: '#3b82f6', // blue
+          mathematics: '#ec4899', // pink
           DEFAULT: '#3b82f6' // blue
         },
         background: '#0f172a',

@@ -39,6 +39,10 @@ body {
   @apply from-primary-socialscience/50 to-primary-socialscience/20 hover:from-primary-socialscience/60 hover:to-primary-socialscience/30;
 }
 
+.subject-card.mathematics {
+  @apply from-primary-mathematics/50 to-primary-mathematics/20 hover:from-primary-mathematics/60 hover:to-primary-mathematics/30;
+}
+
 .chapter-card {
   @apply relative flex flex-col items-center justify-center w-full h-40 p-4 
          transition-all duration-300 rounded-lg overflow-hidden 
@@ -65,4 +69,8 @@ body {
 
 .chapter-card.socialscience {
   @apply hover:border-primary-socialscience/50;
+}
+
+.chapter-card.mathematics {
+  @apply hover:border-primary-mathematics/50;
 }

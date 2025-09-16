@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <style>
+        /* Full-screen overrides - No distortion */
+        * {
+            box-sizing: border-box !important;
+        }
+        
+        html, body {
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            overflow-x: hidden !important;
+            overflow-y: auto !important;
+        }
+        
+        /* Remove all width constraints */
+        .illustration-container,
+        .content-section,
+        .container,
+        .main-content,
+        #main-content,
+        .hero-content,
+        .loading-content {
+            max-width: none !important;
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        
+        /* Ensure all sections take full width */
+        section, .section, .hero-section, .narrative-section, .formula-section, 
+        .visualization-section, .comparison-section, .interactive-section,
+        .concept-section, .oersted-container, .wire-container {
+            width: 100% !important;
+            max-width: none !important;
+            margin: 0 !important;
+            padding: 2rem !important;
+            box-sizing: border-box !important;
+        }
+        
+        /* Make sure content flows properly without distortion */
+        .section-content, .concept-section, .formula-box, .data-viz,
+        .interactive-demo, .grid-layout, .grid-item {
+            width: 100% !important;
+            max-width: none !important;
+            margin: 20px 0 !important;
+            box-sizing: border-box !important;
+        }
+        
+        /* Ensure proper aspect ratios and prevent distortion */
+        .animation-container, .chart-container, .particle-container {
+            width: 100% !important;
+            max-width: none !important;
+            aspect-ratio: auto !important;
+        }
+        
+        /* Fix any fixed positioning issues */
+        #loading-screen, #audio-control, .audio-indicator {
+            position: fixed !important;
+            z-index: 9999 !important;
+        }
+        
+        /* Ensure text remains readable */
+        h1, h2, h3, h4, h5, h6, p, span, div {
+            max-width: none !important;
+            word-wrap: break-word !important;
+        }
+        
+        /* Prevent any horizontal scrolling */
+        body {
+            min-width: 100vw !important;
+            max-width: 100vw !important;
+        }
+        </style>
+        
+        <script>
+        // Listen for messages from parent to stop audio
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'STOP_AUDIO') {
+                // Stop all audio elements
+                const audioElements = document.querySelectorAll('audio, video');
+                audioElements.forEach(audio => {
+                    if (audio instanceof HTMLAudioElement || audio instanceof HTMLVideoElement) {
+                        audio.pause();
+                        audio.currentTime = 0;
+                    }
+                });
+                
+                // Stop any speech synthesis
+                if (window.speechSynthesis) {
+                    window.speechSynthesis.cancel();
+                }
+                
+                // Stop any ongoing animations or timers
+                if (window.humanVoice && typeof window.humanVoice.stop === 'function') {
+                    window.humanVoice.stop();
+                }
+                
+                // Clear any intervals
+                if (window.audioIntervals) {
+                    window.audioIntervals.forEach(interval => clearInterval(interval));
+                    window.audioIntervals = [];
+                }
+            }
+        });
+        </script>
+        
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ellipse - Mathematical Beauty in Motion</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e57c2 100%);
+            color: white;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Audio Control */
+        #audio-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .control-btn {
+            background: rgba(126, 87, 194, 0.9);
+            border: none;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .control-btn:hover {
+            transform: scale(1.1);
+            background: rgba(126, 87, 194, 1);
+        }
+
+        .control-btn.muted .unmute-icon { display: none; }
+        .control-btn:not(.muted) .mute-icon { display: none; }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 3.2rem;
+            background: linear-gradient(45deg, #ffd700, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Mathematics Stage */
+        .math-stage {
+            background: linear-gradient(to bottom, #0a0e27 0%, #1a1f3a 100%);
+            border-radius: 25px;
+            height: 600px;
+            position: relative;
+            margin: 40px 0;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            border: 4px solid rgba(255, 215, 0, 0.4);
+        }
+
+        /* Grid Background */
+        .grid-background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.3;
+        }
+
+        /* Coordinate System */
+        .axis {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .x-axis {
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            transform: translateY(-50%);
+        }
+
+        .y-axis {
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            transform: translateX(-50%);
+        }
+
+        .axis-label {
+            position: absolute;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        .x-label {
+            right: 10px;
+            top: 52%;
+        }
+
+        .y-label {
+            left: 52%;
+            top: 10px;
+        }
+
+        /* Ellipse SVG Container */
+        .ellipse-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Ellipse Elements */
+        .ellipse-main {
+            fill: none;
+            stroke: #ffd700;
+            stroke-width: 3;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .ellipse-main.visible {
+            opacity: 1;
+        }
+
+        .ellipse-main.animated {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: drawEllipse 3s ease-in-out forwards;
+        }
+
+        @keyframes drawEllipse {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        /* Focus Points */
+        .focus-point {
+            fill: #ff6b6b;
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+
+        .focus-point.visible {
+            opacity: 1;
+            animation: focusPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes focusPulse {
+            0%, 100% { r: 8; fill: #ff6b6b; }
+            50% { r: 12; fill: #ff8888; }
+        }
+
+        .focus-label {
+            fill: #ff6b6b;
+            font-size: 18px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .focus-label.visible {
+            opacity: 1;
+        }
+
+        /* Center Point */
+        .center-point {
+            fill: #4ecdc4;
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+
+        .center-point.visible {
+            opacity: 1;
+            animation: centerPulse 2.5s ease-in-out infinite;
+        }
+
+        @keyframes centerPulse {
+            0%, 100% { r: 6; fill: #4ecdc4; }
+            50% { r: 10; fill: #6edddc; }
+        }
+
+        /* Axes of Ellipse */
+        .major-axis, .minor-axis {
+            stroke: #a855f7;
+            stroke-width: 2;
+            stroke-dasharray: 5, 5;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .major-axis.visible, .minor-axis.visible {
+            opacity: 0.7;
+        }
+
+        .axis-measurement {
+            fill: #a855f7;
+            font-size: 16px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .axis-measurement.visible {
+            opacity: 1;
+        }
+
+        /* Moving Point on Ellipse */
+        .moving-point {
+            fill: #00ff00;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .moving-point.visible {
+            opacity: 1;
+        }
+
+        .moving-point.animating {
+            animation: moveOnEllipse 8s linear infinite;
+        }
+
+        /* Distance Lines */
+        .distance-line {
+            stroke: #00ff00;
+            stroke-width: 2;
+            stroke-dasharray: 3, 3;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .distance-line.visible {
+            opacity: 0.6;
+        }
+
+        /* Planet Orbit Animation */
+        .planet {
+            fill: #4169e1;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .planet.visible {
+            opacity: 1;
+        }
+
+        .sun {
+            fill: #ffa500;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            filter: drop-shadow(0 0 20px #ffa500);
+        }
+
+        .sun.visible {
+            opacity: 1;
+        }
+
+        /* Control Panel */
+        .controls {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .controls-title {
+            font-size: 2rem;
+            margin-bottom: 25px;
+            color: #ffd700;
+            font-weight: 600;
+        }
+
+        .demo-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 25px 0;
+        }
+
+        .demo-btn {
+            background: linear-gradient(135deg, #7e57c2, #5e35b1);
+            border: none;
+            color: white;
+            padding: 16px 28px;
+            border-radius: 35px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(126, 87, 194, 0.3);
+            min-width: 180px;
+        }
+
+        .demo-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(126, 87, 194, 0.4);
+        }
+
+        .demo-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .demo-btn.active {
+            background: linear-gradient(135deg, #ffd700, #ffa500);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+        }
+
+        /* Parameter Controls */
+        .parameter-controls {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 20px;
+            padding: 25px;
+            margin: 20px 0;
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .slider-group {
+            margin: 15px 0;
+        }
+
+        .slider-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ffd700;
+            font-weight: 600;
+        }
+
+        .slider {
+            width: 100%;
+            -webkit-appearance: none;
+            height: 8px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            outline: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ffd700;
+            cursor: pointer;
+        }
+
+        .slider-value {
+            display: inline-block;
+            margin-left: 10px;
+            color: #4ecdc4;
+            font-weight: bold;
+        }
+
+        /* Analysis Panel */
+        .analysis {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 25px;
+            padding: 35px;
+            margin: 35px 0;
+            border: 3px solid rgba(255, 215, 0, 0.4);
+            backdrop-filter: blur(15px);
+        }
+
+        .analysis-title {
+            font-size: 1.6rem;
+            color: #ffd700;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .equation-box {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(126, 87, 194, 0.15));
+            border-radius: 20px;
+            border: 3px solid rgba(255, 215, 0, 0.4);
+            margin-bottom: 20px;
+        }
+
+        .equation-title {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            color: #ffd700;
+            font-weight: 600;
+        }
+
+        .equation-formula {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+            font-family: 'Courier New', monospace;
+            color: #4ecdc4;
+        }
+
+        .equation-explanation {
+            font-size: 1rem;
+            color: #e2e8f0;
+            line-height: 1.5;
+        }
+
+        .properties-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .property-item {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 20px;
+            border-radius: 20px;
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .property-title {
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+            color: #ffd700;
+            font-weight: 500;
+        }
+
+        .property-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            color: #4ecdc4;
+            margin-bottom: 8px;
+        }
+
+        .property-description {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .math-stage {
+                height: 450px;
+            }
+            
+            .demo-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .properties-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Audio Control -->
+    <div id="audio-control">
+        <button id="mute-btn" class="control-btn">
+            <span class="unmute-icon">🔊</span>
+            <span class="mute-icon">🔇</span>
+        </button>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>The Ellipse</h1>
+            <p>Discover the mathematical beauty of ellipses - from their geometric properties to real-world applications in planetary orbits and architecture.</p>
+        </div>
+
+        <!-- Mathematics Stage -->
+        <div class="math-stage" id="stage">
+            <div class="grid-background"></div>
+            <div class="axis x-axis"></div>
+            <div class="axis y-axis"></div>
+            <div class="axis-label x-label">x</div>
+            <div class="axis-label y-label">y</div>
+            
+            <div class="ellipse-container">
+                <svg id="ellipse-svg" viewBox="0 0 500 500">
+                    <!-- Major and Minor Axes -->
+                    <line class="major-axis" id="major-axis" x1="100" y1="250" x2="400" y2="250"/>
+                    <line class="minor-axis" id="minor-axis" x1="250" y1="150" x2="250" y2="350"/>
+                    
+                    <!-- Axis Measurements -->
+                    <text class="axis-measurement" id="major-measurement" x="250" y="240">2a = 300</text>
+                    <text class="axis-measurement" id="minor-measurement" x="260" y="250">2b = 200</text>
+                    
+                    <!-- Main Ellipse -->
+                    <ellipse class="ellipse-main" id="main-ellipse" cx="250" cy="250" rx="150" ry="100"/>
+                    
+                    <!-- Distance Lines -->
+                    <line class="distance-line" id="distance-line-1" x1="0" y1="0" x2="0" y2="0"/>
+                    <line class="distance-line" id="distance-line-2" x1="0" y1="0" x2="0" y2="0"/>
+                    
+                    <!-- Focus Points -->
+                    <circle class="focus-point" id="focus1" cx="180" cy="250" r="8"/>
+                    <circle class="focus-point" id="focus2" cx="320" cy="250" r="8"/>
+                    <text class="focus-label" id="focus1-label" x="165" y="280">F₁</text>
+                    <text class="focus-label" id="focus2-label" x="310" y="280">F₂</text>
+                    
+                    <!-- Center Point -->
+                    <circle class="center-point" id="center" cx="250" cy="250" r="6"/>
+                    
+                    <!-- Moving Point -->
+                    <circle class="moving-point" id="moving-point" cx="400" cy="250" r="10"/>
+                    
+                    <!-- Planetary Orbit Elements -->
+                    <circle class="sun" id="sun" cx="180" cy="250" r="15"/>
+                    <circle class="planet" id="planet" cx="400" cy="250" r="8"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Parameter Controls -->
+        <div class="parameter-controls" id="param-controls" style="display: none;">
+            <div class="slider-group">
+                <label class="slider-label">Semi-Major Axis (a): <span class="slider-value" id="a-value">150</span></label>
+                <input type="range" class="slider" id="a-slider" min="100" max="200" value="150">
+            </div>
+            <div class="slider-group">
+                <label class="slider-label">Semi-Minor Axis (b): <span class="slider-value" id="b-value">100</span></label>
+                <input type="range" class="slider" id="b-slider" min="50" max="150" value="100">
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <div class="controls-title" id="lesson-title">Explore the Ellipse</div>
+            
+            <div class="demo-buttons">
+                <button class="demo-btn" onclick="playEllipseStory()">📖 Complete Story</button>
+                <button class="demo-btn" onclick="showConstruction()">📐 Construction</button>
+                <button class="demo-btn" onclick="showFocusProperty()">🎯 Focus Property</button>
+                <button class="demo-btn" onclick="showPlanetaryOrbit()">🌍 Planetary Orbit</button>
+                <button class="demo-btn" onclick="showInteractive()">🎮 Interactive</button>
+                <button class="demo-btn" onclick="resetAll()">🔄 Reset</button>
+            </div>
+        </div>
+
+        <!-- Analysis -->
+        <div class="analysis">
+            <div class="analysis-title">📊 Ellipse Mathematics</div>
+            
+            <div class="equation-box">
+                <div class="equation-title">Standard Form Equation</div>
+                <div class="equation-formula">x²/a² + y²/b² = 1</div>
+                <div class="equation-explanation">
+                    Where a is the semi-major axis and b is the semi-minor axis.<br>
+                    The center is at the origin (0, 0).
+                </div>
+            </div>
+
+            <div class="properties-grid">
+                <div class="property-item">
+                    <div class="property-title">Eccentricity</div>
+                    <div class="property-value" id="eccentricity">e = 0.745</div>
+                    <div class="property-description">Measure of how "stretched" the ellipse is</div>
+                </div>
+                <div class="property-item">
+                    <div class="property-title">Focus Distance</div>
+                    <div class="property-value" id="focus-distance">c = 111.8</div>
+                    <div class="property-description">Distance from center to each focus</div>
+                </div>
+                <div class="property-item">
+                    <div class="property-title">Area</div>
+                    <div class="property-value" id="area">A = 47,124</div>
+                    <div class="property-description">Total area enclosed by the ellipse</div>
+                </div>
+                <div class="property-item">
+                    <div class="property-title">Perimeter</div>
+                    <div class="property-value" id="perimeter">P ≈ 793.5</div>
+                    <div class="property-description">Approximate circumference</div>
+                </div>
+            </div>
+
+            <div id="current-analysis" style="text-align: center; margin-top: 20px; font-size: 1.1rem; color: #e2e8f0;">
+                Select a demonstration to explore the fascinating properties of ellipses!
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Voice System
+        class EllipseNarrator {
+            constructor() {
+                this.isEnabled = true;
+                this.currentUtterance = null;
+                this.settings = { rate: 0.95, pitch: 1.0, volume: 0.85 };
+            }
+
+            async speak(text, delay = 0) {
+                if (!this.isEnabled || !text) return;
+                
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        this.stop();
+                        const utterance = new SpeechSynthesisUtterance(text);
+                        Object.assign(utterance, this.settings);
+                        
+                        utterance.onend = resolve;
+                        utterance.onerror = resolve;
+                        
+                        this.currentUtterance = utterance;
+                        speechSynthesis.speak(utterance);
+                    }, delay);
+                });
+            }
+
+            stop() {
+                speechSynthesis.cancel();
+                this.currentUtterance = null;
+            }
+
+            toggle() {
+                this.isEnabled = !this.isEnabled;
+                if (!this.isEnabled) this.stop();
+                return this.isEnabled;
+            }
+        }
+
+        // Global state
+        const narrator = new EllipseNarrator();
+        let isPlaying = false;
+        let animationFrame = null;
+        let movingPointAngle = 0;
+
+        // Ellipse parameters
+        let ellipseParams = {
+            a: 150,  // semi-major axis
+            b: 100,  // semi-minor axis
+            cx: 250, // center x
+            cy: 250  // center y
+        };
+
+        // Initialize
+        window.addEventListener('load', () => {
+            narrator.speak("Welcome to the world of ellipses! Let's explore this beautiful mathematical curve that appears everywhere in nature and science.");
+            updateCalculations();
+            validateSceneComponents();
+        });
+
+        // Scene Validation
+        function validateSceneComponents() {
+            const requiredElements = [
+                'main-ellipse', 'focus1', 'focus2', 'center',
+                'major-axis', 'minor-axis', 'moving-point'
+            ];
+            
+            let allPresent = true;
+            requiredElements.forEach(id => {
+                if (!document.getElementById(id)) {
+                    console.error(`Missing required element: ${id}`);
+                    allPresent = false;
+                }
+            });
+            
+            if (allPresent) {
+                console.log('✓ All scene components validated successfully');
+            }
+            return allPresent;
+        }
+
+        // Complete Ellipse Story
+        async function playEllipseStory() {
+            if (isPlaying) return;
+            isPlaying = true;
+            setActiveButton(0);
+            
+            await resetAll();
+            updateTitle("📖 The Complete Story of the Ellipse");
+            updateAnalysis("Beginning our journey through ellipse mathematics...");
+            
+            // Chapter 1: Basic Shape
+            await narrator.speak("Chapter 1: Meet the ellipse - a stretched circle and one of the most important curves in mathematics!");
+            
+            drawEllipse(true);
+            await wait(2000);
+            await narrator.speak("An ellipse looks like a flattened circle. It has a unique mathematical property that makes it special.");
+            
+            // Chapter 2: Axes
+            await narrator.speak("Chapter 2: Every ellipse has two axes - the major axis is the longest diameter, and the minor axis is the shortest.");
+            
+            showAxes();
+            await wait(2000);
+            await narrator.speak("The semi-major axis 'a' is half the major axis, and the semi-minor axis 'b' is half the minor axis.");
+            
+            // Chapter 3: Focus Points
+            await narrator.speak("Chapter 3: The magic of ellipses lies in their two focus points!");
+            
+            showFoci();
+            await wait(2000);
+            await narrator.speak("These special points, called foci, define the ellipse's unique property.");
+            
+            // Chapter 4: Constant Sum Property
+            await narrator.speak("Chapter 4: Here's the amazing property - pick any point on the ellipse, and the sum of distances to both foci is always constant!");
+            
+            showCenter();
+            startMovingPoint();
+            showDistanceLines();
+            await wait(3000);
+            
+            await narrator.speak("Watch as the point moves around the ellipse. The green lines show the distances to each focus. Their sum never changes!");
+            await wait(5000);
+            
+            // Chapter 5: Applications
+            await narrator.speak("Chapter 5: Ellipses appear everywhere! Planetary orbits, architectural domes, and even whispering galleries use elliptical properties.");
+            
+            stopMovingPoint();
+            await showPlanetaryOrbit();
+            await wait(3000);
+            
+            await narrator.speak("Planets orbit the sun in elliptical paths, with the sun at one focus. This was discovered by Johannes Kepler!");
+            
+            updateAnalysis("Ellipse exploration complete! The mathematical beauty of conic sections revealed.");
+            
+            isPlaying = false;
+        }
+
+        // Construction Demo
+        async function showConstruction() {
+            setActiveButton(1);
+            await resetAll();
+            updateTitle("📐 Ellipse Construction");
+            
+            await narrator.speak("Let me show you how to construct an ellipse step by step!");
+            
+            // Draw axes first
+            showAxes();
+            await narrator.speak("First, we establish the major and minor axes. These define the size and shape of our ellipse.");
+            await wait(2000);
+            
+            // Calculate and show foci
+            showFoci();
+            await narrator.speak("Next, we locate the two focus points. They're positioned along the major axis at a specific distance from the center.");
+            await wait(2000);
+            
+            // Draw the ellipse
+            drawEllipse(true);
+            await narrator.speak("Now we draw the ellipse! Every point on this curve maintains a constant sum of distances to the two foci.");
+            
+            updateAnalysis("Construction complete: Ellipse with a=150, b=100, focal distance c=111.8");
+        }
+
+        // Focus Property Demo
+        async function showFocusProperty() {
+            setActiveButton(2);
+            await resetAll();
+            updateTitle("🎯 Focus Property Demonstration");
+            
+            drawEllipse(false);
+            showFoci();
+            showCenter();
+            
+            await narrator.speak("The defining property of an ellipse: the sum of distances from any point to both foci is constant!");
+            
+            startMovingPoint();
+            showDistanceLines();
+            
+            await narrator.speak("Watch the moving green point. No matter where it is on the ellipse, the sum of the two green lines stays exactly the same - it equals 2a, which is 300 pixels!");
+            
+            updateAnalysis("Constant sum property: d₁ + d₂ = 2a = 300 (always!)");
+        }
+
+        // Planetary Orbit Demo
+        async function showPlanetaryOrbit() {
+            setActiveButton(3);
+            await resetAll();
+            updateTitle("🌍 Planetary Orbit");
+            
+            // Draw elliptical orbit
+            drawEllipse(false);
+            
+            // Show sun at one focus
+            const sun = document.getElementById('sun');
+            sun.classList.add('visible');
+            
+            await narrator.speak("Planets orbit stars in elliptical paths! The star sits at one focus of the ellipse, not at the center.");
+            
+            // Start planet animation
+            startPlanetOrbit();
+            
+            await narrator.speak("Notice how the planet moves faster when it's closer to the sun and slower when farther away. This is Kepler's second law of planetary motion!");
+            
+            updateAnalysis("Kepler's Laws: Planets follow elliptical orbits with the sun at one focus");
+        }
+
+        // Interactive Mode
+        function showInteractive() {
+            setActiveButton(4);
+            resetAll();
+            updateTitle("🎮 Interactive Ellipse Explorer");
+            
+            document.getElementById('param-controls').style.display = 'block';
+            
+            drawEllipse(false);
+            showAxes();
+            showFoci();
+            showCenter();
+            
+            narrator.speak("Use the sliders to change the ellipse shape! Watch how the eccentricity and other properties change as you adjust the axes.");
+            
+            updateAnalysis("Experiment with different ellipse parameters using the sliders above!");
+        }
+
+        // Helper Functions
+        async function resetAll() {
+            stopMovingPoint();
+            stopPlanetOrbit();
+            
+            // Hide all elements
+            document.getElementById('main-ellipse').classList.remove('visible', 'animated');
+            document.getElementById('focus1').classList.remove('visible');
+            document.getElementById('focus2').classList.remove('visible');
+            document.getElementById('focus1-label').classList.remove('visible');
+            document.getElementById('focus2-label').classList.remove('visible');
+            document.getElementById('center').classList.remove('visible');
+            document.getElementById('major-axis').classList.remove('visible');
+            document.getElementById('minor-axis').classList.remove('visible');
+            document.getElementById('major-measurement').classList.remove('visible');
+            document.getElementById('minor-measurement').classList.remove('visible');
+            document.getElementById('moving-point').classList.remove('visible', 'animating');
+            document.getElementById('distance-line-1').classList.remove('visible');
+            document.getElementById('distance-line-2').classList.remove('visible');
+            document.getElementById('sun').classList.remove('visible');
+            document.getElementById('planet').classList.remove('visible');
+            document.getElementById('param-controls').style.display = 'none';
+            
+            updateAnalysis("Ready to explore ellipse properties!");
+            
+            await wait(300);
+        }
+
+        function drawEllipse(animated = false) {
+            const ellipse = document.getElementById('main-ellipse');
+            ellipse.setAttribute('cx', ellipseParams.cx);
+            ellipse.setAttribute('cy', ellipseParams.cy);
+            ellipse.setAttribute('rx', ellipseParams.a);
+            ellipse.setAttribute('ry', ellipseParams.b);
+            
+            if (animated) {
+                ellipse.classList.add('animated');
+            }
+            ellipse.classList.add('visible');
+        }
+
+        function showAxes() {
+            document.getElementById('major-axis').classList.add('visible');
+            document.getElementById('minor-axis').classList.add('visible');
+            document.getElementById('major-measurement').classList.add('visible');
+            document.getElementById('minor-measurement').classList.add('visible');
+            
+            // Update measurements
+            document.getElementById('major-measurement').textContent = `2a = ${ellipseParams.a * 2}`;
+            document.getElementById('minor-measurement').textContent = `2b = ${ellipseParams.b * 2}`;
+        }
+
+        function showFoci() {
+            const c = Math.sqrt(ellipseParams.a * ellipseParams.a - ellipseParams.b * ellipseParams.b);
+            
+            document.getElementById('focus1').setAttribute('cx', ellipseParams.cx - c);
+            document.getElementById('focus2').setAttribute('cx', ellipseParams.cx + c);
+            document.getElementById('focus1').classList.add('visible');
+            document.getElementById('focus2').classList.add('visible');
+            document.getElementById('focus1-label').setAttribute('x', ellipseParams.cx - c - 15);
+            document.getElementById('focus2-label').setAttribute('x', ellipseParams.cx + c - 10);
+            document.getElementById('focus1-label').classList.add('visible');
+            document.getElementById('focus2-label').classList.add('visible');
+        }
+
+        function showCenter() {
+            document.getElementById('center').classList.add('visible');
+        }
+
+        function startMovingPoint() {
+            const point = document.getElementById('moving-point');
+            point.classList.add('visible');
+            
+            function animate() {
+                movingPointAngle += 0.02;
+                const x = ellipseParams.cx + ellipseParams.a * Math.cos(movingPointAngle);
+                const y = ellipseParams.cy + ellipseParams.b * Math.sin(movingPointAngle);
+                
+                point.setAttribute('cx', x);
+                point.setAttribute('cy', y);
+                
+                updateDistanceLines(x, y);
+                
+                animationFrame = requestAnimationFrame(animate);
+            }
+            
+            animate();
+        }
+
+        function stopMovingPoint() {
+            if (animationFrame) {
+                cancelAnimationFrame(animationFrame);
+                animationFrame = null;
+            }
+        }
+
+        function showDistanceLines() {
+            document.getElementById('distance-line-1').classList.add('visible');
+            document.getElementById('distance-line-2').classList.add('visible');
+        }
+
+        function updateDistanceLines(px, py) {
+            const c = Math.sqrt(ellipseParams.a * ellipseParams.a - ellipseParams.b * ellipseParams.b);
+            const f1x = ellipseParams.cx - c;
+            const f2x = ellipseParams.cx + c;
+            const fy = ellipseParams.cy;
+            
+            const line1 = document.getElementById('distance-line-1');
+            const line2 = document.getElementById('distance-line-2');
+            
+            line1.setAttribute('x1', f1x);
+            line1.setAttribute('y1', fy);
+            line1.setAttribute('x2', px);
+            line1.setAttribute('y2', py);
+            
+            line2.setAttribute('x1', f2x);
+            line2.setAttribute('y1', fy);
+            line2.setAttribute('x2', px);
+            line2.setAttribute('y2', py);
+        }
+
+        let planetAngle = 0;
+        let planetAnimationFrame = null;
+
+        function startPlanetOrbit() {
+            const planet = document.getElementById('planet');
+            planet.classList.add('visible');
+            
+            function animatePlanet() {
+                planetAngle += 0.015;
+                const x = ellipseParams.cx + ellipseParams.a * Math.cos(planetAngle);
+                const y = ellipseParams.cy + ellipseParams.b * Math.sin(planetAngle);
+                
+                planet.setAttribute('cx', x);
+                planet.setAttribute('cy', y);
+                
+                planetAnimationFrame = requestAnimationFrame(animatePlanet);
+            }
+            
+            animatePlanet();
+        }
+
+        function stopPlanetOrbit() {
+            if (planetAnimationFrame) {
+                cancelAnimationFrame(planetAnimationFrame);
+                planetAnimationFrame = null;
+            }
+        }
+
+        function updateCalculations() {
+            const a = ellipseParams.a;
+            const b = ellipseParams.b;
+            const c = Math.sqrt(a * a - b * b);
+            const e = c / a;
+            const area = Math.PI * a * b;
+            const perimeter = Math.PI * (3 * (a + b) - Math.sqrt((3 * a + b) * (a + 3 * b)));
+            
+            document.getElementById('eccentricity').textContent = `e = ${e.toFixed(3)}`;
+            document.getElementById('focus-distance').textContent = `c = ${c.toFixed(1)}`;
+            document.getElementById('area').textContent = `A = ${area.toFixed(0)}`;
+            document.getElementById('perimeter').textContent = `P ≈ ${perimeter.toFixed(1)}`;
+        }
+
+        function updateTitle(title) {
+            document.getElementById('lesson-title').textContent = title;
+        }
+
+        function updateAnalysis(text) {
+            document.getElementById('current-analysis').textContent = text;
+        }
+
+        function setActiveButton(index) {
+            document.querySelectorAll('.demo-btn').forEach((btn, i) => {
+                btn.classList.toggle('active', i === index);
+            });
+        }
+
+        function wait(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // Audio Control
+        document.getElementById('mute-btn').addEventListener('click', () => {
+            const isEnabled = narrator.toggle();
+            document.getElementById('mute-btn').classList.toggle('muted', !isEnabled);
+        });
+
+        // Interactive Sliders
+        document.getElementById('a-slider').addEventListener('input', (e) => {
+            ellipseParams.a = parseInt(e.target.value);
+            document.getElementById('a-value').textContent = ellipseParams.a;
+            updateEllipse();
+        });
+
+        document.getElementById('b-slider').addEventListener('input', (e) => {
+            ellipseParams.b = parseInt(e.target.value);
+            document.getElementById('b-value').textContent = ellipseParams.b;
+            updateEllipse();
+        });
+
+        function updateEllipse() {
+            drawEllipse(false);
+            showAxes();
+            showFoci();
+            updateCalculations();
+        }
+    </script>
+</body>
+</html>

@@ -11,9 +11,30 @@ export type Chapter = {
   name: string;
   path: string;
   files: string[];
+  youtube?: string;
 };
 
 export const subjects: Subject[] = [
+  {
+    id: 'mathematics',
+    name: 'Mathematics',
+    description: 'Explore numbers, patterns, and the language of logic',
+    icon: '🧮',
+    chapters: [
+      {
+        id: 'trigonometry-functions',
+        name: 'Trigonometry Functions',
+        path: 'content/Mathematics',
+        files: ['Trigonometry Functions.html']
+      },
+      {
+        id: 'ellipse',
+        name: 'Ellipse',
+        path: 'content/Mathematics',
+        files: ['Elipse.html']
+      }
+    ]
+  },
   {
     id: 'socialscience',
     name: 'Social Science',
@@ -37,6 +58,13 @@ export const subjects: Subject[] = [
         name: 'Constitutional Design',
         path: 'content/Social Science/Constitutional Design',
         files: ['index.html']
+      },
+      {
+        id: 'mughal-empire',
+        name: 'Mughal Empire',
+        path: '',
+        files: [],
+        youtube: 'https://youtu.be/tYnkfIadmKI?si=puUtnWHJBQANRSl9'
       }
     ]
   },
