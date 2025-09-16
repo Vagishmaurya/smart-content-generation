@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Two Stories About Flying - Interactive English Lesson</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <meta name="description" content="Interactive English lesson based on 'Two Stories About Flying'">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav-menu" role="navigation" aria-label="Main navigation">
+        <div class="nav-items">
+            <button class="nav-item active" onclick="showModule('intro')" aria-pressed="true">📚 Introduction</button>
+            <button class="nav-item" onclick="showModule('prereading')" aria-pressed="false">✓ Before You Read</button>
+            <button class="nav-item" onclick="showModule('story1')" aria-pressed="false">🐦 His First Flight</button>
+            <button class="nav-item" onclick="showModule('story2')" aria-pressed="false">✈️ Black Aeroplane</button>
+            <button class="nav-item" onclick="showModule('thinking-language')" aria-pressed="false">🔤 About Language</button>
+            <button class="nav-item" onclick="showModule('poem1')" aria-pressed="false">🦁 Wild Animals</button>
+            <button class="nav-item" onclick="showModule('poem2')" aria-pressed="false">🏀 The Ball Poem</button>
+            <button class="nav-item" onclick="showModule('activities')" aria-pressed="false">🎯 Activities</button>
+        </div>
+    </nav>
+
+    <!-- Audio Control -->
+    <div class="audio-control">
+        <button id="audioBtn" class="audio-btn" onclick="toggleAudio()" aria-label="Toggle audio narration">🔊</button>
+    </div>
+
+    <!-- Achievement Popup -->
+    <div id="achievementPopup" class="achievement-popup" aria-live="polite">
+        <div class="achievement-title">🏆 Achievement Unlocked!</div>
+        <div class="achievement-desc" id="achievementDesc">You've completed a module!</div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title">📚 Two Stories About Flying</h1>
+            <p class="subtitle">Chapter 3</p>
+            <p class="reprint">Reprint 2025-26</p>
+        </header>
+
+        <!-- Progress Tracker -->
+        <div class="progress-container">
+            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-fill" id="progressBar">0%</div>
+            </div>
+            <div class="progress-stats">
+                <span>📖 Modules: <span id="modulesComplete">0</span>/8</span>
+                <span>⭐ Score: <span id="totalScore">0</span></span>
+                <span>⏱️ Time: <span id="timeSpent">0:00</span></span>
+            </div>
+        </div>
+
+        <!-- Introduction Module -->
+        <div class="module active" id="intro">
+            <div class="exercise-card">
+                <h2 class="exercise-title">
+                    <span class="exercise-icon">🌟</span>
+                    Welcome to "Two Stories About Flying"
+                </h2>
+                <div class="content-block">
+                    <p>Since the earliest times, humans have dreamt of conquering the skies. This lesson features two fascinating stories about flying - one about a young seagull's first flight and another about a mysterious encounter during a stormy night flight.</p>
+                    <p>You'll also explore two beautiful poems: "How to Tell Wild Animals" - a humorous guide to identifying dangerous animals, and "The Ball Poem" - a thoughtful reflection on loss and growing up.</p>
+                    <p>Join us as we soar through these tales of courage, mystery, and self-discovery!</p>
+                </div>
+                <div class="button-container">
+                    <button class="interactive-btn" onclick="startJourney()" aria-label="Begin the lesson">
+                        🚀 Start Your Learning Journey
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Before You Read Module -->
+        <div class="module" id="prereading">
+            <div class="exercise-card">
+                <h2 class="exercise-title">
+                    <span class="exercise-icon">✓</span>
+                    Before You Read
+                </h2>
+                <div class="content-block">
+                    <p>Since the earliest times, humans have dreamt of conquering the skies. Here are two stories about flying.</p>
+                    <ol>
+                        <li>A young seagull is afraid to fly. How does he conquer his fear?</li>
+                        <li>A pilot is lost in storm clouds. Does he arrive safe? Who helps him?</li>
+                    </ol>
+                </div>
+                
+                <h3 class="activity-title">Thinking About Fear</h3>
+                <div class="content-block">
+                    <p>Many people face fear when trying something new. Think about these questions:</p>
+                    <div class="prereading-questions">
+                        <div class="prereading-question">
+                            <p>1. Do you think all young birds are afraid to make their first flight, or are some birds more timid than others?</p>
+                            <textarea class="answer-input" rows="3" placeholder="Write your thoughts here..."></textarea>
+                        </div>
+                        <div class="prereading-question">
+                            <p>2. Do you think a human baby also finds it a challenge to take its first steps?</p>
+                            <textarea class="answer-input" rows="3" placeholder="Write your thoughts here..."></textarea>
+                        </div>
+                        <div class="prereading-question">
+                            <p>3. Have you ever been afraid to try something new? What happened?</p>
+                            <textarea class="answer-input" rows="3" placeholder="Write your thoughts here..."></textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3 class="activity-title">Flying Vocabulary</h3>
+                <div class="matching-game">
+                    <div class="match-column">
+                        <h3>Flying Terms</h3>
+                        <div class="match-item" data-match="soar" onclick="selectMatch(this, 'term')">Soar</div>
+                        <div class="match-item" data-match="glide" onclick="selectMatch(this, 'term')">Glide</div>
+                        <div class="match-item" data-match="hover" onclick="selectMatch(this, 'term')">Hover</div>
+                        <div class="match-item" data-match="dive" onclick="selectMatch(this, 'term')">Dive</div>
+                        <div class="match-item" data-match="flutter" onclick="selectMatch(this, 'term')">Flutter</div>
+                    </div>
+                    
+                    <div class="match-column">
+                        <h3>Definitions</h3>
+                        <div class="match-item" data-match="soar" onclick="selectMatch(this, 'def')">
+                            To fly high in the air with little movement of the wings
+                        </div>
+                        <div class="match-item" data-match="glide" onclick="selectMatch(this, 'def')">
+                            To fly with no engine or wing movement, using air currents
+                        </div>
+                        <div class="match-item" data-match="hover" onclick="selectMatch(this, 'def')">
+                            To stay in one place in the air
+                        </div>
+                        <div class="match-item" data-match="dive" onclick="selectMatch(this, 'def')">
+                            To fly or move down quickly at a steep angle
+                        </div>
+                        <div class="match-item" data-match="flutter" onclick="selectMatch(this, 'def')">
+                            To move wings quickly with light irregular movements
+                        </div>
+                    </div>
+                </div>
+                <div id="matchFeedback" class="feedback-message" aria-live="polite"></div>
+            </div>
+        </div>
+
+        <!-- His First Flight Module -->
+        <div class="module" id="story1">
+            <div class="story-reader">
+                <h2 class="section-title">HIS FIRST FLIGHT</h2>
+                <p class="author">by Liam O'Flaherty</p>
+                
+                <div class="story-controls">
+                    <button class="reading-mode-btn" onclick="toggleReadAloud('story1')" aria-label="Read the story aloud">
+                        🔊 Read Aloud
+                    </button>
+                    <button class="reading-mode-btn" onclick="highlightVocabulary('story1')" aria-label="Highlight vocabulary words">
+                        ✨ Highlight Vocabulary
+                    </button>
+                    <button class="reading-mode-btn" onclick="togglePrintMode()" aria-label="Toggle print-friendly mode">
+                        🖨️ Print Mode
+                    </button>
+                </div>
+                
+                <div class="story-content" id="story1Content">
+                    <!-- Story content will be loaded dynamically via JavaScript -->
+                </div>
+                
+                <div class="glossary-section">
+                    <h3>Glossary</h3>
+                    <dl class="glossary-list">
+                        <dt>ledge</dt>
+                        <dd>a narrow horizontal shelf projecting from a wall or (here) a cliff</dd>
+                        <dt>upbraiding</dt>
+                        <dd>scolding</dd>
+                        <dt>(to) skim</dt>
+                        <dd>to move lightly just above a surface (here, the sea)</dd>
+                        <dt>herring</dt>
+                        <dd>a soft-finned sea fish</dd>
+                        <dt>preening</dt>
+                        <dd>making an effort to maintain feathers</dd>
+                        <dt>(to) whet</dt>
+                        <dd>to sharpen</dd>
+                        <dt>derisively</dt>
+                        <dd>in a manner showing someone that she/he is stupid</dd>
+                        <dt>dizzy</dt>
+                        <dd>an uncomfortable feeling of spinning around and losing one's balance</dd>
+                        <dt>curveting</dt>
+                        <dd>leaping like a horse</dd>
+                        <dt>banking</dt>
+                        <dd>flying with one wing higher than the other</dd>
+                    </dl>
+                </div>
+                
+                <div class="thinking-section">
+                    <h3>Thinking About the Text</h3>
+                    <div id="story1Questions" class="story-questions">
+                        <!-- Questions will be loaded dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Black Aeroplane Module -->
+        <div class="module" id="story2">
+            <div class="story-reader">
+                <h2 class="section-title">THE BLACK AEROPLANE</h2>
+                <p class="author">by Frederick Forsyth</p>
+                
+                <div class="story-controls">
+                    <button class="reading-mode-btn" onclick="toggleReadAloud('story2')" aria-label="Read the story aloud">
+                        🔊 Read Aloud
+                    </button>
+                    <button class="reading-mode-btn" onclick="highlightVocabulary('story2')" aria-label="Highlight vocabulary words">
+                        ✨ Highlight Vocabulary
+                    </button>
+                    <button class="reading-mode-btn" onclick="togglePrintMode()" aria-label="Toggle print-friendly mode">
+                        🖨️ Print Mode
+                    </button>
+                </div>
+                
+                <div class="story-content" id="story2Content">
+                    <!-- Story content will be loaded dynamically via JavaScript -->
+                </div>
+                
+                <div class="thinking-section">
+                    <h3>Thinking About the Text</h3>
+                    <div id="story2Questions" class="story-questions">
+                        <!-- Questions will be loaded dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Thinking About Language Module -->
+        <div class="module" id="thinking-language">
+            <div class="exercise-card">
+                <h2 class="exercise-title">
+                    <span class="exercise-icon">🔤</span>
+                    Thinking About Language
+                </h2>
+                
+                <div class="language-section">
+                    <h3>The Many Meanings of "Black"</h3>
+                    <div class="content-block">
+                        <p>Study the sentences given below.</p>
+                        <ol type="a" class="example-sentences">
+                            <li>They looked like black mountains.</li>
+                            <li>Inside the clouds, everything was suddenly black.</li>
+                            <li>In the black clouds near me, I saw another aeroplane.</li>
+                            <li>The strange black aeroplane was there.</li>
+                        </ol>
+                        <p>The word 'black' in sentences (a) and (c) refers to the very darkest colour. But in (b) and (d) it means without light/with no light.</p>
+                        <p>'Black' has a variety of meanings in different contexts. For example:</p>
+                        <ol type="a" class="example-sentences">
+                            <li>'I prefer black tea' means 'I prefer tea without milk'.</li>
+                            <li>'With increasing pollution the future of the world is black' means 'With increasing pollution the future of the world is very depressing/without hope'.</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="meaning-exercise">
+                        <h4>Try to guess the meanings of the word 'black' in these sentences:</h4>
+                        <div class="meaning-item">
+                            <p>1. Go and have a bath; your hands and face are absolutely black.</p>
+                            <input type="text" class="meaning-input" placeholder="Write your guess here..." data-answer="dirty/covered with dirt">
+                        </div>
+                        <div class="meaning-item">
+                            <p>2. The taxi-driver gave Ratan a black look as he crossed the road when the traffic light was green.</p>
+                            <input type="text" class="meaning-input" placeholder="Write your guess here..." data-answer="angry/hostile">
+                        </div>
+                        <div class="meaning-item">
+                            <p>3. The bombardment of Hiroshima is one of the blackest crimes against humanity.</p>
+                            <input type="text" class="meaning-input" placeholder="Write your guess here..." data-answer="most evil/worst">
+                        </div>
+                        <div class="meaning-item">
+                            <p>4. Very few people enjoy Harold Pinter's black comedy.</p>
+                            <input type="text" class="meaning-input" placeholder="Write your guess here..." data-answer="grim/dark/morbid">
+                        </div>
+                        <div class="meaning-item">
+                            <p>5. Sometimes shopkeepers store essential goods to create false scarcity and then sell these in black.</p>
+                            <input type="text" class="meaning-input" placeholder="Write your guess here..." data-answer="illegal market/illicitly">
+                        </div>
+                        <div class="meaning-item">
+                            <p>6. Villagers had beaten the criminal black and blue.</p>
+                            <input type="text" class="meaning-input" placeholder="Write your guess here..." data-answer="severely/until bruised">
+                        </div>
+                        <button class="interactive-btn" onclick="checkMeanings()">Check Answers</button>
+                    </div>
+                </div>
+                
+                <div class="language-section">
+                    <h3>The Many Meanings of "Fly"</h3>
+                    <div class="content-block">
+                        <p>Look at these sentences taken from the stories:</p>
+                        <ol type="a" class="example-sentences">
+                            <li>I was flying my old Dakota aeroplane.</li>
+                            <li>The young seagull had been afraid to fly with them.</li>
+                        </ol>
+                        <p>In the first sentence the author was controlling an aircraft in the air. In the second sentence the seagull was afraid to move through the air, using its wings.</p>
+                    </div>
+                    
+                    <div class="phrase-matching">
+                        <h4>Match the phrases with their meanings:</h4>
+                        <div class="matching-table">
+                            <div class="phrase-row">
+                                <div class="phrase">Fly a flag</div>
+                                <div class="phrase-options">
+                                    <select class="phrase-select" data-answer="Display a flag on a long pole">
+                                        <option value="">-- Select meaning --</option>
+                                        <option value="Move quickly/suddenly">Move quickly/suddenly</option>
+                                        <option value="Be successful">Be successful</option>
+                                        <option value="Display a flag on a long pole">Display a flag on a long pole</option>
+                                        <option value="Escape from a place">Escape from a place</option>
+                                        <option value="Become suddenly very angry">Become suddenly very angry</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="phrase-row">
+                                <div class="phrase">Fly into rage</div>
+                                <div class="phrase-options">
+                                    <select class="phrase-select" data-answer="Become suddenly very angry">
+                                        <option value="">-- Select meaning --</option>
+                                        <option value="Move quickly/suddenly">Move quickly/suddenly</option>
+                                        <option value="Be successful">Be successful</option>
+                                        <option value="Display a flag on a long pole">Display a flag on a long pole</option>
+                                        <option value="Escape from a place">Escape from a place</option>
+                                        <option value="Become suddenly very angry">Become suddenly very angry</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="phrase-row">
+                                <div class="phrase">Fly along</div>
+                                <div class="phrase-options">
+                                    <select class="phrase-select" data-answer="Move quickly/suddenly">
+                                        <option value="">-- Select meaning --</option>
+                                        <option value="Move quickly/suddenly">Move quickly/suddenly</option>
+                                        <option value="Be successful">Be successful</option>
+                                        <option value="Display a flag on a long pole">Display a flag on a long pole</option>
+                                        <option value="Escape from a place">Escape from a place</option>
+                                        <option value="Become suddenly very angry">Become suddenly very angry</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="phrase-row">
+                                <div class="phrase">Fly high</div>
+                                <div class="phrase-options">
+                                    <select class="phrase-select" data-answer="Be successful">
+                                        <option value="">-- Select meaning --</option>
+                                        <option value="Move quickly/suddenly">Move quickly/suddenly</option>
+                                        <option value="Be successful">Be successful</option>
+                                        <option value="Display a flag on a long pole">Display a flag on a long pole</option>
+                                        <option value="Escape from a place">Escape from a place</option>
+                                        <option value="Become suddenly very angry">Become suddenly very angry</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="phrase-row">
+                                <div class="phrase">Fly the coop</div>
+                                <div class="phrase-options">
+                                    <select class="phrase-select" data-answer="Escape from a place">
+                                        <option value="">-- Select meaning --</option>
+                                        <option value="Move quickly/suddenly">Move quickly/suddenly</option>
+                                        <option value="Be successful">Be successful</option>
+                                        <option value="Display a flag on a long pole">Display a flag on a long pole</option>
+                                        <option value="Escape from a place">Escape from a place</option>
+                                        <option value="Become suddenly very angry">Become suddenly very angry</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="interactive-btn" onclick="checkPhrases()">Check Answers</button>
+                    </div>
+                </div>
+                
+                <div class="language-section">
+                    <h3>Synonyms of "Fly"</h3>
+                    <div class="content-block">
+                        <p>We know that the word 'fly' (of birds/insects) means to move through air using wings. Which of these words have the same or nearly the same meaning?</p>
+                    </div>
+                    
+                    <div class="synonym-selector">
+                        <div class="synonym-grid">
+                            <div class="synonym-item" onclick="toggleSynonymSelection(this)" data-correct="true">swoop</div>
+                            <div class="synonym-item" onclick="toggleSynonymSelection(this)" data-correct="true">flit</div>
+                            <div class="synonym-item" onclick="toggleSynonymSelection(this)" data-correct="false">paddle</div>
+                            <div class="synonym-item" onclick="toggleSynonymSelection(this)" data-correct="true">flutter</div>
+                            <div class="synonym-item" onclick="toggleSynonymSelection(this)" data-correct="true">ascend</div>
+                            <div class="synonym-item" onclick="toggleSynonymSelection(this)" data-correct="true">float</div>
+                            <div class="synonym-item" onclick="toggleSynonymSelection(this)" data-correct="false">ride</div>
+                            <div class="synonym-item" onclick="toggleSynonymSelection(this)" data-correct="true">skim</div>
+                            <div class="synonym-item" onclick="toggleSynonymSelection(this)" data-correct="false">sink</div>
+                            <div class="synonym-item" onclick="toggleSynonymSelection(this)" data-correct="true">dart</div>
+                            <div class="synonym-item" onclick="toggleSynonymSelection(this)" data-correct="true">hover</div>
+                            <div class="synonym-item" onclick="toggleSynonymSelection(this)" data-correct="true">glide</div>
+                            <div class="synonym-item" onclick="toggleSynonymSelection(this)" data-correct="false">descend</div>
+                            <div class="synonym-item" onclick="toggleSynonymSelection(this)" data-correct="true">soar</div>
+                            <div class="synonym-item" onclick="toggleSynonymSelection(this)" data-correct="true">shoot</div>
+                            <div class="synonym-item" onclick="toggleSynonymSelection(this)" data-correct="false">spring</div>
+                            <div class="synonym-item" onclick="toggleSynonymSelection(this)" data-correct="false">stay</div>
+                            <div class="synonym-item" onclick="toggleSynonymSelection(this)" data-correct="false">fall</div>
+                            <div class="synonym-item" onclick="toggleSynonymSelection(this)" data-correct="true">sail</div>
+                            <div class="synonym-item" onclick="toggleSynonymSelection(this)" data-correct="true">flap</div>
+                        </div>
+                        <button class="interactive-btn" onclick="checkSynonyms()">Check Selection</button>
+                        <div id="synonymFeedback" class="feedback-message"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- How to Tell Wild Animals Poem Module -->
+        <div class="module" id="poem1">
+            <div class="poem-container">
+                <h2 class="poem-title">How to Tell Wild Animals</h2>
+                <p class="poem-author">by Carolyn Wells</p>
+                
+                <div class="poem-intro">
+                    <p>This humorous poem suggests some dangerous ways to identify (or 'tell') wild animals! Read it aloud, keeping to a strong and regular rhythm.</p>
+                </div>
+                
+                <div class="poem-content" id="wildAnimalsPoemContent">
+                    <!-- Poem content will be loaded dynamically via JavaScript -->
+                </div>
+                
+                <div class="poem-glossary">
+                    <h3>Glossary</h3>
+                    <dl>
+                        <dt>ground</dt>
+                        <dd>background</dd>
+                        <dt>discern</dt>
+                        <dd>make out; identify</dd>
+                        <dt>hide</dt>
+                        <dd>animal skin</dd>
+                        <dt>peppered</dt>
+                        <dd>here, covered with spots</dd>
+                        <dt>caress</dt>
+                        <dd>a gentle, loving touch</dd>
+                        <dt>novice</dt>
+                        <dd>someone new to a job</dd>
+                        <dt>(be) nonplus (sed)</dt>
+                        <dd>(be) puzzle(d), confuse(d), surprise(d)</dd>
+                    </dl>
+                </div>
+                
+                <div class="poem-analysis">
+                    <h3>Thinking about the Poem</h3>
+                    
+                    <div id="wildAnimalsPoemQuestions" class="poem-questions">
+                        <!-- Questions will be loaded dynamically -->
+                    </div>
+                    
+                    <div class="button-container">
+                        <button class="interactive-btn" onclick="readAloudPoem('wildAnimals')">
+                            🔊 Listen to Poem
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- The Ball Poem Module -->
+        <div class="module" id="poem2">
+            <div class="poem-container">
+                <h2 class="poem-title">The Ball Poem</h2>
+                <p class="poem-author">by John Berryman</p>
+                
+                <div class="poem-intro">
+                    <p>A boy loses a ball. He is very upset. A ball doesn't cost much, nor is it difficult to buy another ball. Why then is the boy so upset? Read the poem to see what the poet thinks has been lost, and what the boy has to learn from the experience of losing something.</p>
+                </div>
+                
+                <div class="poem-content" id="ballPoemContent">
+                    <!-- Poem content will be loaded dynamically via JavaScript -->
+                </div>
+                
+                <div class="poem-glossary">
+                    <h3>Glossary</h3>
+                    <dl>
+                        <dt>O there are other balls</dt>
+                        <dd>The words suggest that the loss is not important enough to worry about</dd>
+                        <dt>shaking grief</dt>
+                        <dd>sadness which greatly affects the boy</dd>
+                        <dt>rigid</dt>
+                        <dd>stiff</dd>
+                        <dt>(to) intrude on</dt>
+                        <dd>here, to enter a situation where one is not welcome</dd>
+                        <dt>a dime</dt>
+                        <dd>ten cents (U.S.)</dd>
+                        <dt>desperate</dt>
+                        <dd>hopeless</dd>
+                        <dt>epistemology of loss</dt>
+                        <dd>understanding the nature of loss — what it means to lose something</dd>
+                        <dt>epistemology</dt>
+                        <dd>The Greek word episteme means 'knowledge' (it comes from a word meaning 'to understand, to know'). Epistemology is the study of the nature of knowledge itself.</dd>
+                    </dl>
+                </div>
+                
+                <div class="poem-analysis">
+                    <h3>Thinking about the Poem</h3>
+                    
+                    <div id="ballPoemQuestions" class="poem-questions">
+                        <!-- Questions will be loaded dynamically -->
+                    </div>
+                    
+                    <div class="button-container">
+                        <button class="interactive-btn" onclick="readAloudPoem('ballPoem')">
+                            🔊 Listen to Poem
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activities Module -->
+        <div class="module" id="activities">
+            <div class="exercise-card">
+                <h2 class="exercise-title">
+                    <span class="exercise-icon">🎯</span>
+                    Activities
+                </h2>
+                
+                <div class="activity-section speaking-activity">
+                    <h3>📢 Speaking Activity</h3>
+                    <div class="content-block">
+                        <p>We have just read about the first flight of a young seagull. Your teacher will now divide the class into groups. Each group will work on one of the following topics. Prepare a presentation with your group members and then present it to the entire class.</p>
+                        <div class="activity-topics">
+                            <div class="activity-topic">
+                                <h4>Progression of Models of Airplanes</h4>
+                                <div class="topic-notes">
+                                    <textarea class="notes-area" rows="3" placeholder="Make notes for your presentation here..."></textarea>
+                                </div>
+                            </div>
+                            <div class="activity-topic">
+                                <h4>Progression of Models of Motorcars</h4>
+                                <div class="topic-notes">
+                                    <textarea class="notes-area" rows="3" placeholder="Make notes for your presentation here..."></textarea>
+                                </div>
+                            </div>
+                            <div class="activity-topic">
+                                <h4>Birds and Their Wing Span</h4>
+                                <div class="topic-notes">
+                                    <textarea class="notes-area" rows="3" placeholder="Make notes for your presentation here..."></textarea>
+                                </div>
+                            </div>
+                            <div class="activity-topic">
+                                <h4>Migratory Birds — Tracing Their Flights</h4>
+                                <div class="topic-notes">
+                                    <textarea class="notes-area" rows="3" placeholder="Make notes for your presentation here..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="interactive-btn" onclick="recordPresentation()">
+                        🎤 Record Presentation
+                    </button>
+                </div>
+                
+                <div class="activity-section writing-activity">
+                    <h3>✍️ Writing Activity 1</h3>
+                    <div class="content-block">
+                        <p>Write a short composition on your initial attempts at learning a skill. You could describe the challenges of learning to ride a bicycle or learning to swim. Make it as humorous as possible.</p>
+                    </div>
+                    <button class="interactive-btn" onclick="openWritingPad('skill')">
+                        ✏️ Start Writing
+                    </button>
+                </div>
+                
+                <div class="activity-section writing-activity">
+                    <h3>✍️ Writing Activity 2</h3>
+                    <div class="content-block">
+                        <p>Have you ever been alone or away from home during a thunderstorm? Narrate your experience in a paragraph.</p>
+                    </div>
+                    <button class="interactive-btn" onclick="openWritingPad('storm')">
+                        ✏️ Start Writing
+                    </button>
+                </div>
+                
+                <div class="activity-section loss-activity">
+                    <h3>🤔 Reflection Activity</h3>
+                    <div class="content-block">
+                        <p>Have you ever lost something you liked very much? Write a paragraph describing how you felt then, and saying whether — and how — you got over your loss.</p>
+                    </div>
+                    <button class="interactive-btn" onclick="openWritingPad('loss')">
+                        ✏️ Start Writing
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Interactive English Lesson - Two Stories About Flying</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/stories.js"></script>
+    <script src="js/poems.js"></script>
+    <script src="js/questions.js"></script>
+    <script src="js/activities.js"></script>
+</body>
+</html>

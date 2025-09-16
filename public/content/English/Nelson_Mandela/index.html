@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nelson Mandela: Long Walk to Freedom - Interactive English Lesson</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <meta name="description" content="Interactive English lesson based on 'Long Walk to Freedom' by Nelson Mandela">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav-menu" role="navigation" aria-label="Main navigation">
+        <div class="nav-items">
+            <button class="nav-item active" onclick="showModule('intro')" aria-pressed="true">📚 Introduction</button>
+            <button class="nav-item" onclick="showModule('prereading')" aria-pressed="false">✓ Before You Read</button>
+            <button class="nav-item" onclick="showModule('story')" aria-pressed="false">📖 The Text</button>
+            <button class="nav-item" onclick="showModule('thinking-text')" aria-pressed="false">❓ Thinking About the Text</button>
+            <button class="nav-item" onclick="showModule('thinking-language')" aria-pressed="false">🔤 Thinking About Language</button>
+            <button class="nav-item" onclick="showModule('poetry')" aria-pressed="false">🎭 A Tiger in the Zoo</button>
+            <button class="nav-item" onclick="showModule('activities')" aria-pressed="false">🎯 Activities</button>
+        </div>
+    </nav>
+
+    <!-- Audio Control -->
+    <div class="audio-control">
+        <button id="audioBtn" class="audio-btn" onclick="toggleAudio()" aria-label="Toggle audio narration">🔊</button>
+    </div>
+
+    <!-- Achievement Popup -->
+    <div id="achievementPopup" class="achievement-popup" aria-live="polite">
+        <div class="achievement-title">🏆 Achievement Unlocked!</div>
+        <div class="achievement-desc" id="achievementDesc">You've completed a module!</div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title">📚 Nelson Mandela: Long Walk to Freedom</h1>
+            <p class="subtitle">Chapter 2</p>
+            <p class="reprint">Reprint 2025-26</p>
+        </header>
+
+        <!-- Progress Tracker -->
+        <div class="progress-container">
+            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-fill" id="progressBar">0%</div>
+            </div>
+            <div class="progress-stats">
+                <span>📖 Modules: <span id="modulesComplete">0</span>/7</span>
+                <span>⭐ Score: <span id="totalScore">0</span></span>
+                <span>⏱️ Time: <span id="timeSpent">0:00</span></span>
+            </div>
+        </div>
+
+        <!-- Introduction Module -->
+        <div class="module active" id="intro">
+            <div class="exercise-card">
+                <h2 class="exercise-title">
+                    <span class="exercise-icon">🌟</span>
+                    Welcome to "Nelson Mandela: Long Walk to Freedom"
+                </h2>
+                <div class="content-block">
+                    <p>Freedom is a fundamental human right, but what does it mean to truly be free? This text explores the journey of Nelson Mandela and his fight against apartheid in South Africa.</p>
+                    <p>In this lesson, you'll learn about Nelson Mandela's historic inauguration as South Africa's first black President after decades of struggle against racial discrimination. Join us as we explore this powerful story of courage, resilience, and the triumph of justice!</p>
+                </div>
+                <div class="button-container">
+                    <button class="interactive-btn" onclick="startJourney()" aria-label="Begin the lesson">
+                        🚀 Start Your Learning Journey
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Before You Read Module -->
+        <div class="module" id="prereading">
+            <div class="exercise-card">
+                <h2 class="exercise-title">
+                    <span class="exercise-icon">✓</span>
+                    Before You Read
+                </h2>
+                <div class="content-block">
+                    <p>'Apartheid' is a political system that separates people according to their race. Can you say which of the three countries named below had such a political system until very recently?</p>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkAnswer(this, 'South Africa')">
+                            <span class="option-letter">A</span>
+                            <span class="option-text">United States of America</span>
+                        </div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'South Africa')">
+                            <span class="option-letter">B</span>
+                            <span class="option-text">South Africa</span>
+                        </div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'South Africa')">
+                            <span class="option-letter">C</span>
+                            <span class="option-text">Australia</span>
+                        </div>
+                    </div>
+                    <div id="country-feedback" class="feedback-message"></div>
+                </div>
+                
+                <div class="content-block">
+                    <p>Have you heard of Nelson Mandela? Mandela, and his African National Congress, spent a lifetime fighting against apartheid. Mandela had to spend thirty years in prison. Finally, democratic elections were held in South Africa in 1994, and Mandela became the first black President of a new nation.</p>
+                    <p>In this extract from his autobiography, Long Walk to Freedom, Mandela speaks about a historic occasion, 'the inauguration'. Can you guess what the occasion might be? Check your guess with this news item (from the BBC) of 10 May 1994.</p>
+                </div>
+
+                <div class="news-item">
+                    <h3>Mandela Becomes South Africa's First Black President</h3>
+                    <div class="news-content">
+                        <p>Nelson Mandela has become South Africa's first Black President after more than three centuries of White rule. Mr Mandela's African National Congress (ANC) party won 252 of the 400 seats in the first democratic elections of South Africa's history.</p>
+                        <p>The inauguration ceremony took place in the Union Buildings amphitheatre in Pretoria today, attended by politicians and dignitaries from more than 140 countries around the world. "Never, never again will this beautiful land experience the oppression of one by another," said Nelson Mandela in his address.</p>
+                        <p>... Jubilant scenes on the streets of Pretoria followed the ceremony with blacks, whites and coloureds celebrating together... More than 100,000 South African men, women and children of all races sang and danced with joy.</p>
+                    </div>
+                </div>
+                
+                <h3 class="activity-title">Activity: Matching Expressions</h3>
+                <div class="content-block">
+                    <p>In Column A are some expressions you will find in the text. Make a guess and match each expression with an appropriate meaning from Column B.</p>
+                </div>
+                
+                <div class="matching-game">
+                    <div class="match-column">
+                        <h3>Column A</h3>
+                        <div class="match-item" data-match="rainbow" onclick="selectMatch(this, 'term')">A rainbow gathering of different colours and nations</div>
+                        <div class="match-item" data-match="supremacy" onclick="selectMatch(this, 'term')">The seat of white supremacy</div>
+                        <div class="match-item" data-match="history" onclick="selectMatch(this, 'term')">Be overwhelmed with a sense of history</div>
+                        <div class="match-item" data-match="resilience" onclick="selectMatch(this, 'term')">Resilience that defies the imagination</div>
+                        <div class="match-item" data-match="humanity" onclick="selectMatch(this, 'term')">A glimmer of humanity</div>
+                        <div class="match-item" data-match="twilight" onclick="selectMatch(this, 'term')">A twilight existence</div>
+                    </div>
+                    
+                    <div class="match-column">
+                        <h3>Column B</h3>
+                        <div class="match-item" data-match="resilience" onclick="selectMatch(this, 'def')">
+                            A great ability (almost unimaginable) to remain unchanged by suffering (not losing hope, goodness or courage)
+                        </div>
+                        <div class="match-item" data-match="twilight" onclick="selectMatch(this, 'def')">
+                            A half-secret life, like a life lived in the fading light between sunset and darkness
+                        </div>
+                        <div class="match-item" data-match="humanity" onclick="selectMatch(this, 'def')">
+                            A sign of human feeling (goodness, kindness, pity, justice, etc.)
+                        </div>
+                        <div class="match-item" data-match="rainbow" onclick="selectMatch(this, 'def')">
+                            A beautiful coming together of various peoples, like the colours in a rainbow
+                        </div>
+                        <div class="match-item" data-match="supremacy" onclick="selectMatch(this, 'def')">
+                            The centre of racial superiority
+                        </div>
+                        <div class="match-item" data-match="history" onclick="selectMatch(this, 'def')">
+                            Feel deeply emotional, remembering and understanding all the past events that have led up to the moment
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="matchFeedback" class="feedback-message" aria-live="polite"></div>
+            </div>
+        </div>
+
+        <!-- Story Module -->
+        <div class="module" id="story">
+            <div class="story-reader">
+                <h2 class="section-title">THE TEXT: LONG WALK TO FREEDOM</h2>
+                
+                <div class="story-controls">
+                    <button class="reading-mode-btn" onclick="toggleReadAloud()" aria-label="Read the story aloud">
+                        🔊 Read Aloud
+                    </button>
+                    <button class="reading-mode-btn" onclick="highlightVocabulary()" aria-label="Highlight vocabulary words">
+                        ✨ Highlight Vocabulary
+                    </button>
+                    <button class="reading-mode-btn" onclick="togglePrintMode()" aria-label="Toggle print-friendly mode">
+                        🖨️ Print Mode
+                    </button>
+                </div>
+                
+                <div class="story-navigation">
+                    <button class="story-nav-btn active" onclick="showStoryPart(1)" aria-pressed="true">Part 1</button>
+                    <button class="story-nav-btn" onclick="showStoryPart(2)" aria-pressed="false">Part 2</button>
+                    <button class="story-nav-btn" onclick="showStoryPart(3)" aria-pressed="false">Part 3</button>
+                </div>
+                
+                <div class="story-content" id="storyContent">
+                    <!-- Story content will be loaded dynamically via JavaScript -->
+                </div>
+                
+                <div class="comprehension-check" id="comprehensionCheck">
+                    <!-- Comprehension checks will be loaded dynamically -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Thinking About the Text Module -->
+        <div class="module" id="thinking-text">
+            <div class="exercise-card">
+                <h2 class="exercise-title">
+                    <span class="exercise-icon">❓</span>
+                    Thinking About the Text
+                </h2>
+                
+                <div id="textQuestions" class="question-section">
+                    <!-- Questions will be loaded dynamically -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Thinking About Language Module -->
+        <div class="module" id="thinking-language">
+            <div class="exercise-card">
+                <h2 class="exercise-title">
+                    <span class="exercise-icon">🔄</span>
+                    Noun and Verb Forms
+                </h2>
+                <div class="content-block">
+                    <p>There are nouns in the text (formation, government) which are formed from the corresponding verbs (form, govern) by suffixing -(at)ion or ment. There may be a change in the spelling of some verb – noun pairs: such as rebel, rebellion; constitute, constitution.</p>
+                </div>
+                
+                <div class="noun-verb-exercise">
+                    <h3>1. Make a list of such pairs of nouns and verbs in the text.</h3>
+                    <table class="word-pairs">
+                        <tr>
+                            <th>Noun</th>
+                            <th>Verb</th>
+                        </tr>
+                        <tr>
+                            <td>rebellion</td>
+                            <td>rebel</td>
+                        </tr>
+                        <tr>
+                            <td>constitution</td>
+                            <td>constitute</td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="word-input" data-pair="obligation"></td>
+                            <td><input type="text" class="word-input" data-pair="oblige"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="word-input" data-pair="oppression"></td>
+                            <td><input type="text" class="word-input" data-pair="oppress"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="word-input" data-pair="liberation"></td>
+                            <td><input type="text" class="word-input" data-pair="liberate"></td>
+                        </tr>
+                    </table>
+                    
+                    <h3>2. Fill in the blanks with the noun forms of the verbs in brackets.</h3>
+                    <div class="fill-blanks">
+                        <p>Martin Luther King's <input type="text" class="blank-input" data-answer="contribution"> (contribute) to our history as an outstanding leader began when he came to the <input type="text" class="blank-input" data-answer="assistance"> (assist) of Rosa Parks, a seamstress who refused to give up her seat on a bus to a white passenger. In those days American Blacks were confined to positions of second class citizenship by restrictive laws and customs. To break these laws would mean <input type="text" class="blank-input" data-answer="subjugation"> (subjugate) and <input type="text" class="blank-input" data-answer="humiliation"> (humiliate) by the police and the legal system. Beatings, <input type="text" class="blank-input" data-answer="imprisonment"> (imprison) and sometimes death awaited those who defied the System. Martin Luther King's tactics of protest involved non-violent <input type="text" class="blank-input" data-answer="resistance"> (resist) to racial injustice.</p>
+                    </div>
+                    <button class="interactive-btn" onclick="checkBlanks()">Check Answers</button>
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <h2 class="exercise-title">
+                    <span class="exercise-icon">🔍</span>
+                    Using the Definite Article with Names
+                </h2>
+                <div class="content-block">
+                    <p>You know that the definite article 'the' is not normally used before proper nouns. Nor do proper nouns usually occur in the plural. (We do not say: *The Nelson Mandela, or *Nelson Mandelas.) But now look at this sentence from the text:</p>
+                    <blockquote>... the decades of oppression and brutality ... produced the Oliver Tambos, the Walter Sisulus, ... of our time.</blockquote>
+                    <p>Used in this way with the and/or in the plural, a proper noun carries a special meaning. Choose the right answer:</p>
+                </div>
+                
+                <div class="multiple-choice">
+                    <div class="choice-option" onclick="selectChoice(this, 'b')">
+                        <span class="choice-letter">A</span>
+                        <span class="choice-text">For example Oliver Tambo, Walter Sisulu, ...</span>
+                    </div>
+                    <div class="choice-option" onclick="selectChoice(this, 'b')">
+                        <span class="choice-letter">B</span>
+                        <span class="choice-text">Many other men like Oliver Tambo, Walter Sisulu .../many men of their type or kind, whose names may not be as well known.</span>
+                    </div>
+                </div>
+                <div id="choiceFeedback" class="feedback-message"></div>
+                
+                <div class="content-block">
+                    <h3>Try to say what these sentences mean:</h3>
+                    <div class="sentence-meaning">
+                        <p>1. Mr Singh regularly invites the Amitabh Bachchans and the Shah Rukh Khans to his parties.</p>
+                        <textarea class="meaning-input" rows="2" placeholder="Write your interpretation here..."></textarea>
+                        
+                        <p>2. Many people think that Madhuri Dixit is the Madhubala of our times.</p>
+                        <textarea class="meaning-input" rows="2" placeholder="Write your interpretation here..."></textarea>
+                        
+                        <p>3. History is not only the story of the Alexanders, the Napoleons and the Hitlers, but of ordinary people as well.</p>
+                        <textarea class="meaning-input" rows="2" placeholder="Write your interpretation here..."></textarea>
+                    </div>
+                    <button class="interactive-btn" onclick="showSampleResponses()">Show Sample Responses</button>
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <h2 class="exercise-title">
+                    <span class="exercise-icon">📝</span>
+                    Idiomatic Expressions
+                </h2>
+                <div class="content-block">
+                    <p>Match the italicized phrases in Column A with the phrase nearest in meaning in Column B.</p>
+                </div>
+                
+                <div class="idiom-matching">
+                    <div class="idiom-item">
+                        <p>1. <em>I was not unmindful of the fact</em></p>
+                        <div class="idiom-options">
+                            <div class="idiom-option" onclick="selectIdiom(this, 'i')">
+                                <span class="option-letter">i</span>
+                                <span class="option-text">had not forgotten; was aware of the fact</span>
+                            </div>
+                            <div class="idiom-option" onclick="selectIdiom(this, 'i')">
+                                <span class="option-letter">ii</span>
+                                <span class="option-text">was not careful about the fact</span>
+                            </div>
+                            <div class="idiom-option" onclick="selectIdiom(this, 'i')">
+                                <span class="option-letter">iii</span>
+                                <span class="option-text">forgot or was not aware of the fact</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="idiom-item">
+                        <p>2. <em>when my comrades and I were pushed to our limits</em></p>
+                        <div class="idiom-options">
+                            <div class="idiom-option" onclick="selectIdiom(this, 'iii')">
+                                <span class="option-letter">i</span>
+                                <span class="option-text">pushed by the guards to the wall</span>
+                            </div>
+                            <div class="idiom-option" onclick="selectIdiom(this, 'iii')">
+                                <span class="option-letter">ii</span>
+                                <span class="option-text">took more than our share of beatings</span>
+                            </div>
+                            <div class="idiom-option" onclick="selectIdiom(this, 'iii')">
+                                <span class="option-letter">iii</span>
+                                <span class="option-text">felt that we could not endure the suffering any longer</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="idiom-item">
+                        <p>3. <em>to reassure me and keep me going</em></p>
+                        <div class="idiom-options">
+                            <div class="idiom-option" onclick="selectIdiom(this, 'ii')">
+                                <span class="option-letter">i</span>
+                                <span class="option-text">make me go on walking</span>
+                            </div>
+                            <div class="idiom-option" onclick="selectIdiom(this, 'ii')">
+                                <span class="option-letter">ii</span>
+                                <span class="option-text">help me continue to live in hope in this very difficult situation</span>
+                            </div>
+                            <div class="idiom-option" onclick="selectIdiom(this, 'ii')">
+                                <span class="option-letter">iii</span>
+                                <span class="option-text">make me remain without complaining</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="idiom-item">
+                        <p>4. <em>the basic and honourable freedoms of...earning my keep,...</em></p>
+                        <div class="idiom-options">
+                            <div class="idiom-option" onclick="selectIdiom(this, 'i')">
+                                <span class="option-letter">i</span>
+                                <span class="option-text">earning enough money to live on</span>
+                            </div>
+                            <div class="idiom-option" onclick="selectIdiom(this, 'i')">
+                                <span class="option-letter">ii</span>
+                                <span class="option-text">keeping what I earned</span>
+                            </div>
+                            <div class="idiom-option" onclick="selectIdiom(this, 'i')">
+                                <span class="option-letter">iii</span>
+                                <span class="option-text">getting a good salary</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="idiomFeedback" class="feedback-message"></div>
+            </div>
+        </div>
+
+        <!-- Poetry Module -->
+        <div class="module" id="poetry">
+            <div class="poem-container">
+                <h2 class="poem-title">A Tiger in the Zoo</h2>
+                <p class="poem-author">by Leslie Norris</p>
+                
+                <div class="poem-intro">
+                    <p>This poem contrasts a tiger in the zoo with the tiger in its natural habitat. The poem moves from the zoo to the jungle, and back again to the zoo. Read the poem silently once, and say which stanzas speak about the tiger in the zoo, and which ones speak about the tiger in the jungle.</p>
+                </div>
+                
+                <div class="poem-text">
+                    He stalks in his vivid stripes<br>
+                    The few steps of his cage,<br>
+                    On pads of velvet quiet,<br>
+                    In his quiet rage.<br><br>
+                    
+                    He should be lurking in shadow,<br>
+                    Sliding through long grass<br>
+                    Near the water hole<br>
+                    Where plump deer pass.<br><br>
+                    
+                    He should be snarling around houses<br>
+                    At the jungle's edge,<br>
+                    Baring his white fangs, his claws,<br>
+                    Terrorising the village!<br><br>
+                    
+                    But he's locked in a concrete cell,<br>
+                    His strength behind bars,<br>
+                    Stalking the length of his cage,<br>
+                    Ignoring visitors.<br><br>
+                    
+                    He hears the last voice at night,<br>
+                    The patrolling cars,<br>
+                    And stares with his brilliant eyes<br>
+                    At the brilliant stars.
+                </div>
+                
+                <div class="poem-glossary">
+                    <h3>Glossary</h3>
+                    <dl>
+                        <dt>snarls</dt>
+                        <dd>makes an angry, warning sound</dd>
+                    </dl>
+                </div>
+                
+                <div class="poem-analysis">
+                    <h3>Thinking about the Poem</h3>
+                    
+                    <div id="tigerPoemQuestions" class="poem-questions">
+                        <!-- Questions will be loaded dynamically -->
+                    </div>
+                    
+                    <div class="button-container">
+                        <button class="interactive-btn" onclick="readAloudPoem('tiger')">
+                            🔊 Listen to Poem
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="additional-poems">
+                    <h3>Additional Poems for Discussion</h3>
+                    <div class="toggle-poems">
+                        <button class="poem-toggle" onclick="toggleAdditionalPoem('peter')">The Tiger by Peter Niblett</button>
+                        <button class="poem-toggle" onclick="toggleAdditionalPoem('rilke')">The Panther by Rainer Maria Rilke</button>
+                        <button class="poem-toggle" onclick="toggleAdditionalPoem('victoria')">The Greater Cats by Victoria Sackville-West</button>
+                    </div>
+                    
+                    <div id="additionalPoemText" class="additional-poem-text">
+                        <!-- Additional poem text will be shown here -->
+                    </div>
+                </div>
+                
+                <div class="discussion-question">
+                    <h3>Discussion Question</h3>
+                    <p>Are zoos necessary for the protection or conservation of some species of animals? Are they useful for educating the public? Are there alternatives to zoos?</p>
+                    
+                    <div class="opinion-buttons">
+                        <button class="opinion-btn" onclick="showOpinionPrompt('for')">For Zoos</button>
+                        <button class="opinion-btn" onclick="showOpinionPrompt('against')">Against Zoos</button>
+                        <button class="opinion-btn" onclick="showOpinionPrompt('both')">Consider Both</button>
+                    </div>
+                    
+                    <div id="opinionPrompt" class="opinion-prompt">
+                        <!-- Opinion writing prompt will appear here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activities Module -->
+        <div class="module" id="activities">
+            <div class="exercise-card">
+                <h2 class="exercise-title">
+                    <span class="exercise-icon">🎯</span>
+                    Activities
+                </h2>
+                
+                <div class="activity-section speaking-activity">
+                    <h3>📢 Speaking Activity</h3>
+                    <div class="content-block">
+                        <p>In groups, discuss the issues suggested in the box below. Then prepare a speech of about two minutes on the following topic.</p>
+                        <blockquote>True liberty is freedom from poverty, deprivation and all forms of discrimination.</blockquote>
+                        
+                        <div class="discussion-points">
+                            <ul>
+                                <li>causes of poverty and means of overcoming it</li>
+                                <li>discrimination based on gender, religion, class, etc.</li>
+                                <li>constitutionally guaranteed human rights</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <button class="interactive-btn" onclick="recordSpeaking()">
+                        🎤 Record Your Speech
+                    </button>
+                </div>
+                
+                <div class="activity-section writing-activity">
+                    <h3>✍️ Writing Activity: Looking at Contrasts</h3>
+                    <div class="content-block">
+                        <p>Nelson Mandela's writing is marked by balance: many sentences have two parts in balance.</p>
+                        <p>Use the following phrases to complete the sentences given below.</p>
+                        
+                        <div class="phrase-bank">
+                            <div class="phrase">(i) they can be taught to love.</div>
+                            <div class="phrase">(ii) I was born free.</div>
+                            <div class="phrase">(iii) but the triumph over it.</div>
+                            <div class="phrase">(iv) but he who conquers that fear.</div>
+                            <div class="phrase">(v) to create such heights of character.</div>
+                        </div>
+                        
+                        <div class="sentence-completion">
+                            <div class="sentence-item">
+                                <p>1. It requires such depths of oppression <input type="text" class="completion-input" data-answer="to create such heights of character."></p>
+                            </div>
+                            <div class="sentence-item">
+                                <p>2. Courage was not the absence of fear <input type="text" class="completion-input" data-answer="but the triumph over it."></p>
+                            </div>
+                            <div class="sentence-item">
+                                <p>3. The brave man is not he who does not feel afraid <input type="text" class="completion-input" data-answer="but he who conquers that fear."></p>
+                            </div>
+                            <div class="sentence-item">
+                                <p>4. If people can learn to hate <input type="text" class="completion-input" data-answer="they can be taught to love."></p>
+                            </div>
+                            <div class="sentence-item">
+                                <p>5. I was not born with a hunger to be free. <input type="text" class="completion-input" data-answer="I was born free."></p>
+                            </div>
+                        </div>
+                        <button class="interactive-btn" onclick="checkContrastCompletion()">Check Answers</button>
+                    </div>
+                </div>
+                
+                <div class="activity-section research-activity">
+                    <h3>🔍 Research Activity</h3>
+                    <div class="content-block">
+                        <p><strong>What you can do:</strong> Divide your class into three groups and give each group one of the following topics to research:</p>
+                        <ol>
+                            <li>Black Americans, and their fight against discrimination</li>
+                            <li>Women, and their fight for equality</li>
+                            <li>The Vietnamese, and their fight for independence</li>
+                        </ol>
+                        <p>Choose a student from each group to present a short summary of each topic to the class.</p>
+                    </div>
+                    <button class="interactive-btn" onclick="showResearchResources()">
+                        📚 Access Research Resources
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Interactive English Lesson - Nelson Mandela: Long Walk to Freedom</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/story.js"></script>
+    <script src="js/questions.js"></script>
+    <script src="js/activities.js"></script>
+</body>
+</html>

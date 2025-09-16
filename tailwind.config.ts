@@ -13,6 +13,7 @@ const config: Config = {
           biology: '#2dd4bf', // teal
           english: '#a78bfa', // purple
           physics: '#f97316', // orange
+          chemistry: '#10b981', // emerald
           DEFAULT: '#3b82f6' // blue
         },
         background: '#0f172a',

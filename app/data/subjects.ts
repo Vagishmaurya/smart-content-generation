@@ -15,6 +15,25 @@ export type Chapter = {
 
 export const subjects: Subject[] = [
   {
+    id: 'chemistry',
+    name: 'Chemistry',
+    description: 'Discover the composition, structure, and properties of matter',
+    icon: '🧪',
+    chapters: [
+      {
+        id: 'carbon-and-its-compound',
+        name: 'Carbon and its Compound',
+        path: 'content/Chemistry/Carbon and its Compound',
+        files: [
+          'Chemical_properties_of_carbon_compunds.html',
+          'Covalent_bond_and_carbon.html',
+          'Important_carbon_compund.html',
+          'Versatile_nature_of_Carbon.html'
+        ]
+      }
+    ]
+  },
+  {
     id: 'biology',
     name: 'Biology',
     description: 'Explore the science of life from cells to ecosystems',
@@ -154,6 +173,18 @@ export const subjects: Subject[] = [
         id: 'a-letter-to-god',
         name: 'A Letter to God',
         path: 'content/English/A_letter_to_god',
+        files: ['index.html']
+      },
+      {
+        id: 'nelson-mandela',
+        name: 'Nelson Mandela',
+        path: 'content/English/Nelson_Mandela',
+        files: ['index.html']
+      },
+      {
+        id: 'flying-stories',
+        name: 'Flying Stories',
+        path: 'content/English/Flying Stories',
         files: ['index.html']
       }
     ]

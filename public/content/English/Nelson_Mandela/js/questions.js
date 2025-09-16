@@ -1,536 +1,555 @@
-/**
- * Questions and exercises for the interactive lesson
- */
+// Questions and exercises for Nelson Mandela lesson
 
 // Thinking About the Text questions
-const textThinkingQuestions = [
+const textQuestions = [
     {
-        question: "1. Why did such a large number of international leaders attend the inauguration? What did it signify the triumph of?",
-        type: "essay"
+        id: "text-q1",
+        question: "Why did such a large number of international leaders attend the inauguration? What did it signify the triumph of?",
+        type: "essay",
+        points: 5
     },
     {
-        question: "2. What does Mandela mean when he says he is "simply the sum of all those African patriots" who had gone before him?",
-        type: "essay"
+        id: "text-q2",
+        question: "What does Mandela mean when he says he is "simply the sum of all those African patriots" who had gone before him?",
+        type: "essay",
+        points: 5
     },
     {
-        question: "3. Would you agree that the "depths of oppression" create "heights of character"? How does Mandela illustrate this? Can you add your own examples to this argument?",
-        type: "essay"
+        id: "text-q3",
+        question: "Would you agree that the "depths of oppression" create "heights of character"? How does Mandela illustrate this? Can you add your own examples to this argument?",
+        type: "essay",
+        points: 10
     },
     {
-        question: "4. How did Mandela's understanding of freedom change with age and experience?",
-        type: "essay"
+        id: "text-q4",
+        question: "How did Mandela's understanding of freedom change with age and experience?",
+        type: "essay",
+        points: 5
     },
     {
-        question: "5. How did Mandela's 'hunger for freedom' change his life?",
-        type: "essay"
+        id: "text-q5",
+        question: "How did Mandela's 'hunger for freedom' change his life?",
+        type: "essay",
+        points: 5
     }
 ];
 
-// Noun formation exercise data
-const nounFormationExercises = [
+// Thinking About the Poem questions for "A Tiger in the Zoo"
+const tigerPoemQuestions = [
     {
-        verb: "rebel",
-        noun: "rebellion"
+        id: "poem-q1",
+        question: "Find the words that describe the movements and actions of the tiger in the cage and in the wild. Arrange them in two columns.",
+        type: "table",
+        columns: ["In the Cage", "In the Wild"],
+        points: 5
     },
     {
-        verb: "constitute",
-        noun: "constitution"
+        id: "poem-q2",
+        question: "Find the words that describe the two places, and arrange them in two columns.",
+        type: "table",
+        columns: ["The Zoo", "The Jungle"],
+        points: 5
     },
     {
-        verb: "govern",
-        noun: "government"
+        id: "poem-q3",
+        question: "Notice the use of a word repeated in lines such as these:<br>'On pads of velvet quiet, In his quiet rage.'<br>'And stares with his brilliant eyes At the brilliant stars.'<br>What do you think is the effect of this repetition?",
+        type: "essay",
+        points: 5
     },
     {
-        verb: "form",
-        noun: "formation"
-    },
-    {
-        verb: "oppress",
-        noun: "oppression"
-    },
-    {
-        verb: "emancipate",
-        noun: "emancipation"
-    },
-    {
-        verb: "liberate",
-        noun: "liberation"
-    },
-    {
-        verb: "discriminate",
-        noun: "discrimination"
+        id: "poem-q4",
+        question: "Take a point of view for or against zoos, or even consider both points of view and write a couple of paragraphs.",
+        type: "essay",
+        points: 10
     }
 ];
 
-// Noun blank fill exercise
-const nounBlankExercises = [
+// Hope exercise for Thinking About Language section
+const hopeExercise = [
     {
-        sentence: "Martin Luther King's ___________ (contribute) to our history as an outstanding leader began when he came to the ___________ (assist) of Rosa Parks, a seamstress who refused to give up her seat on a bus to a white passenger.",
-        answers: ["contribution", "assistance"]
+        sentence: "I hope you don't mind if I go out tonight.",
+        analysis: "Here 'hope' is a verb that means 'wish that something happens'."
     },
     {
-        sentence: "In those days American Blacks were confined to positions of second class citizenship by restrictive laws and customs. To break these laws would mean ___________ (subjugate) and ___________ (humiliate) by the police and the legal system.",
-        answers: ["subjugation", "humiliation"]
+        sentence: "They gave up hope of finding survivors after the earthquake.",
+        analysis: "Here 'hope' is a noun that means 'a feeling that something good might happen'."
     },
     {
-        sentence: "Beatings, ___________ (imprison) and sometimes death awaited those who defied the System. Martin Luther King's tactics of protest involved non-violent ___________ (resist) to racial injustice.",
-        answers: ["imprisonment", "resistance"]
+        sentence: "We are hoping for good weather tomorrow.",
+        analysis: "Here 'hoping' is a verb form (present participle) that means 'wishing for'."
+    },
+    {
+        sentence: "Our only hope is to find shelter before the storm arrives.",
+        analysis: "Here 'hope' is a noun that means 'chance that something good will happen'."
     }
 ];
 
-// Idiomatic expressions exercise
-const idiomaticExpressions = [
+// Relative clause exercise for Thinking About Language section
+const relativeClauseExercise = [
     {
-        phrase: "I was not unmindful of the fact",
-        options: [
-            "had not forgotten; was aware of the fact",
-            "was not careful about the fact",
-            "forgot or was not aware of the fact"
+        id: "rc-q1",
+        instruction: "Join the following sentences using 'who', 'whom', 'whose', or 'which'.",
+        examples: [
+            {
+                original: ["The man was late.", "He has a shop in the neighborhood."],
+                joined: "The man who has a shop in the neighborhood was late."
+            },
+            {
+                original: ["The lady is waiting outside.", "I want to see her."],
+                joined: "The lady whom I want to see is waiting outside."
+            }
         ],
-        correct: 0
-    },
-    {
-        phrase: "when my comrades and I were pushed to our limits",
-        options: [
-            "pushed by the guards to the wall",
-            "took more than our share of beatings",
-            "felt that we could not endure the suffering any longer"
-        ],
-        correct: 2
-    },
-    {
-        phrase: "to reassure me and keep me going",
-        options: [
-            "make me go on walking",
-            "help me continue to live in hope in this very difficult situation",
-            "make me remain without complaining"
-        ],
-        correct: 1
-    },
-    {
-        phrase: "the basic and honourable freedoms of...earning my keep,...",
-        options: [
-            "earning enough money to live on",
-            "keeping what I earned",
-            "getting a good salary"
-        ],
-        correct: 0
-    }
-];
-
-// Balance sentences exercise
-const balanceSentencesExercise = [
-    {
-        start: "It requires such depths of oppression",
-        end: "to create such heights of character."
-    },
-    {
-        start: "Courage was not the absence of fear",
-        end: "but the triumph over it."
-    },
-    {
-        start: "The brave man is not he who does not feel afraid",
-        end: "but he who conquers that fear."
-    },
-    {
-        start: "If people can learn to hate",
-        end: "they can be taught to love."
-    },
-    {
-        start: "I was not born with a hunger to be free.",
-        end: "I was born free."
-    }
-];
-
-// Contrast completion exercise
-const contrastExercises = [
-    {
-        start: "For decades the Union Buildings had been the seat of white supremacy, and now",
-        answer: "it was the site of a rainbow gathering of different colours and nations for the installation of South Africa's first democratic, non-racial government."
-    },
-    {
-        start: "Only moments before, the highest generals of the South African defence force and police ... saluted me and pledged their loyalty. ... not so many years before they would not have saluted",
-        answer: "but arrested me."
-    },
-    {
-        start: "Although that day neither group knew the lyrics of the anthem ..., they would soon",
-        answer: "know the words by heart."
-    },
-    {
-        start: "My country is rich in the minerals and gems that lie beneath its soil,",
-        answer: "but I have always known that its greatest wealth is its people, finer and truer than the purest diamonds."
-    },
-    {
-        start: "The Air Show was not only a display of pinpoint precision and military force, but",
-        answer: "a demonstration of the military's loyalty to democracy, to a new government that had been freely and fairly elected."
-    },
-    {
-        start: "It was this desire for the freedom of my people ... that transformed",
-        answer: "a frightened young man into a bold one, that drove a law-abiding attorney to become a criminal, that turned a family-loving husband into a man without a home."
-    }
-];
-
-// Poetry questions for A Tiger in the Zoo
-const tigerInZooQuestions = [
-    {
-        question: "1. Read the poem again, and work in pairs or groups to do the following tasks.",
-        subQuestions: [
-            "(i) Find the words that describe the movements and actions of the tiger in the cage and in the wild. Arrange them in two columns.",
-            "(ii) Find the words that describe the two places, and arrange them in two columns."
+        questions: [
+            {
+                original: ["Nelson Mandela fought against apartheid.", "He became the first black President of South Africa."],
+                answer: "Nelson Mandela, who fought against apartheid, became the first black President of South Africa."
+            },
+            {
+                original: ["The inauguration ceremony was attended by world leaders.", "It took place in the Union Buildings."],
+                answer: "The inauguration ceremony, which took place in the Union Buildings, was attended by world leaders."
+            },
+            {
+                original: ["The freedom fighters sacrificed their lives.", "Their courage inspired many."],
+                answer: "The freedom fighters, whose courage inspired many, sacrificed their lives."
+            }
         ]
-    },
-    {
-        question: "2. Notice the use of a word repeated in lines such as these:",
-        subQuestions: [
-            "(i) On pads of velvet quiet, In his quiet rage.",
-            "(ii) And stares with his brilliant eyes At the brilliant stars."
-        ],
-        additionalContent: "What do you think is the effect of this repetition?"
-    },
-    {
-        question: "3. Read the following two poems — one about a tiger and the other about a panther. Then discuss: Are zoos necessary for the protection or conservation of some species of animals? Are they useful for educating the public? Are there alternatives to zoos?"
-    },
-    {
-        question: "4. Take a point of view for or against zoos, or even consider both points of view and write a couple of paragraphs or speak about this topic for a couple of minutes in class."
     }
 ];
 
-// Load Thinking About the Text questions
-function loadTextThinkingQuestions() {
-    const container = document.getElementById('textQuestions');
-    if (!container) {
-        console.error('textQuestions container not found');
-        return;
-    }
+// Function to load text questions
+function loadTextQuestions() {
+    const questionSection = document.getElementById('textQuestions');
     
-    let html = '';
+    // Clear existing content
+    questionSection.innerHTML = '';
     
-    textThinkingQuestions.forEach((q, index) => {
-        html += `<div class="thinking-question">
-            <h3>${q.question}</h3>`;
-            
-        if (q.hint) {
-            html += `<p class="question-hint">${q.hint}</p>`;
-        }
+    // Create header
+    const header = document.createElement('h3');
+    header.textContent = 'Answer the following questions:';
+    questionSection.appendChild(header);
+    
+    // Create questions
+    textQuestions.forEach(q => {
+        const questionDiv = document.createElement('div');
+        questionDiv.className = 'question-item';
         
-        if (q.type === 'essay') {
-            html += `<textarea class="question-answer" rows="4" placeholder="Write your answer here..."></textarea>`;
-        } else if (q.type === 'multiselect') {
-            html += `<div class="option-box">`;
-            q.options.forEach(option => {
-                html += `<label class="option-label">
-                    <input type="checkbox" value="${option}"> ${option}
-                </label>`;
+        const questionText = document.createElement('p');
+        questionText.className = 'question-text';
+        questionText.innerHTML = q.question;
+        questionDiv.appendChild(questionText);
+        
+        const answerArea = document.createElement('textarea');
+        answerArea.className = 'answer-area';
+        answerArea.rows = 5;
+        answerArea.placeholder = 'Write your answer here...';
+        answerArea.dataset.points = q.points;
+        answerArea.addEventListener('input', function() {
+            // Award points when the user starts typing
+            if (this.value.trim().length > 10 && !this.dataset.scored) {
+                updateScore(parseInt(this.dataset.points));
+                this.dataset.scored = 'true';
+            }
+        });
+        questionDiv.appendChild(answerArea);
+        
+        questionSection.appendChild(questionDiv);
+    });
+    
+    // Create submit button
+    const submitButton = document.createElement('button');
+    submitButton.className = 'interactive-btn';
+    submitButton.textContent = 'Submit Answers';
+    submitButton.addEventListener('click', () => {
+        showAchievement('Critical Thinker', 'You completed the Thinking About the Text questions!');
+    });
+    questionSection.appendChild(submitButton);
+}
+
+// Function to load tiger poem questions
+function loadTigerPoemQuestions() {
+    const questionSection = document.getElementById('tigerPoemQuestions');
+    
+    // Clear existing content
+    questionSection.innerHTML = '';
+    
+    // Create questions
+    tigerPoemQuestions.forEach(q => {
+        const questionDiv = document.createElement('div');
+        questionDiv.className = 'question-item';
+        
+        const questionText = document.createElement('p');
+        questionText.className = 'question-text';
+        questionText.innerHTML = q.question;
+        questionDiv.appendChild(questionText);
+        
+        if (q.type === 'table') {
+            // Create table for comparison
+            const table = document.createElement('table');
+            table.className = 'comparison-table';
+            
+            // Create header row
+            const headerRow = document.createElement('tr');
+            q.columns.forEach(colTitle => {
+                const th = document.createElement('th');
+                th.textContent = colTitle;
+                headerRow.appendChild(th);
             });
-            html += `</div>`;
-        }
-        
-        html += `</div>`;
-    });
-    
-    html += `<div class="button-container">
-        <button class="interactive-btn" onclick="saveTextAnswers()">Save Answers</button>
-    </div>`;
-    
-    // Set the HTML content
-    container.innerHTML = html;
-    
-    // Debug log
-    console.log('Thinking About the Text questions loaded');
-}
-
-// Save Text Thinking answers
-function saveTextAnswers() {
-    // In a real implementation, this would save the answers
-    showAchievement('Thinking About the Text Completed!');
-    score += 25;
-    document.getElementById('totalScore').textContent = score;
-    
-    if (narrator) {
-        narrator.speak("Great job analyzing the text! Your answers have been saved.");
-    }
-}
-
-// Load Noun Formation Exercises
-function loadNounFormationExercises() {
-    const container = document.getElementById('nounFormationExercise');
-    if (!container) return;
-    
-    let html = '<div class="table-container"><table class="noun-table"><thead><tr><th>Verb</th><th>Noun</th></tr></thead><tbody>';
-    
-    nounFormationExercises.forEach((pair, index) => {
-        html += `<tr>
-            <td>${pair.verb}</td>
-            <td>${pair.noun}</td>
-        </tr>`;
-    });
-    
-    html += '</tbody></table></div>';
-    container.innerHTML = html;
-    
-    // Load the blanks exercise
-    const blankContainer = document.getElementById('nounBlankExercise');
-    if (blankContainer) {
-        let blanksHtml = '';
-        
-        nounBlankExercises.forEach((exercise, index) => {
-            const parts = exercise.sentence.split('___________');
-            let questionHtml = '';
+            table.appendChild(headerRow);
             
-            for (let i = 0; i < parts.length; i++) {
-                questionHtml += parts[i];
-                if (i < parts.length - 1) {
-                    const verb = exercise.sentence.match(/\(([^)]+)\)/g)[i];
-                    questionHtml += `<input type="text" class="blank-input" data-answer="${exercise.answers[i]}" placeholder="${verb}">`;
-                }
+            // Create input rows (3 rows for input)
+            for (let i = 0; i < 5; i++) {
+                const tr = document.createElement('tr');
+                q.columns.forEach(() => {
+                    const td = document.createElement('td');
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.className = 'table-input';
+                    td.appendChild(input);
+                    tr.appendChild(td);
+                });
+                table.appendChild(tr);
             }
             
-            blanksHtml += `<div class="blank-exercise">${questionHtml}</div>`;
-        });
-        
-        blanksHtml += `<div class="button-container">
-            <button class="interactive-btn" onclick="checkNounBlanks()">Check Answers</button>
-        </div>`;
-        
-        blankContainer.innerHTML = blanksHtml;
-    }
-}
-
-// Check Noun Blanks
-function checkNounBlanks() {
-    const inputs = document.querySelectorAll('.blank-input');
-    let correctCount = 0;
-    
-    inputs.forEach(input => {
-        const userAnswer = input.value.trim().toLowerCase();
-        const correctAnswer = input.dataset.answer.toLowerCase();
-        
-        if (userAnswer === correctAnswer) {
-            input.style.backgroundColor = '#c8e6c9';
-            correctCount++;
+            questionDiv.appendChild(table);
         } else {
-            input.style.backgroundColor = '#ffcdd2';
+            // Essay question
+            const answerArea = document.createElement('textarea');
+            answerArea.className = 'answer-area';
+            answerArea.rows = 5;
+            answerArea.placeholder = 'Write your answer here...';
+            questionDiv.appendChild(answerArea);
         }
+        
+        questionSection.appendChild(questionDiv);
     });
-    
-    if (correctCount === inputs.length) {
-        showAchievement('Noun Formation Mastered!');
-        score += 15;
-        document.getElementById('totalScore').textContent = score;
-        
-        if (narrator) {
-            narrator.speak("Perfect! You've mastered noun formation.");
-        }
-    } else {
-        if (narrator) {
-            narrator.speak(`You got ${correctCount} out of ${inputs.length} correct. Try again!`);
-        }
-    }
 }
 
-// Load Definitive Article Exercise
-function loadDefinitiveArticleExercise() {
-    const container = document.getElementById('definitiveArticleExercise');
-    if (!container) return;
+// Function to load Dust of Snow poem questions
+function loadDustOfSnowQuestions() {
+    const questionSection = document.getElementById('dustOfSnowQuestions');
     
-    let html = `
-        <p>When 'the' is used with proper nouns in this way, it refers to:</p>
-        <div class="option-box">
-            <label class="option-label">
-                <input type="radio" name="article" value="a"> (a) for example Oliver Tambo, Walter Sisulu, ...
-            </label>
-            <label class="option-label">
-                <input type="radio" name="article" value="b"> (b) many other men like Oliver Tambo, Walter Sisulu .../many men of their type or kind, whose names may not be as well known.
-            </label>
-        </div>
-        
-        <p>Here are some more examples of 'the' used with proper names. What do these sentences mean?</p>
-        
-        <div class="example-box">
-            <p>1. Mr Singh regularly invites the Amitabh Bachchans and the Shah Rukh Khans to his parties.</p>
-            <textarea class="question-answer" rows="2" placeholder="What does this mean?"></textarea>
-        </div>
-        
-        <div class="example-box">
-            <p>2. Many people think that Madhuri Dixit is the Madhubala of our times.</p>
-            <textarea class="question-answer" rows="2" placeholder="What does this mean?"></textarea>
-        </div>
-        
-        <div class="example-box">
-            <p>3. History is not only the story of the Alexanders, the Napoleons and the Hitlers, but of ordinary people as well.</p>
-            <textarea class="question-answer" rows="2" placeholder="What does this mean?"></textarea>
-        </div>
-        
-        <div class="button-container">
-            <button class="interactive-btn" onclick="checkArticleAnswers()">Check Answers</button>
-        </div>
-    `;
+    if (!questionSection) return;
     
-    container.innerHTML = html;
-}
-
-// Check Article Answers
-function checkArticleAnswers() {
-    const radioAnswer = document.querySelector('input[name="article"]:checked');
-    
-    if (radioAnswer && radioAnswer.value === 'b') {
-        showAchievement('Definite Article Usage Understood!');
-        score += 10;
-        document.getElementById('totalScore').textContent = score;
-        
-        if (narrator) {
-            narrator.speak("Correct! Using 'the' with proper nouns in plural refers to people of similar qualities or characteristics.");
+    const questions = [
+        {
+            question: "What is a "dust of snow"? What does the poet say has changed his mood? How has his mood changed?",
+            type: "essay"
+        },
+        {
+            question: "How does Frost present nature in this poem? The following questions may help you to think of an answer.<br>(i) What are the birds that are usually associated with good/bad omens?<br>(ii) What does 'a crow' represent in this poem?<br>(iii) What is the meaning of 'a hemlock tree'?",
+            type: "essay"
         }
-    } else {
-        if (narrator) {
-            narrator.speak("That's not quite right. Try again!");
-        }
-    }
+    ];
     
-    // In a real implementation, we would also check the text area explanations
-}
-
-// Load Idiomatic Expressions Exercise
-function loadIdiomaticExpressionExercise() {
-    const container = document.getElementById('idiomaticExpressionExercise');
-    if (!container) return;
+    // Clear existing content
+    questionSection.innerHTML = '';
     
-    let html = '<div class="match-container"><div class="match-column"><h4>Column A</h4>';
-    
-    idiomaticExpressions.forEach((expression, index) => {
-        html += `<div class="match-item term" data-match="${index}" onclick="selectIdiomMatch(this, 'term')">
-            ${expression.phrase}
-        </div>`;
+    // Create questions
+    questions.forEach((q, index) => {
+        const questionDiv = document.createElement('div');
+        questionDiv.className = 'question-item';
+        
+        const questionNumber = document.createElement('div');
+        questionNumber.className = 'question-number';
+        questionNumber.textContent = (index + 1).toString();
+        questionDiv.appendChild(questionNumber);
+        
+        const questionText = document.createElement('p');
+        questionText.className = 'question-text';
+        questionText.innerHTML = q.question;
+        questionDiv.appendChild(questionText);
+        
+        const answerArea = document.createElement('textarea');
+        answerArea.className = 'answer-area';
+        answerArea.rows = 4;
+        answerArea.placeholder = 'Write your answer here...';
+        questionDiv.appendChild(answerArea);
+        
+        questionSection.appendChild(questionDiv);
     });
+}
+
+// Function to load Fire and Ice poem questions
+function loadFireAndIceQuestions() {
+    const questionSection = document.getElementById('fireAndIceQuestions');
     
-    html += '</div><div class="match-column"><h4>Column B</h4>';
+    if (!questionSection) return;
     
-    idiomaticExpressions.forEach((expression, index) => {
-        expression.options.forEach((option, optionIndex) => {
-            if (optionIndex === expression.correct) {
-                html += `<div class="match-item def" data-match="${index}" onclick="selectIdiomMatch(this, 'def')">
-                    ${option}
-                </div>`;
+    const questions = [
+        {
+            question: "For Frost, what do 'fire' and 'ice' stand for? Here are some ideas:<br>• greed<br>• avarice<br>• cruelty<br>• lust<br>• conflict<br>• hatred<br>• indifference<br>• rigidity<br>• insensitivity<br>• coldness<br>• intolerance",
+            type: "essay"
+        },
+        {
+            question: "What is the rhyme scheme of the poem? How does it help in bringing out the contrasting ideas in the poem?",
+            type: "essay"
+        }
+    ];
+    
+    // Clear existing content
+    questionSection.innerHTML = '';
+    
+    // Create questions
+    questions.forEach((q, index) => {
+        const questionDiv = document.createElement('div');
+        questionDiv.className = 'question-item';
+        
+        const questionNumber = document.createElement('div');
+        questionNumber.className = 'question-number';
+        questionNumber.textContent = (index + 1).toString();
+        questionDiv.appendChild(questionNumber);
+        
+        const questionText = document.createElement('p');
+        questionText.className = 'question-text';
+        questionText.innerHTML = q.question;
+        questionDiv.appendChild(questionText);
+        
+        const answerArea = document.createElement('textarea');
+        answerArea.className = 'answer-area';
+        answerArea.rows = 4;
+        answerArea.placeholder = 'Write your answer here...';
+        questionDiv.appendChild(answerArea);
+        
+        questionSection.appendChild(questionDiv);
+    });
+}
+
+// Function to load the hope exercise
+function loadHopeExercise() {
+    const hopeSection = document.getElementById('hopeExercise');
+    
+    if (!hopeSection) return;
+    
+    // Clear existing content
+    hopeSection.innerHTML = '';
+    
+    // Create title and instructions
+    const instructions = document.createElement('div');
+    instructions.className = 'content-block';
+    instructions.innerHTML = '<p>Match the following sentences with their analysis to understand how the word "hope" is used:</p>';
+    hopeSection.appendChild(instructions);
+    
+    // Create matching exercise
+    const matchingDiv = document.createElement('div');
+    matchingDiv.className = 'hope-matching';
+    
+    // Shuffle the analyses for the exercise
+    const analyses = hopeExercise.map(item => item.analysis);
+    const shuffledAnalyses = shuffleArray([...analyses]);
+    
+    hopeExercise.forEach((item, index) => {
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'hope-item';
+        
+        const sentenceDiv = document.createElement('div');
+        sentenceDiv.className = 'hope-sentence';
+        sentenceDiv.textContent = item.sentence;
+        itemDiv.appendChild(sentenceDiv);
+        
+        const selectDiv = document.createElement('div');
+        selectDiv.className = 'hope-select';
+        
+        const select = document.createElement('select');
+        select.className = 'hope-dropdown';
+        select.dataset.correct = item.analysis;
+        
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = '-- Select the correct analysis --';
+        select.appendChild(defaultOption);
+        
+        shuffledAnalyses.forEach(analysis => {
+            const option = document.createElement('option');
+            option.value = analysis;
+            option.textContent = analysis;
+            select.appendChild(option);
+        });
+        
+        select.addEventListener('change', function() {
+            if (this.value === this.dataset.correct) {
+                this.parentElement.classList.add('correct');
+                this.parentElement.classList.remove('incorrect');
+                updateScore(2);
+            } else if (this.value) {
+                this.parentElement.classList.add('incorrect');
+                this.parentElement.classList.remove('correct');
+            } else {
+                this.parentElement.classList.remove('correct', 'incorrect');
             }
         });
+        
+        selectDiv.appendChild(select);
+        itemDiv.appendChild(selectDiv);
+        matchingDiv.appendChild(itemDiv);
     });
     
-    html += '</div></div>';
+    hopeSection.appendChild(matchingDiv);
     
-    container.innerHTML = html;
-}
-
-// Select Idiom Match
-function selectIdiomMatch(element, type) {
-    // Same logic as in selectMatch function from main.js
-    // Clear previous selections of same type
-    document.querySelectorAll(`.match-item`).forEach(item => {
-        if (item.parentElement === element.parentElement) {
-            item.classList.remove('selected');
-        }
-    });
-    
-    element.classList.add('selected');
-    selectedMatch[type] = element.dataset.match;
-    
-    // Check if both selected
-    if (selectedMatch.term && selectedMatch.def) {
-        checkIdiomMatch();
-    }
-}
-
-// Check Idiom Match
-function checkIdiomMatch() {
-    // Similar logic to checkMatch function in main.js
-    const termElements = document.querySelectorAll(`.match-item[data-match="${selectedMatch.term}"]`);
-    const defElements = document.querySelectorAll(`.match-item[data-match="${selectedMatch.def}"]`);
-    
-    if (selectedMatch.term === selectedMatch.def) {
-        // Correct match
-        termElements.forEach(el => {
-            el.classList.add('correct');
-            el.onclick = null; // Disable further clicks
-        });
-        
-        defElements.forEach(el => {
-            el.classList.add('correct');
-            el.onclick = null; // Disable further clicks
-        });
-        
-        score += 5;
-        document.getElementById('totalScore').textContent = score;
-        
-        // Check if all matches are complete
-        const allMatched = document.querySelectorAll('.match-item:not(.correct)').length === 0;
-        if (allMatched) {
-            showAchievement('Idiomatic Expressions Mastered!');
-            score += 15;
-            document.getElementById('totalScore').textContent = score;
-            
-            if (narrator) {
-                narrator.speak("Excellent! You've matched all the idiomatic expressions with their meanings!");
+    // Create check button
+    const checkButton = document.createElement('button');
+    checkButton.className = 'interactive-btn';
+    checkButton.textContent = 'Check Answers';
+    checkButton.addEventListener('click', function() {
+        let allCorrect = true;
+        document.querySelectorAll('.hope-dropdown').forEach(select => {
+            if (select.value !== select.dataset.correct) {
+                allCorrect = false;
             }
-        } else if (narrator) {
-            narrator.speak("Perfect match!");
-        }
-    } else {
-        // Incorrect match
-        const selectedItems = document.querySelectorAll('.match-item.selected');
-        selectedItems.forEach(el => {
-            el.classList.add('incorrect');
-            setTimeout(() => {
-                el.classList.remove('incorrect', 'selected');
-            }, 1000);
         });
         
-        if (narrator) {
-            narrator.speak("Not a match. Try again.");
+        if (allCorrect) {
+            showAchievement('Word Master', 'You correctly identified all uses of "hope"!');
+        } else {
+            showFeedback('Try again! Some of your answers are incorrect.');
         }
-    }
-    
-    // Reset selection
-    selectedMatch = { term: null, def: null };
+    });
+    hopeSection.appendChild(checkButton);
 }
 
-// Load Poetry questions
-function loadPoetryQuestions() {
-    const container = document.getElementById('tigerQuestions');
-    if (!container) return;
+// Function to load the relative clause exercise
+function loadRelativeClauseExercise() {
+    const rcSection = document.getElementById('relativeClauseExercise');
     
-    let html = '';
+    if (!rcSection) return;
     
-    tigerInZooQuestions.forEach((q, index) => {
-        html += `<div class="poem-question">
-            <h4>${q.question}</h4>`;
+    // Clear existing content
+    rcSection.innerHTML = '';
+    
+    relativeClauseExercise.forEach(exercise => {
+        const exerciseDiv = document.createElement('div');
+        exerciseDiv.className = 'relative-clause-exercise';
+        
+        const instructionDiv = document.createElement('div');
+        instructionDiv.className = 'instruction-block';
+        instructionDiv.textContent = exercise.instruction;
+        exerciseDiv.appendChild(instructionDiv);
+        
+        // Examples
+        const examplesDiv = document.createElement('div');
+        examplesDiv.className = 'examples-block';
+        
+        const examplesTitle = document.createElement('h4');
+        examplesTitle.textContent = 'Examples:';
+        examplesDiv.appendChild(examplesTitle);
+        
+        exercise.examples.forEach(example => {
+            const exampleDiv = document.createElement('div');
+            exampleDiv.className = 'example-item';
             
-        if (q.subQuestions) {
-            q.subQuestions.forEach(subQ => {
-                html += `<p class="sub-question">${subQ}</p>`;
+            const originalDiv = document.createElement('div');
+            originalDiv.className = 'original-sentences';
+            originalDiv.innerHTML = `<strong>Original:</strong> ${example.original.join(' ')}`;
+            exampleDiv.appendChild(originalDiv);
+            
+            const joinedDiv = document.createElement('div');
+            joinedDiv.className = 'joined-sentence';
+            joinedDiv.innerHTML = `<strong>Joined:</strong> ${example.joined}`;
+            exampleDiv.appendChild(joinedDiv);
+            
+            examplesDiv.appendChild(exampleDiv);
+        });
+        
+        exerciseDiv.appendChild(examplesDiv);
+        
+        // Questions
+        const questionsDiv = document.createElement('div');
+        questionsDiv.className = 'rc-questions';
+        
+        const questionsTitle = document.createElement('h4');
+        questionsTitle.textContent = 'Now join these sentences:';
+        questionsDiv.appendChild(questionsTitle);
+        
+        exercise.questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'rc-question-item';
+            
+            const questionNumber = document.createElement('div');
+            questionNumber.className = 'question-number';
+            questionNumber.textContent = (index + 1).toString();
+            questionDiv.appendChild(questionNumber);
+            
+            const originalDiv = document.createElement('div');
+            originalDiv.className = 'original-sentences';
+            originalDiv.textContent = q.original.join(' ');
+            questionDiv.appendChild(originalDiv);
+            
+            const answerInput = document.createElement('input');
+            answerInput.type = 'text';
+            answerInput.className = 'rc-answer-input';
+            answerInput.placeholder = 'Write the joined sentence here...';
+            answerInput.dataset.answer = q.answer;
+            questionDiv.appendChild(answerInput);
+            
+            questionsDiv.appendChild(questionDiv);
+        });
+        
+        exerciseDiv.appendChild(questionsDiv);
+        
+        // Check button
+        const checkButton = document.createElement('button');
+        checkButton.className = 'interactive-btn';
+        checkButton.textContent = 'Check Answers';
+        checkButton.addEventListener('click', function() {
+            let correctCount = 0;
+            document.querySelectorAll('.rc-answer-input').forEach(input => {
+                const userAnswer = input.value.trim().toLowerCase();
+                const correctAnswer = input.dataset.answer.toLowerCase();
+                
+                if (userAnswer === correctAnswer || similarEnough(userAnswer, correctAnswer)) {
+                    input.classList.add('correct');
+                    input.classList.remove('incorrect');
+                    correctCount++;
+                } else {
+                    input.classList.add('incorrect');
+                    input.classList.remove('correct');
+                }
             });
-        }
+            
+            if (correctCount === exercise.questions.length) {
+                showAchievement('Grammar Expert', 'You successfully used relative clauses!');
+                updateScore(correctCount * 3);
+            } else {
+                showFeedback(`You got ${correctCount} out of ${exercise.questions.length} correct!`);
+            }
+        });
         
-        if (q.additionalContent) {
-            html += `<p>${q.additionalContent}</p>`;
-        }
+        exerciseDiv.appendChild(checkButton);
         
-        html += `<textarea class="question-answer" rows="4" placeholder="Write your answer here..."></textarea>
-        </div>`;
+        rcSection.appendChild(exerciseDiv);
     });
-    
-    html += `<div class="button-container">
-        <button class="interactive-btn" onclick="savePoetryAnswers()">Save Answers</button>
-    </div>`;
-    
-    container.innerHTML = html;
 }
 
-// Save Poetry answers
-function savePoetryAnswers() {
-    showAchievement('Poetry Analysis Completed!');
-    score += 20;
-    document.getElementById('totalScore').textContent = score;
+// Helper function to check if two strings are similar enough
+function similarEnough(str1, str2) {
+    // This is a simple implementation that checks if the key parts match
+    // A more sophisticated implementation might use string similarity metrics
+    const keywords1 = str1.match(/\b(who|whom|whose|which)\b/gi) || [];
+    const keywords2 = str2.match(/\b(who|whom|whose|which)\b/gi) || [];
     
-    if (narrator) {
-        narrator.speak("Great job analyzing the poem! Your answers have been saved.");
+    if (keywords1.length !== keywords2.length) return false;
+    
+    for (let i = 0; i < keywords1.length; i++) {
+        if (keywords1[i].toLowerCase() !== keywords2[i].toLowerCase()) return false;
     }
+    
+    return true;
 }
+
+// Helper function to shuffle an array
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+// Initialize all question sections when the page loads
+window.addEventListener('DOMContentLoaded', () => {
+    loadTextQuestions();
+    loadTigerPoemQuestions();
+    loadDustOfSnowQuestions();
+    loadFireAndIceQuestions();
+    loadHopeExercise();
+    loadRelativeClauseExercise();
+});

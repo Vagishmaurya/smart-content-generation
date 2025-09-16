@@ -75,6 +75,8 @@ export default function Home() {
         return 'bg-green-500/10 border-green-400/30';
       case 'english':
         return 'bg-purple-500/10 border-purple-400/30';
+      case 'chemistry':
+        return 'bg-emerald-500/10 border-emerald-400/30';
       default:
         return 'bg-white/5 border-white/20';
     }
@@ -90,6 +92,8 @@ export default function Home() {
         return 'bg-green-500/20 hover:bg-green-500/30 border-green-400/40 hover:border-green-400/60';
       case 'english':
         return 'bg-purple-500/20 hover:bg-purple-500/30 border-purple-400/40 hover:border-purple-400/60';
+      case 'chemistry':
+        return 'bg-emerald-500/20 hover:bg-emerald-500/30 border-emerald-400/40 hover:border-emerald-400/60';
       default:
         return 'bg-white/10 hover:bg-white/20 border-white/30 hover:border-white/50';
     }
@@ -105,6 +109,8 @@ export default function Home() {
         return 'from-green-500/30 to-emerald-500/30';
       case 'english':
         return 'from-purple-500/30 to-pink-500/30';
+      case 'chemistry':
+        return 'from-emerald-500/30 to-teal-500/30';
       default:
         return 'from-blue-500/20 to-purple-500/20';
     }
@@ -309,11 +315,14 @@ export default function Home() {
             >
               <div className="text-6xl mb-6 opacity-60">
                 {selectedSubject === 'physics' ? '⚛️' : 
-                 selectedSubject === 'biology' ? '🧬' : '📚'}
+                 selectedSubject === 'biology' ? '🧬' : 
+                 selectedSubject === 'chemistry' ? '🧪' : '📚'}
               </div>
               <p className="text-xl text-white/70 text-center max-w-md">
                 {selectedSubject === 'physics' ? 
                   'Physics content is coming soon! Check back later for exciting chapters on mechanics, electricity, and more.' :
+                  selectedSubject === 'chemistry' ? 
+                  'Chemistry content is coming soon! Check back later for exciting chapters on chemical reactions, elements, and more.' :
                   'No chapters available yet'}
               </p>
               <button 
@@ -321,6 +330,7 @@ export default function Home() {
                 className={`mt-6 px-6 py-3 rounded-full transition-colors text-white ${
                   selectedSubject === 'physics' ? 'bg-primary-physics/40 hover:bg-primary-physics/60' :
                   selectedSubject === 'biology' ? 'bg-primary-biology/40 hover:bg-primary-biology/60' :
+                  selectedSubject === 'chemistry' ? 'bg-primary-chemistry/40 hover:bg-primary-chemistry/60' :
                   'bg-primary-english/40 hover:bg-primary-english/60'
                 }`}
               >
