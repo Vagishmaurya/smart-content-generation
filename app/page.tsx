@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { subjects } from './data/subjects';
 import SubjectCard from '../components/SubjectCard';
@@ -13,6 +13,7 @@ export default function Home() {
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
   const [selectedChapter, setSelectedChapter] = useState<Chapter | null>(null);
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
   
   const handleSubjectClick = (subjectId: string) => {
     setSelectedSubject(subjectId);
@@ -49,7 +50,63 @@ export default function Home() {
     setSelectedTopic(null);
   };
   
+  // Function to stop all audio
+  const stopAllAudio = () => {
+    try {
+      // Stop speech synthesis
+      if (window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+      }
+      
+      // Try to access iframe content and stop audio there
+      if (iframeRef.current?.contentWindow) {
+        try {
+          const iframeWindow = iframeRef.current.contentWindow as any;
+          
+          // Stop speech synthesis in iframe
+          if (iframeWindow.speechSynthesis) {
+            iframeWindow.speechSynthesis.cancel();
+          }
+          
+          // Stop any audio elements in iframe
+          const audioElements = iframeWindow.document.querySelectorAll('audio, video');
+          audioElements.forEach((element: any) => {
+            if (element.pause) {
+              element.pause();
+              element.currentTime = 0;
+            }
+          });
+          
+          // Call cleanup functions if they exist in the iframe
+          if (typeof iframeWindow.stopAllAudio === 'function') {
+            iframeWindow.stopAllAudio();
+          }
+          if (typeof iframeWindow.cleanupAudio === 'function') {
+            iframeWindow.cleanupAudio();
+          }
+          if (typeof iframeWindow.destroy === 'function') {
+            iframeWindow.destroy();
+          }
+          
+          // Call cleanup on any global teacher instances
+          if (iframeWindow.currentTeacher && typeof iframeWindow.currentTeacher.destroy === 'function') {
+            iframeWindow.currentTeacher.destroy();
+          }
+          if (iframeWindow.currentTeacher && typeof iframeWindow.currentTeacher.stop === 'function') {
+            iframeWindow.currentTeacher.stop();
+          }
+        } catch (e) {
+          // Cross-origin restrictions might prevent access
+          console.log('Cannot access iframe content for audio cleanup (cross-origin)');
+        }
+      }
+    } catch (error) {
+      console.log('Error during audio cleanup:', error);
+    }
+  };
+
   const handleBackFromContent = () => {
+    stopAllAudio();
     const currentChapter = currentSubject?.chapters.find(chapter => chapter.id === selectedChapter?.id);
     // If it's a single-file chapter, go back to chapters list
     if (currentChapter && currentChapter.files.length === 1) {
@@ -141,7 +198,7 @@ export default function Home() {
     return cleanName;
   };
   
-  // Control body scroll when in content view
+  // Control body scroll when in content view and handle audio cleanup
   useEffect(() => {
     if (selectedSubject && selectedChapter && selectedTopic) {
       document.body.style.overflow = 'hidden';
@@ -152,6 +209,13 @@ export default function Home() {
     // Cleanup on unmount
     return () => {
       document.body.style.overflow = 'auto';
+    };
+  }, [selectedSubject, selectedChapter, selectedTopic]);
+  
+  // Audio cleanup when navigating away from content
+  useEffect(() => {
+    return () => {
+      stopAllAudio();
     };
   }, [selectedSubject, selectedChapter, selectedTopic]);
   
@@ -388,6 +452,7 @@ export default function Home() {
             transition={{ duration: 0.5 }}
           >
             <iframe 
+              ref={iframeRef}
               src={`/${selectedChapter.path}/${selectedTopic}`}
               className="w-full h-full border-0"
               title={formatFileName(selectedTopic)}
