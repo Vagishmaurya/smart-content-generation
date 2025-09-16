@@ -15,6 +15,32 @@ export type Chapter = {
 
 export const subjects: Subject[] = [
   {
+    id: 'socialscience',
+    name: 'Social Science',
+    description: 'Understand society, economics, politics, and human relationships',
+    icon: '🌍',
+    chapters: [
+      {
+        id: 'palampur-economics',
+        name: 'Palampur Economics',
+        path: 'content/Social Science/Palampur Economics',
+        files: ['index.html']
+      },
+      {
+        id: 'democracy',
+        name: 'Democracy',
+        path: 'content/Social Science/Democracy',
+        files: ['index.html']
+      },
+      {
+        id: 'constitutional-design',
+        name: 'Constitutional Design',
+        path: 'content/Social Science/Constitutional Design',
+        files: ['index.html']
+      }
+    ]
+  },
+  {
     id: 'chemistry',
     name: 'Chemistry',
     description: 'Discover the composition, structure, and properties of matter',

@@ -14,6 +14,7 @@ const config: Config = {
           english: '#a78bfa', // purple
           physics: '#f97316', // orange
           chemistry: '#10b981', // emerald
+          socialscience: '#3b82f6', // blue
           DEFAULT: '#3b82f6' // blue
         },
         background: '#0f172a',

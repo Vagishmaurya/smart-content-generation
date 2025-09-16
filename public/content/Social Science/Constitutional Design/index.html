@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Constitutional Design - Interactive Lesson</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <meta name="description" content="Interactive lesson on Constitutional Design based on NCERT Chapter 2">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav-menu" role="navigation" aria-label="Main navigation">
+        <div class="nav-items">
+            <button class="nav-item active" onclick="showModule('intro')" aria-pressed="true">📚 Introduction</button>
+            <button class="nav-item" onclick="showModule('overview')" aria-pressed="false">📋 Overview</button>
+            <button class="nav-item" onclick="showModule('southafrica')" aria-pressed="false">🇿🇦 South Africa</button>
+            <button class="nav-item" onclick="showModule('whyconstitution')" aria-pressed="false">❓ Why Constitution</button>
+            <button class="nav-item" onclick="showModule('indianconstitution')" aria-pressed="false">🇮🇳 Indian Constitution</button>
+            <button class="nav-item" onclick="showModule('values')" aria-pressed="false">🔤 Guiding Values</button>
+            <button class="nav-item" onclick="showModule('activities')" aria-pressed="false">🎯 Activities</button>
+        </div>
+    </nav>
+
+    <!-- Audio Control -->
+    <div class="audio-control">
+        <button id="audioBtn" class="audio-btn" onclick="toggleAudio()" aria-label="Toggle audio narration">🔊</button>
+    </div>
+
+    <!-- Achievement Popup -->
+    <div id="achievementPopup" class="achievement-popup" aria-live="polite">
+        <div class="achievement-title" id="achievementTitle">🏆 Achievement Unlocked!</div>
+        <div class="achievement-desc" id="achievementDesc">You've completed a module!</div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title">📚 Constitutional Design</h1>
+            <p class="subtitle">Chapter 2: Democratic Politics</p>
+            <p class="reprint">Interactive Edition 2025</p>
+        </header>
+
+        <!-- Progress Tracker -->
+        <div class="progress-container">
+            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-fill" id="progressBar">0%</div>
+            </div>
+            <div class="progress-stats">
+                <span>📖 Modules: <span id="modulesComplete">0</span>/7</span>
+                <span>⭐ Score: <span id="totalScore">0</span></span>
+                <span>⏱️ Time: <span id="timeSpent">0:00</span></span>
+            </div>
+        </div>
+
+        <!-- Introduction Module -->
+        <div class="module active" id="intro">
+            <div class="exercise-card">
+                <h2 class="exercise-title">
+                    <span class="exercise-icon">🌟</span>
+                    Welcome to "Constitutional Design"
+                </h2>
+                <div class="content-block">
+                    <p>What makes a country democratic? Is it just about holding elections and having elected representatives? Or is there something more to it? In this lesson, we'll explore how constitutions form the foundation of democratic societies.</p>
+                    <p>We'll learn about the inspiring story of South Africa's transition from apartheid to democracy, understand why constitutions are necessary, and discover how India's own constitution was created. Let's begin this journey to understand the rules that govern our democratic life!</p>
+                </div>
+                <div class="button-container">
+                    <button class="interactive-btn" onclick="startJourney()" aria-label="Begin the lesson">
+                        🚀 Start Your Learning Journey
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Overview Module -->
+        <div class="module" id="overview">
+            <div class="exercise-card">
+                <h2 class="exercise-title">
+                    <span class="exercise-icon">📋</span>
+                    Overview
+                </h2>
+                <div class="content-block">
+                    <p>We noted in the previous chapter that in a democracy the rulers are not free to do what they like. There are certain basic rules that the citizens and the government have to follow. All such rules together are called constitution. As the supreme law of the country, the constitution determines the rights of citizens, the powers of the government and how the government should function.</p>
+                    
+                    <p>In this chapter we ask some basic questions about the constitutional design of a democracy. Why do we need a constitution? How are the constitutions drawn up? Who designs them and in what way? What are the values that shape the constitutions in democratic states? Once a constitution is accepted, can we make changes later as required by the changing conditions?</p>
+                    
+                    <p>One recent instance of designing constitution for a democratic state is that of South Africa. We begin this chapter by looking at what happened there and how the South Africans went about this task of designing their constitution. Then we turn to how the Indian Constitution was made, what its foundational values are, and how it provides a good framework for the conduct of citizens' life and that of the government.</p>
+                </div>
+                
+                <div class="button-container">
+                    <button class="interactive-btn" onclick="showModule('southafrica')">
+                        Continue to South Africa's Story
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- South Africa Module -->
+        <div class="module" id="southafrica">
+            <div class="exercise-card">
+                <h2 class="exercise-title">
+                    <span class="exercise-icon">🇿🇦</span>
+                    Democratic Constitution in South Africa
+                </h2>
+                
+                <div class="quote-block">
+                    <p class="quote-text">"I have fought against white domination and I have fought against black domination. I have cherished the ideal of a democratic and free society in which all persons live together in harmony and with equal opportunities. It is an ideal which I hope to live for and to achieve. But if needs be, it is an ideal for which I am prepared to die."</p>
+                    <p class="quote-author">- Nelson Mandela, during his trial for treason, 1964</p>
+                    <button class="interactive-btn" onclick="readQuote(this.parentNode)">🔊 Listen to Quote</button>
+                </div>
+                
+                <p>This was Nelson Mandela, being tried for treason by the white South African government. He and seven other leaders were sentenced to life imprisonment in 1964 for daring to oppose the apartheid regime in his country. He spent the next 27 years in South Africa's most dreaded prison, Robben Island.</p>
+                
+                <div class="content-block" id="struggle-content">
+                    <!-- Content will be loaded dynamically -->
+                </div>
+                
+                <div class="content-block" id="transition-content">
+                    <!-- Content will be loaded dynamically -->
+                </div>
+                
+                <div class="button-container">
+                    <button class="interactive-btn" onclick="readText('section-content')">
+                        🔊 Read Section Aloud
+                    </button>
+                    <button class="interactive-btn" onclick="showModule('whyconstitution')">
+                        Continue to Why We Need a Constitution
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Why Constitution Module -->
+        <div class="module" id="whyconstitution">
+            <div class="exercise-card">
+                <h2 class="exercise-title">
+                    <span class="exercise-icon">❓</span>
+                    Why Do We Need a Constitution?
+                </h2>
+                
+                <div class="content-block" id="why-constitution-content">
+                    <!-- Content will be loaded dynamically -->
+                </div>
+                
+                <div class="button-container">
+                    <button class="interactive-btn" onclick="readText('why-constitution-content')">
+                        🔊 Read Section Aloud
+                    </button>
+                    <button class="interactive-btn" onclick="showModule('indianconstitution')">
+                        Continue to Indian Constitution
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Indian Constitution Module -->
+        <div class="module" id="indianconstitution">
+            <div class="exercise-card">
+                <h2 class="exercise-title">
+                    <span class="exercise-icon">🇮🇳</span>
+                    Making of the Indian Constitution
+                </h2>
+                
+                <div class="content-block" id="making-content">
+                    <!-- Content will be loaded dynamically -->
+                </div>
+                
+                <h3 class="activity-title">The Path to Constitution</h3>
+                <div class="content-block" id="path-content">
+                    <!-- Content will be loaded dynamically -->
+                </div>
+                
+                <h3 class="activity-title">The Constituent Assembly</h3>
+                <div class="content-block" id="assembly-content">
+                    <!-- Content will be loaded dynamically -->
+                </div>
+                
+                <div id="constitution-makers">
+                    <!-- Constitution makers will be loaded dynamically -->
+                </div>
+                
+                <div class="button-container">
+                    <button class="interactive-btn" onclick="readText('section-content')">
+                        🔊 Read Section Aloud
+                    </button>
+                    <button class="interactive-btn" onclick="showModule('values')">
+                        Continue to Guiding Values
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Guiding Values Module -->
+        <div class="module" id="values">
+            <div class="exercise-card">
+                <h2 class="exercise-title">
+                    <span class="exercise-icon">🔤</span>
+                    Guiding Values of the Indian Constitution
+                </h2>
+                
+                <div class="content-block">
+                    <p>In this section, we'll understand the overall philosophy of what our Constitution is all about. We can do this in two ways. We can understand it by reading the views of some of our major leaders on our Constitution. But it is equally important to read what the Constitution says about its own philosophy. This is what the preamble to the Constitution does.</p>
+                </div>
+                
+                <h3 class="activity-title">The Dream and the Promise</h3>
+                
+                <div class="quote-block">
+                    <p class="quote-text">"I shall strive for a constitution which will release India from all thralldom and patronage … I shall work for an India in which the poorest shall feel that it is their country in whose making they have an effective voice; an India in which there shall be no high class and low class of people; an India in which all communities shall live in perfect harmony. There can be no room in such an India for the curse of untouchability or the curse of the intoxicating drinks and drugs. Women will enjoy the same rights as men … I shall be satisfied with nothing else."</p>
+                    <p class="quote-author">- Mahatma Gandhi, Young India, 1931</p>
+                    <button class="interactive-btn" onclick="readQuote(this.parentNode)">🔊 Listen to Quote</button>
+                </div>
+                
+                <div class="quote-block">
+                    <p class="quote-text">"On the 26th of January 1950 we are going to enter a life of contradictions. In politics we will have equality and in social and economic life we will have inequality. In politics we will be recognising the principle of one man one vote and one vote one value. In our social and economic life, we shall, by reason of our social and economic structure, continue to deny the principle of one man one value. How long shall we continue to live this life of contradictions? How long shall we continue to deny equality in our social and economic life? If we continue to deny it for long, we will do so only by putting our political democracy in peril."</p>
+                    <p class="quote-author">- Dr. B.R. Ambedkar, concluding speech to the Constituent Assembly</p>
+                    <button class="interactive-btn" onclick="readQuote(this.parentNode)">🔊 Listen to Quote</button>
+                </div>
+                
+                <div class="quote-block">
+                    <p class="quote-text">"Long years ago we made a tryst with destiny, and now the time comes when we shall redeem our pledge, not wholly or in full measure, but very substantially. At the stroke of the midnight hour, when the world sleeps, India will awake to life and freedom. A moment comes, which comes but rarely in history, when we step out from the old to the new, when an age ends, and when the soul of a nation, long suppressed, finds utterance..."</p>
+                    <p class="quote-author">- Jawaharlal Nehru, speech on 15 August 1947</p>
+                    <button class="interactive-btn" onclick="readQuote(this.parentNode)">🔊 Listen to Quote</button>
+                </div>
+                
+                <h3 class="activity-title">Philosophy of the Constitution</h3>
+                <div class="content-block">
+                    <p>Values that inspired and guided the freedom struggle and were in turn nurtured by it, formed the foundation for India's democracy. These values are embedded in the Preamble of the Indian Constitution. They guide all the articles of the Indian Constitution. The Constitution begins with a short statement of its basic values. This is called the Preamble to the constitution.</p>
+                    
+                    <p>Let's compare the preambles of three different countries:</p>
+                </div>
+                
+                <div id="usa-preamble-container">
+                    <!-- USA Preamble will be loaded dynamically -->
+                </div>
+                
+                <div id="sa-preamble-container">
+                    <!-- South Africa Preamble will be loaded dynamically -->
+                </div>
+                
+                <div id="india-preamble-container">
+                    <!-- India Preamble will be loaded dynamically -->
+                </div>
+                
+                <h3 class="activity-title">Key Terms in the Indian Preamble</h3>
+                <div id="preamble-terms">
+                    <!-- Preamble terms will be loaded dynamically -->
+                </div>
+                
+                <div class="content-block">
+                    <p>The Preamble of the Constitution reads like a poem on democracy. It contains the philosophy on which the entire Constitution has been built. It provides a standard to examine and evaluate any law and action of government, to find out whether it is good or bad. It is the soul of the Indian Constitution.</p>
+                </div>
+                
+                <div class="button-container">
+                    <button class="interactive-btn" onclick="showModule('activities')">
+                        Continue to Activities
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activities Module -->
+        <div class="module" id="activities">
+            <div class="exercise-card">
+                <h2 class="exercise-title">
+                    <span class="exercise-icon">🎯</span>
+                    Activities
+                </h2>
+                
+                <div class="activity-section">
+                    <h3>📝 Quiz: Test Your Knowledge</h3>
+                    <div class="content-block">
+                        <p>Answer the following questions to test your understanding of constitutional design:</p>
+                        <div id="quiz-container">
+                            <!-- Quiz questions will be loaded dynamically -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="activity-section">
+                    <h3>🔄 Matching Activity: Constitutional Terms</h3>
+                    <div class="content-block">
+                        <p>Match each constitutional term with its correct definition:</p>
+                        <div class="matching-game">
+                            <div class="match-column">
+                                <h3>Terms</h3>
+                                <div id="match-terms">
+                                    <!-- Terms will be loaded dynamically -->
+                                </div>
+                            </div>
+                            <div class="match-column">
+                                <h3>Definitions</h3>
+                                <div id="match-definitions">
+                                    <!-- Definitions will be loaded dynamically -->
+                                </div>
+                            </div>
+                        </div>
+                        <div id="match-feedback" class="feedback-message"></div>
+                    </div>
+                </div>
+                
+                <div class="activity-section">
+                    <h3>🔍 Research Activity: Comparing Constitutions</h3>
+                    <div class="content-block">
+                        <p>Research and compare the constitutions of India and any other country of your choice.</p>
+                        <button class="interactive-btn" onclick="openResearchActivity()">
+                            Start Research Activity
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="activity-section">
+                    <h3>💬 Debate Activity: Constitutional Values</h3>
+                    <div class="content-block">
+                        <p>Prepare arguments for a debate on constitutional values and principles.</p>
+                        <button class="interactive-btn" onclick="openDebateActivity()">
+                            Start Debate Activity
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Interactive Lesson - Constitutional Design</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/content.js"></script>
+    <script src="js/activities.js"></script>
+    <script src="js/placeholder.js"></script>
+</body>
+</html>

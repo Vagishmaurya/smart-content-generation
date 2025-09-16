@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Palampur Economics Lab - Interactive Village Economy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/enhancements.css">
+</head>
+<body>
+    <!-- Particle Background -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Floating Action Button -->
+    <button class="fab" id="helpButton" aria-label="Help"><i class="fas fa-question"></i></button>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1 class="main-title"><i class="fas fa-leaf"></i> Palampur Economics Lab</h1>
+            <p class="subtitle">Explore, Experience, and Understand Village Economy Through the Story of Palampur</p>
+            
+            <!-- Audio Controls -->
+            <div class="audio-controls">
+                <button id="toggleNarration" class="audio-btn" aria-label="Toggle narration">
+                    <i class="fas fa-volume-up"></i>
+                </button>
+                <button id="playPause" class="audio-btn" aria-label="Play/pause narration">
+                    <i class="fas fa-play"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Progress Tracker -->
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar">0%</div>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+            <button class="tab active" data-module="intro"><i class="fas fa-home"></i> Introduction</button>
+            <button class="tab" data-module="organization"><i class="fas fa-sitemap"></i> Production Factors</button>
+            <button class="tab" data-module="farming"><i class="fas fa-seedling"></i> Farming</button>
+            <button class="tab" data-module="land-labor"><i class="fas fa-users"></i> Land & Labor</button>
+            <button class="tab" data-module="capital"><i class="fas fa-tractor"></i> Capital</button>
+            <button class="tab" data-module="non-farm"><i class="fas fa-store"></i> Non-Farm Activities</button>
+            <button class="tab" data-module="quiz"><i class="fas fa-tasks"></i> Test Yourself</button>
+        </div>
+
+        <!-- Introduction Module -->
+        <div class="module active" id="intro">
+            <div class="interactive-stage">
+                <span class="section-icon"><i class="fas fa-home"></i></span>
+                <h2 class="section-title">Welcome to Palampur Village</h2>
+                
+                <div id="intro-narration" class="sr-only">
+                    Welcome to the Palampur Economics Lab. Today, we'll explore the story of Palampur, a hypothetical village, to understand basic economic concepts like production, factors of production, farming activities, and non-farm activities.
+                </div>
+                
+                <div class="content-text">
+                    <p>Welcome to Palampur, a well-connected village that serves as our window into understanding how a rural economy functions. Through this interactive lab, we'll explore the various production activities and economic concepts using Palampur as our case study.</p>
+                    
+                    <p>Palampur has about 450 families belonging to several different castes. The village has well-developed roads, electricity, irrigation systems, schools, and a health center. While farming is the main production activity, several other activities such as small-scale manufacturing, dairy, and transport are also carried out.</p>
+                </div>
+
+                <div class="village-map">
+                    <div class="map-feature" style="top: 20%; left: 30%;">
+                        <i class="fas fa-home"></i> <span>Residential Area</span>
+                    </div>
+                    <div class="map-feature" style="top: 30%; left: 60%;">
+                        <i class="fas fa-seedling"></i> <span>Farm Fields</span>
+                    </div>
+                    <div class="map-feature" style="top: 60%; left: 20%;">
+                        <i class="fas fa-school"></i> <span>School</span>
+                    </div>
+                    <div class="map-feature" style="top: 50%; left: 70%;">
+                        <i class="fas fa-store"></i> <span>Market</span>
+                    </div>
+                    <div class="map-feature" style="top: 70%; left: 50%;">
+                        <i class="fas fa-hospital"></i> <span>Health Center</span>
+                    </div>
+                </div>
+
+                <div class="content-text">
+                    <p>As we read through the story of Palampur, we will learn how various resources combine to produce goods and services in the village.</p>
+                    
+                    <blockquote>
+                        The purpose of this study is to introduce some basic concepts relating to production through the story of a hypothetical village called Palampur.
+                    </blockquote>
+                </div>
+
+                <div class="btn-container">
+                    <button class="btn" onclick="palampurApp.loadModule('organization')">
+                        <i class="fas fa-arrow-right"></i> Begin Your Economic Journey
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Organization of Production Module -->
+        <div class="module" id="organization">
+            <div class="interactive-stage">
+                <span class="section-icon"><i class="fas fa-sitemap"></i></span>
+                <h2 class="section-title">Organization of Production</h2>
+                
+                <div id="organization-narration" class="sr-only">
+                    Production requires the combination of four factors: land and natural resources, labor provided by people, physical capital like tools and machinery, and human capital which is knowledge and enterprise. Let's explore each of these factors in detail.
+                </div>
+                
+                <div class="content-text">
+                    <p>The aim of production is to produce goods and services that we want. There are four requirements for production:</p>
+                </div>
+                
+                <div class="factors-grid">
+                    <div class="factor-card">
+                        <h3><i class="fas fa-mountain"></i> Land & Natural Resources</h3>
+                        <p>The first requirement is land, and other natural resources such as water, forests, and minerals.</p>
+                        <ul>
+                            <li>Fixed in supply</li>
+                            <li>Includes farm land, water bodies, forests</li>
+                            <li>Natural gift, not man-made</li>
+                        </ul>
+                    </div>
+
+                    <div class="factor-card">
+                        <h3><i class="fas fa-users"></i> Labour</h3>
+                        <p>People who do the work, providing the effort necessary for production.</p>
+                        <ul>
+                            <li>Can be skilled or unskilled</li>
+                            <li>Most abundant factor in rural areas</li>
+                            <li>Provided by farmers, laborers</li>
+                        </ul>
+                    </div>
+
+                    <div class="factor-card">
+                        <h3><i class="fas fa-tools"></i> Physical Capital</h3>
+                        <p>The variety of inputs required at every stage during production.</p>
+                        <ul>
+                            <li>Fixed Capital: Tools, machines, buildings</li>
+                            <li>Working Capital: Raw materials and money in hand</li>
+                            <li>Man-made and can be increased</li>
+                        </ul>
+                    </div>
+
+                    <div class="factor-card">
+                        <h3><i class="fas fa-brain"></i> Human Capital</h3>
+                        <p>Knowledge and enterprise to organize production effectively.</p>
+                        <ul>
+                            <li>Education and skills</li>
+                            <li>Entrepreneurship ability</li>
+                            <li>Improves over time with investment</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="content-text">
+                    <p>Every production is organized by combining these four factors, known as factors of production. As we explore Palampur village, we will learn more about how these factors interact in various production activities.</p>
+                </div>
+
+                <div id="matchingActivity"></div>
+            </div>
+        </div>
+
+        <!-- Farming Module -->
+        <div class="module" id="farming">
+            <div class="interactive-stage">
+                <span class="section-icon"><i class="fas fa-seedling"></i></span>
+                <h2 class="section-title">Farming in Palampur</h2>
+                
+                <div id="farming-narration" class="sr-only">
+                    Farming is the main production activity in Palampur, with 75% of working people dependent on it. Let's explore how farming works in the village, the challenges of fixed land supply, and modern farming methods.
+                </div>
+                
+                <div class="content-text">
+                    <p>Farming is the main production activity in Palampur. 75% of the people who are working are dependent on farming for their livelihood. They could be farmers or farm labourers.</p>
+                    
+                    <p>There's a basic constraint in farming: <strong>land area under cultivation is practically fixed</strong>. Since 1960 in Palampur, there has been no expansion in land area under cultivation. But farmers have found ways to grow more from the same land.</p>
+                </div>
+                
+                <div class="chart-container">
+                    <h3>Cultivation Area in India</h3>
+                    <div id="cultivationAreaChart"></div>
+                </div>
+                
+                <div class="content-text">
+                    <h3><i class="fas fa-sync-alt"></i> Multiple Cropping</h3>
+                    <p>In Palampur, farmers grow different crops in different seasons:</p>
+                    <ul>
+                        <li><strong>Kharif Season (Rainy):</strong> Jowar and bajra used as cattle feed</li>
+                        <li><strong>October-December:</strong> Potato cultivation</li>
+                        <li><strong>Rabi Season (Winter):</strong> Wheat cultivation</li>
+                        <li><strong>Year-round:</strong> Sugarcane on part of the land</li>
+                    </ul>
+                    
+                    <p>Growing more than one crop on a piece of land during the year is known as <strong>multiple cropping</strong>. It's the most common way of increasing production on a given piece of land.</p>
+                    
+                    <h3><i class="fas fa-tint"></i> Irrigation</h3>
+                    <p>The main reason multiple cropping is possible in Palampur is due to the well-developed irrigation system. Electricity transformed irrigation by enabling tubewells that could irrigate larger areas more effectively than traditional Persian wheels.</p>
+                </div>
+                
+                <div class="content-text">
+                    <h3><i class="fas fa-flask"></i> Modern Farming Methods</h3>
+                    <p>The Green Revolution in the late 1960s introduced farmers to cultivation using high yielding varieties (HYVs) of seeds. These seeds promised far larger quantities of grain but needed:</p>
+                    <ul>
+                        <li>Plenty of water through irrigation</li>
+                        <li>Chemical fertilizers</li>
+                        <li>Pesticides</li>
+                    </ul>
+                    
+                    <p>In Palampur, wheat yields increased from 1300 kg per hectare with traditional varieties to 3200 kg per hectare with HYV seeds.</p>
+                </div>
+                
+                <div class="chart-container">
+                    <h3>Production of Pulses and Wheat in India</h3>
+                    <div id="cropProductionChart"></div>
+                </div>
+                
+                <div class="content-text">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Environmental Concerns</h3>
+                    <p>Modern farming methods have overused the natural resource base:</p>
+                    <ul>
+                        <li>Loss of soil fertility due to increased use of chemical fertilizers</li>
+                        <li>Depletion of the water-table due to continuous use of groundwater for tubewell irrigation</li>
+                    </ul>
+                    <p>Environmental resources like soil fertility and groundwater are built up over years. Once destroyed, they are very difficult to restore.</p>
+                </div>
+                
+                <div class="farm-sim">
+                    <h3><i class="fas fa-tractor"></i> Farming Simulator</h3>
+                    <p>Experience the effects of different farming methods by simulating crop production</p>
+                    
+                    <h4>Select a crop to grow:</h4>
+                    <div class="farm-plot">
+                        <div class="crop-option" data-crop="wheat">
+                            <div class="crop-icon"><i class="fas fa-seedling"></i></div>
+                            <div class="crop-name">Wheat</div>
+                            <div class="crop-desc">Winter crop</div>
+                        </div>
+                        
+                        <div class="crop-option" data-crop="potato">
+                            <div class="crop-icon"><i class="fas fa-apple-alt"></i></div>
+                            <div class="crop-name">Potato</div>
+                            <div class="crop-desc">Oct-Dec crop</div>
+                        </div>
+                        
+                        <div class="crop-option" data-crop="sugarcane">
+                            <div class="crop-icon"><i class="fas fa-candy-cane"></i></div>
+                            <div class="crop-name">Sugarcane</div>
+                            <div class="crop-desc">Year-round crop</div>
+                        </div>
+                        
+                        <div class="crop-option" data-crop="jowar">
+                            <div class="crop-icon"><i class="fas fa-leaf"></i></div>
+                            <div class="crop-name">Jowar</div>
+                            <div class="crop-desc">Rainy season crop</div>
+                        </div>
+                    </div>
+                    
+                    <div id="cropInfo" style="display: none;"></div>
+                    
+                    <div class="sim-controls">
+                        <div class="sim-control">
+                            <label for="farmSize">Farm Size (hectares):</label>
+                            <input type="range" id="farmSize" class="sim-slider" min="0.5" max="10" step="0.5" value="1" data-unit=" ha">
+                            <span id="farmSizeValue">1 ha</span>
+                        </div>
+                        
+                        <div class="sim-control">
+                            <label for="irrigated">Irrigation:</label>
+                            <input type="checkbox" id="irrigated" checked>
+                            <span>Has tubewell irrigation</span>
+                        </div>
+                        
+                        <div class="sim-control">
+                            <label for="seedType">Seed Type:</label>
+                            <select id="seedType">
+                                <option value="traditional">Traditional Seeds</option>
+                                <option value="HYV">HYV Seeds</option>
+                            </select>
+                        </div>
+                        
+                        <div class="sim-control">
+                            <label for="fertilizer">Chemical Fertilizer:</label>
+                            <input type="checkbox" id="fertilizer">
+                            <span>Uses chemical fertilizer</span>
+                        </div>
+                    </div>
+                    
+                    <div class="btn-container">
+                        <button id="farmSimulateBtn" class="btn accent">
+                            <i class="fas fa-play-circle"></i> Simulate Farming
+                        </button>
+                        <button id="resetFarmSimBtn" class="btn secondary">
+                            <i class="fas fa-redo"></i> Reset
+                        </button>
+                    </div>
+                    
+                    <div id="farmResults" style="display: none;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Land & Labor Module -->
+        <div class="module" id="land-labor">
+            <div class="interactive-stage">
+                <span class="section-icon"><i class="fas fa-users"></i></span>
+                <h2 class="section-title">Land Distribution & Labour</h2>
+                
+                <div id="land-labor-narration" class="sr-only">
+                    Land is an important factor for farming but not all families engaged in agriculture have sufficient land for cultivation. About one-third of families in Palampur are landless. Let's explore land distribution and the labor situation in the village.
+                </div>
+                
+                <div class="content-text">
+                    <h3><i class="fas fa-chart-pie"></i> Land Distribution in Palampur</h3>
+                    <p>Not all people engaged in agriculture have sufficient land for cultivation:</p>
+                    <ul>
+                        <li><strong>Landless families:</strong> About one-third (150 families), mostly dalits</li>
+                        <li><strong>Small farmers:</strong> 240 families cultivate plots less than 2 hectares</li>
+                        <li><strong>Medium and large farmers:</strong> 60 families cultivate more than 2 hectares</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-user-friends"></i> Gobind's Story</div>
+                    <div class="card-content">
+                        <p>In 1960, Gobind was a farmer with 2.25 hectares of largely unirrigated land. With his three sons, he cultivated the land. The family managed to feed itself with some extra income from a buffalo.</p>
+                        <p>After Gobind's death, his land was divided among his three sons. Each one now has only 0.75 hectare. Even with improved irrigation and modern farming methods, they cannot make a living from this small plot and must look for additional work during part of the year.</p>
+                    </div>
+                </div>
+                
+                <div class="content-grid">
+                    <div class="chart-container">
+                        <h3>Distribution of Land in India</h3>
+                        <div class="bar-chart">
+                            <div class="chart-bar" style="height: 55.4%; background: #2e7d32;" data-value="55.4%" data-label="Area (% of land)"></div>
+                            <div class="chart-bar" style="height: 44.6%; background: #90caf9;" data-value="44.6%" data-label=""></div>
+                            
+                            <div class="chart-bar" style="height: 85%; background: #ff8f00;" data-value="85%" data-label="Farmers (%)"></div>
+                            <div class="chart-bar" style="height: 15%; background: #ffb74d;" data-value="15%" data-label=""></div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-top: 40px;">
+                            <div style="text-align: center; width: 45%;">
+                                <div style="display: flex; align-items: center; justify-content: center;">
+                                    <span style="display: inline-block; width: 12px; height: 12px; background: #2e7d32; margin-right: 5px;"></span>
+                                    <span style="display: inline-block; width: 12px; height: 12px; background: #90caf9; margin-right: 5px;"></span>
+                                </div>
+                                <div>Marginal & Small (< 2 ha) vs Medium & Large (> 2 ha)</div>
+                            </div>
+                            <div style="text-align: center; width: 45%;">
+                                <div style="display: flex; align-items: center; justify-content: center;">
+                                    <span style="display: inline-block; width: 12px; height: 12px; background: #ff8f00; margin-right: 5px;"></span>
+                                    <span style="display: inline-block; width: 12px; height: 12px; background: #ffb74d; margin-right: 5px;"></span>
+                                </div>
+                                <div>Marginal & Small (< 2 ha) vs Medium & Large (> 2 ha)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="content-text">
+                    <h3><i class="fas fa-user-hard-hat"></i> Farm Labour</h3>
+                    <p>After land, labour is the next necessary factor for production:</p>
+                    <ul>
+                        <li><strong>Small farmers:</strong> Cultivate their own fields with family labour</li>
+                        <li><strong>Medium and large farmers:</strong> Hire farm labourers</li>
+                        <li><strong>Farm labourers:</strong> Come from landless families or families with small plots</li>
+                    </ul>
+                    
+                    <p>Unlike farmers, farm labourers do not have rights over crops grown on the land. They are paid wages in cash or kind. Wages vary by region, crop, and activity. Employment duration can be daily, for specific activities, or year-round.</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-comments"></i> Dala and Ramkali's Conversation</div>
+                    <div class="card-content">
+                        <p><strong>Dala:</strong> "It is difficult to find work these days. Only the large farmers employ us. And that too for very limited number of days."</p>
+                        <p><strong>Ramkali:</strong> "Ghansyam, the large farmer, has just bought a harvester. So we are going to get even less work during the harvest season this year. Last year I worked for less than five months in the whole year."</p>
+                        <p><strong>Ramkali:</strong> "We have tractors for ploughing, harvesters for harvesting, threshers for threshing. Even for removing weeds, some farmers spray weedicide."</p>
+                        <p><strong>Dala:</strong> "This year I will have to look for work in the brick-making unit in Raiganj."</p>
+                        <p><strong>Ramkali:</strong> "I owe the local money-lender Rs.2000. I had taken Rs.1000 last summer when no work was available in the fields. How will I ever repay? I hardly earn enough for two square meals."</p>
+                        <p><strong>Dala:</strong> "My situation is not much better. Due to past debt the moneylenders refuse to give me any loan."</p>
+                    </div>
+                </div>
+                
+                <div class="content-text">
+                    <p>Dala and Ramkali are among the poorest people in the village. Their situation highlights the challenges faced by landless laborers:</p>
+                    <ul>
+                        <li>Low wages below minimum wage</li>
+                        <li>Irregular employment</li>
+                        <li>Mechanization reducing available work</li>
+                        <li>Debt traps due to high-interest loans</li>
+                        <li>Migration to find alternative work</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Capital Module -->
+        <div class="module" id="capital">
+            <div class="interactive-stage">
+                <span class="section-icon"><i class="fas fa-tractor"></i></span>
+                <h2 class="section-title">Capital in Farming</h2>
+                
+                <div id="capital-narration" class="sr-only">
+                    Modern farming methods require a great deal of capital. Small farmers often need to borrow money at high interest rates, while medium and large farmers can use their own savings. Let's explore how capital affects production.
+                </div>
+                
+                <div class="content-text">
+                    <p>Modern farming methods require a great deal of capital. Farmers need money for:</p>
+                    <ul>
+                        <li>Seeds, especially HYV seeds</li>
+                        <li>Fertilizers and pesticides</li>
+                        <li>Irrigation (water charges, electricity for pumps)</li>
+                        <li>Farm machinery and maintenance</li>
+                    </ul>
+                    
+                    <p>There are two different situations for farmers regarding capital:</p>
+                </div>
+                
+                <div class="content-grid">
+                    <div class="card">
+                        <div class="card-title"><i class="fas fa-user-friends"></i> Small Farmers</div>
+                        <div class="card-content">
+                            <p>Most small farmers have to borrow money to arrange for capital. They borrow from:</p>
+                            <ul>
+                                <li>Large farmers</li>
+                                <li>Village moneylenders</li>
+                                <li>Traders who supply inputs</li>
+                            </ul>
+                            <p>The interest rate on such loans is very high, and farmers face great distress to repay.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-title"><i class="fas fa-user-tie"></i> Medium and Large Farmers</div>
+                        <div class="card-content">
+                            <p>Medium and large farmers have their own savings from farming. They:</p>
+                            <ul>
+                                <li>Sell surplus farm products in markets</li>
+                                <li>Keep part of earnings for next season's capital</li>
+                                <li>May invest in additional capital like tractors</li>
+                                <li>Sometimes lend money to smaller farmers</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-user"></i> Savita's Story</div>
+                    <div class="card-content">
+                        <p>Savita is a small farmer planning to cultivate wheat on her 1 hectare of land. She needs at least Rs. 3,000 for seeds, fertilizers, pesticides, water, and equipment repair.</p>
+                        <p>Without the money, she borrows from Tejpal Singh, a large farmer, at 24% interest for four months. She must also work on his field during harvest season at just Rs. 100 per day (below market rate).</p>
+                        <p>Savita must now work hard to complete harvesting on her own field and then work as a laborer for Tejpal Singh, all while managing her household responsibilities as a mother of three children.</p>
+                    </div>
+                </div>
+
+                <div id="productionTableContainer" class="chart-container">
+                    <!-- Production table will be rendered here by JS -->
+                </div>
+                
+                <div class="farm-sim">
+                    <h3><i class="fas fa-coins"></i> Capital Investment Simulator</h3>
+                    <p>Explore how different levels of capital investment and loans affect farm production</p>
+                    
+                    <div class="sim-controls">
+                        <div class="sim-control">
+                            <label for="fixedCapital">Fixed Capital (tools, equipment):</label>
+                            <input type="range" id="fixedCapital" class="sim-slider" min="1000" max="20000" step="1000" value="5000" data-unit=" Rs">
+                            <span id="fixedCapitalValue">5000 Rs</span>
+                        </div>
+                        
+                        <div class="sim-control">
+                            <label for="workingCapital">Working Capital (seeds, fertilizers):</label>
+                            <input type="range" id="workingCapital" class="sim-slider" min="1000" max="10000" step="500" value="3000" data-unit=" Rs">
+                            <span id="workingCapitalValue">3000 Rs</span>
+                        </div>
+                        
+                        <div class="sim-control">
+                            <label for="loanAmount">Loan Amount:</label>
+                            <input type="range" id="loanAmount" class="sim-slider" min="0" max="10000" step="500" value="0" data-unit=" Rs">
+                            <span id="loanAmountValue">0 Rs</span>
+                        </div>
+                        
+                        <div class="sim-control">
+                            <label for="interestRate">Interest Rate (%):</label>
+                            <input type="range" id="interestRate" class="sim-slider" min="0" max="36" step="1" value="24" data-unit="%">
+                            <span id="interestRateValue">24%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="btn-container">
+                        <button id="capitalSimulateBtn" class="btn accent">
+                            <i class="fas fa-play-circle"></i> Simulate Production
+                        </button>
+                        <button id="resetCapitalSimBtn" class="btn secondary">
+                            <i class="fas fa-redo"></i> Reset
+                        </button>
+                    </div>
+                    
+                    <div id="capitalResults" style="display: none;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Non-Farm Activities Module -->
+        <div class="module" id="non-farm">
+            <div class="interactive-stage">
+                <span class="section-icon"><i class="fas fa-store"></i></span>
+                <h2 class="section-title">Non-Farm Activities in Palampur</h2>
+                
+                <div id="non-farm-narration" class="sr-only">
+                    While farming is the main activity in Palampur, 25% of working people are engaged in non-farm activities like dairy, small-scale manufacturing, transport, and shop-keeping. Let's explore these activities.
+                </div>
+                
+                <div class="content-text">
+                    <p>Only 25% of the people working in Palampur are engaged in activities other than agriculture. These non-farm activities include:</p>
+                </div>
+                
+                <div class="content-grid">
+                    <div class="card">
+                        <div class="card-title"><i class="fas fa-cow"></i> Dairy</div>
+                        <div class="card-content">
+                            <p>Dairy is common in many Palampur families. People feed buffalos on various grasses and jowar/bajra grown during the rainy season.</p>
+                            <p><strong>Example:</strong> Kishora, a farm laborer, took a loan from a government program to buy a buffalo. He sells milk and also uses his buffalo for transport, increasing his income.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-title"><i class="fas fa-industry"></i> Small-Scale Manufacturing</div>
+                        <div class="card-content">
+                            <p>Less than fifty people are engaged in manufacturing in Palampur, using simple methods and small-scale operations.</p>
+                            <p><strong>Example:</strong> Mishrilal purchased an electric sugarcane crushing machine to make jaggery, which he sells to traders at Shahpur for a small profit.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-title"><i class="fas fa-shopping-cart"></i> Shopkeeping</div>
+                        <div class="card-content">
+                            <p>Small general stores sell items like rice, wheat, sugar, tea, oil, biscuits, soap, stationery, etc. purchased from wholesale markets in cities.</p>
+                            <p><strong>Example:</strong> Kareem opened a computer class center employing two women with degrees in computer applications, serving students who previously had to travel to Shahpur town.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-title"><i class="fas fa-truck"></i> Transport</div>
+                        <div class="card-content">
+                            <p>Various vehicles connect Palampur to Raiganj and beyond, including rickshaws, tongas, jeeps, tractors, and trucks.</p>
+                            <p><strong>Example:</strong> Kishora attached a wooden cart to his buffalo to transport clay for the potter or take jaggery to Shahpur, providing him with additional income.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="content-text">
+                    <h3><i class="fas fa-lightbulb"></i> Importance of Non-Farm Activities</h3>
+                    <p>Non-farm activities have several advantages for rural development:</p>
+                    <ul>
+                        <li>They require little land compared to farming</li>
+                        <li>They provide alternative employment for those with little or no land</li>
+                        <li>They help reduce disguised unemployment in farming</li>
+                        <li>They can increase overall village income and prosperity</li>
+                    </ul>
+                    
+                    <p>For non-farm activities to grow, there are two key requirements:</p>
+                    <ol>
+                        <li><strong>Capital availability:</strong> Low-interest loans for those without savings</li>
+                        <li><strong>Market access:</strong> Good connections to towns and cities for selling products</li>
+                    </ol>
+                    
+                    <p>As villages get better connected to towns and cities through roads, transport, and communication, the opportunities for non-farm activities increase.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Module -->
+        <div class="module" id="quiz">
+            <div class="quiz-container">
+                <span class="section-icon"><i class="fas fa-tasks"></i></span>
+                <h2 class="section-title">Test Your Knowledge</h2>
+                
+                <div id="quiz-narration" class="sr-only">
+                    Now it's time to test your understanding of the economic concepts we've explored through the story of Palampur village.
+                </div>
+                
+                <div id="quizContent">
+                    <!-- Quiz questions will be loaded here -->
+                </div>
+
+                <div id="quizFeedback" class="feedback"></div>
+
+                <div class="btn-container">
+                    <button class="btn" id="nextQuestion"><i class="fas fa-arrow-right"></i> Next Question</button>
+                    <button class="btn secondary" id="resetQuiz"><i class="fas fa-redo"></i> Reset Quiz</button>
+                </div>
+
+                <div id="quizScore" style="display: none; text-align: center; margin-top: 30px;">
+                    <!-- Score will appear here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/quiz.js"></script>
+    <script src="js/simulator.js"></script>
+    <script src="js/activities.js"></script>
+    <script src="js/enhancements.js"></script>
+</body>
+</html>

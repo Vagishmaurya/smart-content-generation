@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Democracy Learning Lab - Interactive Political Science</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="css/enhanced-styles.css">
+</head>
+<body>
+    <!-- Particle Background -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Floating Action Button -->
+    <button class="fab" id="helpButton" aria-label="Help"><i class="fas fa-question"></i></button>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1 class="main-title"><i class="fas fa-landmark"></i> Democracy Learning Lab</h1>
+            <p class="subtitle">Explore, Experience, and Understand Democratic Principles</p>
+            
+            <!-- Audio Controls -->
+            <div class="audio-controls">
+                <button id="toggleNarration" class="audio-btn" aria-label="Toggle narration">
+                    <i class="fas fa-volume-up"></i>
+                </button>
+                <button id="playPause" class="audio-btn" aria-label="Play/pause narration">
+                    <i class="fas fa-play"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Progress Tracker -->
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar">0%</div>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+            <button class="tab active" data-module="intro"><i class="fas fa-rocket"></i> Introduction</button>
+            <button class="tab" data-module="definition"><i class="fas fa-book"></i> What is Democracy?</button>
+            <button class="tab" data-module="features"><i class="fas fa-cogs"></i> Features</button>
+            <button class="tab" data-module="simulator"><i class="fas fa-vote-yea"></i> Voting Simulator</button>
+            <button class="tab" data-module="debate"><i class="fas fa-comments"></i> Debate Arena</button>
+            <button class="tab" data-module="examples"><i class="fas fa-globe-americas"></i> World Examples</button>
+            <button class="tab" data-module="why"><i class="fas fa-question-circle"></i> Why Democracy?</button>
+            <button class="tab" data-module="quiz"><i class="fas fa-tasks"></i> Test Yourself</button>
+        </div>
+
+        <!-- Introduction Module -->
+        <div class="module active" id="intro">
+            <div class="interactive-stage">
+                <span class="section-icon"><i class="fas fa-rocket"></i></span>
+                <h2 class="section-title">Welcome to the Democracy Learning Lab</h2>
+                
+                <div class="content-text">
+                    <p>Today, we'll explore one of the most important concepts in political science: <strong>Democracy</strong>.</p>
+                    <p>But we won't just read about it - we'll <strong>experience</strong> it! Through interactive simulations, debates, and real-world examples, you'll understand what makes democracy unique and why it matters.</p>
+                </div>
+
+                <div id="intro-narration" class="sr-only">
+                    Welcome to the Democracy Learning Lab. Today, we'll explore democracy - not just by reading about it, but by experiencing it through interactive activities. We'll learn what democracy is, how it works, and why it matters in today's world.
+                </div>
+
+                <div class="democracy-sim">
+                    <h3 class="sim-title"><i class="fas fa-lightbulb"></i> Quick Thought Experiment</h3>
+                    <p>If you had to choose how decisions are made in your classroom, which would you prefer?</p>
+                    <div class="content-grid">
+                        <div class="option-card" data-type="teacher">
+                            <div class="candidate-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                            <div class="candidate-content">
+                                <h4 class="candidate-title">Teacher Decides</h4>
+                                <p class="candidate-desc">Teacher has full authority over all decisions</p>
+                            </div>
+                        </div>
+                        <div class="option-card" data-type="vote">
+                            <div class="candidate-icon"><i class="fas fa-vote-yea"></i></div>
+                            <div class="candidate-content">
+                                <h4 class="candidate-title">Everyone Votes</h4>
+                                <p class="candidate-desc">All students participate in decision making</p>
+                            </div>
+                        </div>
+                        <div class="option-card" data-type="smartest">
+                            <div class="candidate-icon"><i class="fas fa-brain"></i></div>
+                            <div class="candidate-content">
+                                <h4 class="candidate-title">Best Student Decides</h4>
+                                <p class="candidate-desc">Top performer makes decisions for the class</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="thoughtResponse" style="display: none;"></div>
+                </div>
+
+                <div class="btn-container">
+                    <button class="btn" id="journeyButton"><i class="fas fa-arrow-right"></i> Begin Your Democratic Journey</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- What is Democracy Module -->
+        <div class="module" id="definition">
+            <div class="interactive-stage">
+                <span class="section-icon"><i class="fas fa-book"></i></span>
+                <h2 class="section-title">Understanding Democracy</h2>
+                
+                <div id="definition-narration" class="sr-only">
+                    What is democracy? The word 'democracy' comes from two Greek words: 'demos' meaning people, and 'kratia' meaning rule. So democracy literally means rule by the people. But what does this actually mean in practice? Let's explore the definition and history of democracy.
+                </div>
+                
+                <div class="content-text">
+                    <p>Democracy comes from the Greek word 'Demokratia' - 'demos' (people) and 'kratia' (rule). But what exactly does "rule by the people" mean in practice?</p>
+                    
+                    <blockquote>
+                        "Democracy is a form of government in which the rulers are elected by the people."
+                    </blockquote>
+                    
+                    <p>This simple definition helps us distinguish democracy from other forms of government where rulers are not chosen by the people:</p>
+                </div>
+                
+                <div class="gov-types">
+                    <div class="gov-card democracy" data-type="democracy">
+                        <h3><i class="fas fa-landmark"></i> Democracy</h3>
+                        <p>Government of the people, by the people, for the people</p>
+                        <ul>
+                            <li>Rulers elected by people</li>
+                            <li>Free and fair elections</li>
+                            <li>One person, one vote</li>
+                            <li>Rule of law</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="gov-card non-democracy" data-type="monarchy">
+                        <h3><i class="fas fa-crown"></i> Monarchy</h3>
+                        <p>Rule by a king or queen, usually hereditary</p>
+                        <ul>
+                            <li>Power inherited</li>
+                            <li>No elections</li>
+                            <li>Subjects, not citizens</li>
+                            <li>Royal decrees</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="gov-card non-democracy" data-type="dictatorship">
+                        <h3><i class="fas fa-fist-raised"></i> Dictatorship</h3>
+                        <p>Rule by one person with absolute power</p>
+                        <ul>
+                            <li>No free elections</li>
+                            <li>Suppression of opposition</li>
+                            <li>Limited rights</li>
+                            <li>Military control</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="content-text">
+                    <p>But this simple definition is not enough. Many governments that hold elections are not truly democratic. We need to understand the key features that make a genuine democracy.</p>
+                </div>
+
+                <h3>Evolution of Democracy</h3>
+                <div class="timeline">
+                    <div class="timeline-item" data-id="athens">
+                        <div class="timeline-year">508 BCE</div>
+                        <div class="timeline-content">
+                            Athens introduces democracy - "rule by the people"
+                        </div>
+                        <div class="timeline-expanded" style="display: none;">
+                            <p>Athenian democracy was a direct democracy where male citizens gathered in the assembly to debate and vote on issues. Though limited to free men, it was revolutionary for its time.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item" data-id="magna-carta">
+                        <div class="timeline-year">1215</div>
+                        <div class="timeline-content">
+                            Magna Carta limits king's power in England
+                        </div>
+                        <div class="timeline-expanded" style="display: none;">
+                            <p>Though not democratic, this document established that the king was subject to the law, limiting absolute power and setting a foundation for future democratic development.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item" data-id="french-revolution">
+                        <div class="timeline-year">1789</div>
+                        <div class="timeline-content">
+                            French Revolution - "Liberty, Equality, Fraternity"
+                        </div>
+                        <div class="timeline-expanded" style="display: none;">
+                            <p>The revolution overthrew the monarchy and established principles of citizenship and equal rights, though full democracy was not immediately established.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item" data-id="india">
+                        <div class="timeline-year">1950</div>
+                        <div class="timeline-content">
+                            India becomes world's largest democracy
+                        </div>
+                        <div class="timeline-expanded" style="display: none;">
+                            <p>After gaining independence from British rule, India adopted a democratic constitution granting universal adult franchise from the very beginning - a remarkable achievement.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Module -->
+        <div class="module" id="features">
+            <div class="interactive-stage">
+                <span class="section-icon"><i class="fas fa-cogs"></i></span>
+                <h2 class="section-title">Essential Features of Democracy</h2>
+                
+                <div id="features-narration" class="sr-only">
+                    Democracy isn't just about holding elections. A true democracy has several essential features that distinguish it from other forms of government. Let's explore these key features that make a system truly democratic.
+                </div>
+                
+                <div class="content-text">
+                    <p>Our simple definition of democracy as "rulers elected by the people" raises several questions:</p>
+                    <ul>
+                        <li>Who are the rulers in this definition?</li>
+                        <li>What kind of elections constitute democratic elections?</li>
+                        <li>Who should be considered "the people" who can vote?</li>
+                        <li>What limits should be placed on elected rulers?</li>
+                    </ul>
+                    <p>These questions help us understand the key features of a genuine democracy:</p>
+                </div>
+                
+                <div class="features-grid">
+                    <div class="feature-card" data-id="elected-power">
+                        <span class="feature-icon"><i class="fas fa-users"></i></span>
+                        <h3 class="feature-title">Major Decisions by Elected Leaders</h3>
+                        <p class="feature-desc">
+                            In a democracy, final decision-making power must rest with those elected by the people.
+                        </p>
+                        <div class="feature-example">
+                            <strong>Example:</strong> In Pakistan under General Musharraf, people elected representatives but real power remained with unelected military officials. This was not a true democracy.
+                        </div>
+                    </div>
+
+                    <div class="feature-card" data-id="free-elections">
+                        <span class="feature-icon"><i class="fas fa-vote-yea"></i></span>
+                        <h3 class="feature-title">Free and Fair Electoral Competition</h3>
+                        <p class="feature-desc">
+                            Elections must offer real choice between political alternatives and a fair chance for the ruling party to lose.
+                        </p>
+                        <div class="feature-example">
+                            <strong>Example:</strong> In China, candidates need approval from the Communist Party. In Mexico until 2000, the PRI party used unfair practices to win every election.
+                        </div>
+                    </div>
+
+                    <div class="feature-card" data-id="equal-vote">
+                        <span class="feature-icon"><i class="fas fa-balance-scale"></i></span>
+                        <h3 class="feature-title">One Person, One Vote, One Value</h3>
+                        <p class="feature-desc">
+                            Each adult citizen must have one vote and each vote must have equal value regardless of their background.
+                        </p>
+                        <div class="feature-example">
+                            <strong>Example:</strong> Until 2015, women in Saudi Arabia couldn't vote. In Fiji, indigenous Fijian votes had more value than Indian-Fijian votes.
+                        </div>
+                    </div>
+
+                    <div class="feature-card" data-id="rule-of-law">
+                        <span class="feature-icon"><i class="fas fa-gavel"></i></span>
+                        <h3 class="feature-title">Rule of Law and Respect for Rights</h3>
+                        <p class="feature-desc">
+                            Democratic governments must operate within constitutional limits and respect citizens' rights.
+                        </p>
+                        <div class="feature-example">
+                            <strong>Example:</strong> In Zimbabwe under Mugabe, elections were held but opposition was harassed, protests were banned, and court judgments were ignored.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="content-text">
+                    <p>To summarize, democracy is a form of government in which:</p>
+                    <ol>
+                        <li>Rulers elected by the people take all the major decisions;</li>
+                        <li>Elections offer a choice and fair opportunity to change the current rulers;</li>
+                        <li>This choice and opportunity is available to all people on an equal basis; and</li>
+                        <li>The exercise of this choice leads to a government limited by basic rules of the constitution and citizens' rights.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Voting Simulator Module -->
+        <div class="module" id="simulator">
+            <div class="interactive-stage">
+                <span class="section-icon"><i class="fas fa-vote-yea"></i></span>
+                <h2 class="section-title">Experience Democracy: Mock Election</h2>
+                
+                <div id="simulator-narration" class="sr-only">
+                    Elections are at the heart of democracy. In this simulation, you'll experience how democratic voting works by participating in a mock school policy election. This will help you understand how people make collective decisions in a democracy.
+                </div>
+                
+                <div class="voting-sim">
+                    <h3><i class="fas fa-school"></i> School Policy Election</h3>
+                    <p>Vote for the policy you want implemented in your school:</p>
+
+                    <div class="ballot-box">
+                        <div class="candidate" data-policy="sports">
+                            <div class="candidate-icon"><i class="fas fa-futbol"></i></div>
+                            <div class="candidate-content">
+                                <h4 class="candidate-title">More Sports Facilities</h4>
+                                <p class="candidate-desc">Extra sports equipment and longer PE periods</p>
+                            </div>
+                        </div>
+
+                        <div class="candidate" data-policy="tech">
+                            <div class="candidate-icon"><i class="fas fa-laptop-code"></i></div>
+                            <div class="candidate-content">
+                                <h4 class="candidate-title">Technology Upgrade</h4>
+                                <p class="candidate-desc">New computers and coding classes for all</p>
+                            </div>
+                        </div>
+
+                        <div class="candidate" data-policy="library">
+                            <div class="candidate-icon"><i class="fas fa-book-reader"></i></div>
+                            <div class="candidate-content">
+                                <h4 class="candidate-title">Library Expansion</h4>
+                                <p class="candidate-desc">More books and quiet study spaces</p>
+                            </div>
+                        </div>
+
+                        <div class="candidate" data-policy="arts">
+                            <div class="candidate-icon"><i class="fas fa-palette"></i></div>
+                            <div class="candidate-content">
+                                <h4 class="candidate-title">Arts Program</h4>
+                                <p class="candidate-desc">Music, drama, and art classes for everyone</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn accent" id="voteButton"><i class="fas fa-check-circle"></i> Cast Your Vote</button>
+
+                    <div id="electionResults" style="display: none; margin-top: 30px;">
+                        <!-- Results will appear here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Debate Arena Module -->
+        <div class="module" id="debate">
+            <div class="interactive-stage debate-arena">
+                <span class="section-icon"><i class="fas fa-comments"></i></span>
+                <h2 class="section-title">The Great Democracy Debate</h2>
+                
+                <div id="debate-narration" class="sr-only">
+                    Is democracy really the best form of government? In this section, we'll explore arguments both for and against democracy, considering its strengths and weaknesses from different perspectives.
+                </div>
+                
+                <p>Is democracy the best form of government? Explore arguments from both sides:</p>
+
+                <div class="debate-sides">
+                    <div class="debate-side">
+                        <h3><i class="fas fa-check-circle"></i> Arguments FOR Democracy</h3>
+                        <div class="argument" data-id="accountability">
+                            <strong><i class="fas fa-user-check"></i> Accountability</strong>
+                            <p style="display: none;">Leaders must answer to people and can be changed peacefully</p>
+                        </div>
+                        <div class="argument" data-id="equality">
+                            <strong><i class="fas fa-equals"></i> Equality</strong>
+                            <p style="display: none;">Every citizen has equal say regardless of status</p>
+                        </div>
+                        <div class="argument" data-id="decisions">
+                            <strong><i class="fas fa-thumbs-up"></i> Better Decisions</strong>
+                            <p style="display: none;">Multiple viewpoints lead to more balanced policies</p>
+                        </div>
+                        <div class="argument" data-id="dignity">
+                            <strong><i class="fas fa-hand-holding-heart"></i> Human Dignity</strong>
+                            <p style="display: none;">Respects citizens as equals, not subjects</p>
+                        </div>
+                    </div>
+
+                    <div class="debate-side">
+                        <h3><i class="fas fa-times-circle"></i> Arguments AGAINST Democracy</h3>
+                        <div class="argument" data-id="slow">
+                            <strong><i class="fas fa-hourglass-half"></i> Slow Decision Making</strong>
+                            <p style="display: none;">Consultation and debate can delay urgent decisions</p>
+                        </div>
+                        <div class="argument" data-id="uninformed">
+                            <strong><i class="fas fa-question-circle"></i> Uninformed Voters</strong>
+                            <p style="display: none;">Not everyone understands complex issues they vote on</p>
+                        </div>
+                        <div class="argument" data-id="competition">
+                            <strong><i class="fas fa-chess"></i> Political Competition</strong>
+                            <p style="display: none;">Focus on winning elections rather than good governance</p>
+                        </div>
+                        <div class="argument" data-id="instability">
+                            <strong><i class="fas fa-exclamation-triangle"></i> Instability</strong>
+                            <p style="display: none;">Frequent changes in leadership and policies</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-container">
+                    <button class="btn" id="debateConclusionBtn"><i class="fas fa-search"></i> View Conclusion</button>
+                </div>
+
+                <div id="debateConclusion" style="display: none; margin-top: 30px; background: rgba(255,255,255,0.3); padding: 20px; border-radius: 15px;">
+                    <!-- Conclusion will appear here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- World Examples Module -->
+        <div class="module" id="examples">
+            <div class="interactive-stage">
+                <span class="section-icon"><i class="fas fa-globe-americas"></i></span>
+                <h2 class="section-title">Democracy Around the World</h2>
+                
+                <div id="examples-narration" class="sr-only">
+                    Democracy takes different forms around the world. Some countries are strong democracies, others are still developing democratic institutions, and some remain non-democratic. Let's explore some examples from different countries.
+                </div>
+                
+                <div class="content-grid country-examples">
+                    <div class="country-card">
+                        <div class="country-flag">🇮🇳</div>
+                        <h3 class="country-name">India</h3>
+                        <div class="country-status democratic">Democratic</div>
+                        <p>
+                            World's largest democracy with over 900 million voters. 
+                            Regular elections, multiple parties, free press.
+                        </p>
+                        <button class="btn country-btn" data-country="india"><i class="fas fa-info-circle"></i> Learn More</button>
+                    </div>
+
+                    <div class="country-card">
+                        <div class="country-flag">🇨🇳</div>
+                        <h3 class="country-name">China</h3>
+                        <div class="country-status non-democratic">Non-Democratic</div>
+                        <p>
+                            One-party rule by Communist Party. No opposition parties allowed. 
+                            Limited freedom of expression.
+                        </p>
+                        <button class="btn country-btn" data-country="china"><i class="fas fa-info-circle"></i> Learn More</button>
+                    </div>
+
+                    <div class="country-card">
+                        <div class="country-flag">🇺🇸</div>
+                        <h3 class="country-name">USA</h3>
+                        <div class="country-status democratic">Democratic</div>
+                        <p>
+                            Presidential democracy with separation of powers. 
+                            Two main parties, protected civil liberties.
+                        </p>
+                        <button class="btn country-btn" data-country="usa"><i class="fas fa-info-circle"></i> Learn More</button>
+                    </div>
+
+                    <div class="country-card">
+                        <div class="country-flag">🇸🇦</div>
+                        <h3 class="country-name">Saudi Arabia</h3>
+                        <div class="country-status non-democratic">Non-Democratic</div>
+                        <p>
+                            Absolute monarchy. King has ultimate authority. 
+                            No elections for national leadership.
+                        </p>
+                        <button class="btn country-btn" data-country="saudi"><i class="fas fa-info-circle"></i> Learn More</button>
+                    </div>
+
+                    <div class="country-card">
+                        <div class="country-flag">🇿🇦</div>
+                        <h3 class="country-name">South Africa</h3>
+                        <div class="country-status democratic">Democratic</div>
+                        <p>
+                            Democracy since 1994 after ending apartheid. 
+                            Universal suffrage, constitutional rights.
+                        </p>
+                        <button class="btn country-btn" data-country="southafrica"><i class="fas fa-info-circle"></i> Learn More</button>
+                    </div>
+
+                    <div class="country-card">
+                        <div class="country-flag">🇰🇵</div>
+                        <h3 class="country-name">North Korea</h3>
+                        <div class="country-status non-democratic">Non-Democratic</div>
+                        <p>
+                            Totalitarian dictatorship. No free elections or opposition. 
+                            Severe restrictions on all freedoms.
+                        </p>
+                        <button class="btn country-btn" data-country="northkorea"><i class="fas fa-info-circle"></i> Learn More</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Why Democracy Module -->
+        <div class="module" id="why">
+            <div class="interactive-stage">
+                <span class="section-icon"><i class="fas fa-question-circle"></i></span>
+                <h2 class="section-title">Why Choose Democracy?</h2>
+                
+                <div id="why-narration" class="sr-only">
+                    Despite its flaws, democracy is widely regarded as the best form of government. Let's explore the key reasons why democracy is considered superior to other systems, even with its imperfections.
+                </div>
+                
+                <div class="content-text">
+                    <p>Democracy is not perfect. It can be slow, messy, and sometimes appears inefficient. So why do we still consider it the best form of government?</p>
+                </div>
+                
+                <div class="content-grid">
+                    <div class="feature-card">
+                        <span class="feature-icon"><i class="fas fa-bullseye"></i></span>
+                        <h3 class="feature-title">Accountable Government</h3>
+                        <p class="feature-desc">Democracy is better at responding to people's needs. Non-democratic governments may respond to people's needs, but only if rulers want to. Democratic governments must respond or risk being voted out.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <span class="feature-icon"><i class="fas fa-handshake"></i></span>
+                        <h3 class="feature-title">Better Decision Making</h3>
+                        <p class="feature-desc">Democracy involves consultation and discussion among many people, reducing the chances of rash or irresponsible decisions. While this takes time, the quality of decisions improves.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <span class="feature-icon"><i class="fas fa-balance-scale"></i></span>
+                        <h3 class="feature-title">Managing Differences</h3>
+                        <p class="feature-desc">Democracy provides peaceful ways to handle conflicts in diverse societies. Different groups can live together because democracy ensures no one is a permanent winner or loser.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <span class="feature-icon"><i class="fas fa-star"></i></span>
+                        <h3 class="feature-title">Human Dignity</h3>
+                        <p class="feature-desc">Democracy enhances citizens' dignity by treating everyone as equals. Even the poorest and least educated have the same status as the rich and educated.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <span class="feature-icon"><i class="fas fa-sync-alt"></i></span>
+                        <h3 class="feature-title">Self-Correction</h3>
+                        <p class="feature-desc">Democracy allows for the correction of its own mistakes. Mistakes can't be hidden for long, and there's space for public discussion and correction.</p>
+                    </div>
+                </div>
+
+                <div class="democracy-sim">
+                    <h3 class="sim-title"><i class="fas fa-lightbulb"></i> Think About It</h3>
+                    <blockquote style="font-size: 1.1rem; text-align: center;">
+                        "Democracy is the worst form of government, except for all the others that have been tried."
+                        <br><em>- Winston Churchill</em>
+                    </blockquote>
+                </div>
+                
+                <div class="content-text">
+                    <p>Democracy cannot get us everything and is not the solution to all problems. But it is clearly better than any other alternative that we know. It offers better chances of a good decision, it is likely to respect people's own wishes and allows different kinds of people to live together. Even when it fails to do these things, it allows a way of correcting its mistakes and offers more dignity to all citizens.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Module -->
+        <div class="module" id="quiz">
+            <div class="quiz-container">
+                <span class="section-icon"><i class="fas fa-tasks"></i></span>
+                <h2 class="section-title">Test Your Knowledge</h2>
+                
+                <div id="quiz-narration" class="sr-only">
+                    Now it's time to test your understanding of democracy. This quiz covers the key concepts we've explored including the definition, features, and arguments for democracy.
+                </div>
+                
+                <div id="quizContent">
+                    <!-- Quiz questions will be loaded here -->
+                </div>
+
+                <div id="quizFeedback" class="feedback"></div>
+
+                <div class="btn-container">
+                    <button class="btn" id="nextQuestion"><i class="fas fa-arrow-right"></i> Next Question</button>
+                    <button class="btn secondary" id="resetQuiz"><i class="fas fa-redo"></i> Reset Quiz</button>
+                </div>
+
+                <div id="quizScore" style="display: none; text-align: center; margin-top: 30px;">
+                    <!-- Score will appear here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/quiz.js"></script>
+    <script src="js/simulator.js"></script>
+    <script src="js/activities.js"></script>
+</body>
+</html>
