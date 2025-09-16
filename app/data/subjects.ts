@@ -32,6 +32,18 @@ export const subjects: Subject[] = [
         name: 'Ellipse',
         path: 'content/Mathematics',
         files: ['Elipse.html']
+      },
+      {
+        id: 'geometry',
+        name: 'Geometry',
+        path: 'content/Mathematics',
+        files: ['Geometry.html']
+      },
+      {
+        id: 'linear-equations',
+        name: 'Linear Equations',
+        path: 'content/Mathematics',
+        files: ['Linear Equations.html']
       }
     ]
   },

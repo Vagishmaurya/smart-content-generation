@@ -1,0 +1,1157 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linear Equations - Interactive Mathematical Journey</title>
+    <style>
+        :root {
+            --blue-accent: #3b82f6;
+            --green-accent: #10b981;
+            --bg-dark-1: #0f0f23;
+            --bg-dark-2: #1a1a40;
+            --bg-dark-3: #2d2d5e;
+            --text-light: #e2e8f0;
+            --text-muted: rgba(255, 255, 255, 0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--bg-dark-1) 0%, var(--bg-dark-2) 50%, var(--bg-dark-3) 100%);
+            color: var(--text-light);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Audio Control */
+        #audio-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .control-btn {
+            background: rgba(59, 130, 246, 0.9);
+            border: none;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .control-btn:hover {
+            transform: scale(1.1);
+            background: rgba(59, 130, 246, 1);
+        }
+
+        .control-btn.muted .unmute-icon { display: none; }
+        .control-btn:not(.muted) .mute-icon { display: none; }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            background: linear-gradient(45deg, var(--blue-accent), #06b6d4, var(--green-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Canvas Stage */
+        .canvas-stage {
+            background: linear-gradient(135deg, #0a0a1a 0%, #151530 100%);
+            border-radius: 25px;
+            padding: 20px;
+            margin: 40px 0;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            border: 3px solid rgba(59, 130, 246, 0.3);
+            position: relative;
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        #graphCanvas {
+            flex-grow: 1;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16 / 10;
+            max-height: 70vh;
+            border-radius: 15px;
+            background: radial-gradient(circle at center, 
+                rgba(59, 130, 246, 0.05) 0%, 
+                rgba(16, 185, 129, 0.05) 50%, 
+                transparent 100%);
+        }
+
+        /* Info Display */
+        .info-display {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(59, 130, 246, 0.3);
+            width: 250px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 80px;
+        }
+
+        .info-item {
+            margin: 8px 0;
+            font-size: 0.95rem;
+        }
+
+        .info-label {
+            color: var(--blue-accent);
+            font-weight: 600;
+        }
+
+        .info-value {
+            color: var(--green-accent);
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+        }
+
+        /* Controls */
+        .controls {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .controls-title {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            margin-bottom: 25px;
+            color: var(--blue-accent);
+            font-weight: 600;
+        }
+
+        .demo-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 25px 0;
+        }
+
+        .demo-btn {
+            background: linear-gradient(135deg, var(--blue-accent), #2563eb);
+            border: none;
+            color: white;
+            padding: 16px 28px;
+            border-radius: 35px;
+            font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+            min-width: 180px;
+        }
+
+        .demo-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(59, 130, 246, 0.4);
+        }
+
+        .demo-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .demo-btn.active {
+            background: linear-gradient(135deg, var(--green-accent), #059669);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+        }
+
+        /* Equation Section */
+        .equation-section {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 25px;
+            padding: 35px;
+            margin: 35px 0;
+            border: 3px solid rgba(59, 130, 246, 0.3);
+            backdrop-filter: blur(15px);
+        }
+
+        .equation-title {
+            font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+            color: var(--blue-accent);
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .equation-box {
+            text-align: center;
+            padding: 25px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(16, 185, 129, 0.15));
+            border-radius: 20px;
+            border: 3px solid rgba(59, 130, 246, 0.4);
+            margin-bottom: 25px;
+        }
+
+        .main-equation {
+            font-size: clamp(1.5rem, 3vw, 2.2rem);
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-family: 'Courier New', monospace;
+            color: var(--green-accent);
+        }
+
+        .equation-explanation {
+            font-size: clamp(0.9rem, 1.5vw, 1rem);
+            color: var(--text-light);
+            line-height: 1.6;
+            margin-top: 15px;
+        }
+
+        /* Properties Grid */
+        .properties-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .property-card {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 20px;
+            border-radius: 20px;
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .property-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(59, 130, 246, 0.5);
+        }
+
+        .property-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .property-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--blue-accent);
+            font-weight: 600;
+        }
+
+        .property-value {
+            font-size: clamp(1.2rem, 2vw, 1.5rem);
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            color: var(--green-accent);
+            margin-bottom: 10px;
+        }
+
+        .property-description {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            line-height: 1.4;
+        }
+
+        /* Applications Section */
+        .applications {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 25px;
+            padding: 35px;
+            margin: 35px 0;
+            border: 3px solid rgba(16, 185, 129, 0.4);
+        }
+
+        .applications-title {
+            font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+            color: var(--green-accent);
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .app-card {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(59, 130, 246, 0.1));
+            padding: 25px;
+            border-radius: 20px;
+            border: 2px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .app-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .app-title {
+            font-size: 1.3rem;
+            color: var(--green-accent);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .app-description {
+            line-height: 1.5;
+            opacity: 0.9;
+        }
+
+        /* Slider Controls */
+        .slider-controls {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 20px;
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .slider-group {
+            margin: 15px 0;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        .slider-name {
+            color: var(--blue-accent);
+            font-weight: 600;
+        }
+
+        .slider-value {
+            color: var(--green-accent);
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(to right, var(--blue-accent), var(--green-accent));
+            border-radius: 10px;
+            outline: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            cursor: grab;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        input[type="range"]:active::-webkit-slider-thumb {
+            cursor: grabbing;
+            transform: scale(1.2);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            cursor: grab;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            border: none;
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+        }
+        input[type="range"]:active::-moz-range-thumb {
+            cursor: grabbing;
+            transform: scale(1.2);
+        }
+
+        /* Caption Display */
+        .caption-display {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 15px 25px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(59, 130, 246, 0.3);
+            max-width: 90%;
+            width: fit-content;
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s, visibility 0.5s;
+            z-index: 999;
+        }
+
+        .caption-display.active {
+            opacity: 1;
+            visibility: visible;
+            animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translate(-50%, 20px);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .canvas-stage {
+                flex-direction: column;
+            }
+            .info-display {
+                position: static;
+                width: 100%;
+                max-width: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .demo-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .properties-grid, .app-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            .demo-btn {
+                width: 100%;
+                max-width: 280px;
+                padding: 12px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Audio Control -->
+    <div id="audio-control">
+        <button id="mute-btn" class="control-btn" aria-label="Toggle sound">
+            <span class="unmute-icon">?</span>
+            <span class="mute-icon">?</span>
+        </button>
+    </div>
+
+    <!-- Caption Display -->
+    <div id="caption-display" class="caption-display" aria-live="polite" aria-atomic="true"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Linear Equations</h1>
+            <p>Master the foundation of algebra! Discover how linear equations model real-world relationships and solve everyday problems.</p>
+        </div>
+
+        <!-- Canvas Stage -->
+        <div class="canvas-stage">
+            <canvas id="graphCanvas"></canvas>
+            <div class="info-display" id="infoDisplay">
+                <div class="info-item">
+                    <span class="info-label">Equation:</span>
+                    <span class="info-value" id="currentEquation">y = 2.0x + 1.0</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Slope (m):</span>
+                    <span class="info-value" id="slopeValue">2.0</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Y-Intercept (b):</span>
+                    <span class="info-value" id="interceptValue">1.0</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">X-Intercept:</span>
+                    <span class="info-value" id="xInterceptValue">-0.50</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Point:</span>
+                    <span class="info-value" id="pointValue">(0.0, 1.0)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slider Controls -->
+        <div class="slider-controls">
+            <div class="slider-group">
+                <div class="slider-label">
+                    <span class="slider-name">Slope (m)</span>
+                    <span class="slider-value" id="mValue">2.0</span>
+                </div>
+                <input type="range" id="mSlider" min="-5" max="5" step="0.1" value="2" aria-label="Slope slider">
+            </div>
+            <div class="slider-group">
+                <div class="slider-label">
+                    <span class="slider-name">Y-Intercept (b)</span>
+                    <span class="slider-value" id="bValue">1.0</span>
+                </div>
+                <input type="range" id="bSlider" min="-10" max="10" step="0.5" value="1" aria-label="Y-intercept slider">
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <div class="controls-title">Interactive Demonstrations</div>
+            
+            <div class="demo-buttons">
+                <button class="demo-btn" onclick="playCompleteStory()">? Complete Story</button>
+                <button class="demo-btn" onclick="showBasicLine()">? Basic Line</button>
+                <button class="demo-btn" onclick="showSlopeDemo()">? Slope Explorer</button>
+                <button class="demo-btn" onclick="showInterceptDemo()">? Intercept Finder</button>
+                <button class="demo-btn" onclick="showRealWorldDemo()">? Real World</button>
+            </div>
+        </div>
+
+        <!-- Equation Section -->
+        <div class="equation-section">
+            <div class="equation-title">? Mathematical Foundation</div>
+            
+            <div class="equation-box">
+                <div class="main-equation">y = mx + b</div>
+                <div class="equation-explanation">
+                    The slope-intercept form of a linear equation.<br>
+                    'm' is the slope (rate of change)<br>
+                    'b' is the y-intercept (where the line crosses the y-axis)<br>
+                    Every linear equation creates a straight line!
+                </div>
+            </div>
+
+            <div class="properties-grid">
+                <div class="property-card">
+                    <div class="property-icon">?</div>
+                    <div class="property-title">Slope Formula</div>
+                    <div class="property-value">m = ?y/?x</div>
+                    <div class="property-description">Rise over run - the change in y divided by the change in x between any two points.</div>
+                </div>
+                <div class="property-card">
+                    <div class="property-icon">?</div>
+                    <div class="property-title">Point-Slope Form</div>
+                    <div class="property-value">y - y? = m(x - x?)</div>
+                    <div class="property-description">Useful when you know the slope and one point on the line.</div>
+                </div>
+                <div class="property-card">
+                    <div class="property-icon">??</div>
+                    <div class="property-title">Standard Form</div>
+                    <div class="property-value">Ax + By = C</div>
+                    <div class="property-description">Often used in systems of equations where A, B, and C are integers.</div>
+                </div>
+                <div class="property-card">
+                    <div class="property-icon">?</div>
+                    <div class="property-title">Intercepts</div>
+                    <div class="property-value">x = -b/m, y = b</div>
+                    <div class="property-description">X-intercept occurs when y = 0, Y-intercept occurs when x = 0.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Applications -->
+        <div class="applications">
+            <div class="applications-title">? Real-World Applications</div>
+            
+            <div class="app-grid">
+                <div class="app-card">
+                    <div class="app-icon">?</div>
+                    <div class="app-title">Economics & Finance</div>
+                    <div class="app-description">
+                        Cost functions, profit calculations, and budget constraints all use linear equations. Example: Total Cost = Fixed Cost + (Variable Cost � Quantity)
+                    </div>
+                </div>
+                <div class="app-card">
+                    <div class="app-icon">?</div>
+                    <div class="app-title">Physics & Motion</div>
+                    <div class="app-description">
+                        Distance-time relationships for constant velocity. Distance = Speed � Time represents uniform motion as a linear equation.
+                    </div>
+                </div>
+                <div class="app-card">
+                    <div class="app-icon">?</div>
+                    <div class="app-title">Data Analysis</div>
+                    <div class="app-description">
+                        Linear regression finds the best-fit line through data points, helping predict trends and make forecasts in science and business.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Setup ---
+        const canvas = document.getElementById('graphCanvas');
+        const ctx = canvas.getContext('2d');
+        let animationId = null;
+        let dpr = window.devicePixelRatio || 1;
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // --- State ---
+        let m = 2; // slope
+        let b = 1; // y-intercept
+        let view = { xMin: -10, xMax: 10, yMin: -10, yMax: 10 };
+        let showGrid = true;
+        let showIntercepts = false;
+        let animatePoint = false;
+        let pointX = -10;
+        let highlightSlope = false;
+        
+        // --- Utility ---
+        const debounce = (func, wait) => {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        };
+
+        const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+        // --- Voice System ---
+        class LinearNarrator {
+            constructor() {
+                this.isEnabled = true;
+                this.isSpeaking = false;
+                this.currentUtterance = null;
+                this.captionElement = document.getElementById('caption-display');
+                this.settings = { rate: 0.95, pitch: 1.0, volume: 0.85, lang: 'en-GB' };
+                speechSynthesis.getVoices(); // Early request
+            }
+
+            async speak(text, delay = 0) {
+                if (!text) return;
+                this.showCaption(text);
+                if (!this.isEnabled) {
+                    await wait(text.length * 50 + 1000); // Simulate speech time for captions
+                    this.hideCaption();
+                    return;
+                }
+                
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        this.stop();
+                        const utterance = new SpeechSynthesisUtterance(text);
+                        Object.assign(utterance, this.settings);
+                        
+                        const voices = speechSynthesis.getVoices();
+                        const britishVoice = voices.find(v => v.lang === 'en-GB' || v.lang === 'en-US');
+                        if (britishVoice) utterance.voice = britishVoice;
+                        
+                        utterance.onstart = () => { this.isSpeaking = true; };
+                        utterance.onend = () => { this.isSpeaking = false; this.hideCaption(); resolve(); };
+                        utterance.onerror = (e) => { this.isSpeaking = false; this.hideCaption(); console.error("SpeechSynthesis Error:", e); resolve(); };
+                        
+                        this.currentUtterance = utterance;
+                        speechSynthesis.speak(utterance);
+                    }, delay);
+                });
+            }
+
+            showCaption(text) {
+                this.captionElement.textContent = text;
+                this.captionElement.classList.add('active');
+            }
+
+            hideCaption() {
+                this.captionElement.classList.remove('active');
+            }
+
+            stop() {
+                if (this.isSpeaking) {
+                    speechSynthesis.cancel();
+                    this.isSpeaking = false;
+                }
+                this.hideCaption();
+            }
+
+            toggle() {
+                this.isEnabled = !this.isEnabled;
+                if (!this.isEnabled) this.stop();
+                document.getElementById('mute-btn').classList.toggle('muted', !this.isEnabled);
+                return this.isEnabled;
+            }
+        }
+        const narrator = new LinearNarrator();
+
+        // --- Canvas & Drawing ---
+        function initCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.scale(dpr, dpr);
+        }
+        
+        function getScale() {
+            const width = canvas.width / dpr;
+            const height = canvas.height / dpr;
+            const xRange = view.xMax - view.xMin;
+            const yRange = view.yMax - view.yMin;
+            if (xRange === 0 || yRange === 0) return 1;
+            return Math.min(width / xRange, height / yRange);
+        }
+
+        function toCanvasCoords(x, y) {
+            const width = canvas.width / dpr;
+            const height = canvas.height / dpr;
+            const scale = getScale();
+            const viewCenterX = (view.xMin + view.xMax) / 2;
+            const viewCenterY = (view.yMin + view.yMax) / 2;
+            const canvasCenterX = width / 2;
+            const canvasCenterY = height / 2;
+            
+            return {
+                x: canvasCenterX + (x - viewCenterX) * scale,
+                y: canvasCenterY - (y - viewCenterY) * scale
+            };
+        }
+        
+        function calculateTickStep(range, maxTicks = 10) {
+            if (range <= 0) return 1;
+            const roughStep = range / maxTicks;
+            const magnitude = Math.pow(10, Math.floor(Math.log10(roughStep)));
+            const residual = roughStep / magnitude;
+            if (residual > 5) return 10 * magnitude;
+            if (residual > 2) return 5 * magnitude;
+            if (residual > 1) return 2 * magnitude;
+            return magnitude;
+        }
+
+        function drawCoordinateSystem() {
+            const width = canvas.width / dpr;
+            const height = canvas.height / dpr;
+            ctx.clearRect(0, 0, width, height);
+            
+            ctx.font = `${12 / dpr * 12}px Segoe UI`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            const xStep = calculateTickStep(view.xMax - view.xMin);
+            const yStep = calculateTickStep(view.yMax - view.yMin);
+
+            // Grid lines
+            if (showGrid) {
+                ctx.strokeStyle = 'rgba(59, 130, 246, 0.1)';
+                ctx.lineWidth = 1;
+                for (let i = Math.floor(view.xMin / xStep) * xStep; i <= view.xMax; i += xStep) {
+                    const pos = toCanvasCoords(i, 0);
+                    ctx.beginPath();
+                    ctx.moveTo(Math.round(pos.x), 0);
+                    ctx.lineTo(Math.round(pos.x), height);
+                    ctx.stroke();
+                }
+                for (let i = Math.floor(view.yMin / yStep) * yStep; i <= view.yMax; i += yStep) {
+                    const pos = toCanvasCoords(0, i);
+                    ctx.beginPath();
+                    ctx.moveTo(0, Math.round(pos.y));
+                    ctx.lineTo(width, Math.round(pos.y));
+                    ctx.stroke();
+                }
+            }
+
+            // Axes
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.lineWidth = 2;
+            const origin = toCanvasCoords(0, 0);
+            ctx.beginPath();
+            ctx.moveTo(0, Math.round(origin.y));
+            ctx.lineTo(width, Math.round(origin.y));
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(Math.round(origin.x), 0);
+            ctx.lineTo(Math.round(origin.x), height);
+            ctx.stroke();
+
+            // Axis labels
+            ctx.fillStyle = 'white';
+            ctx.font = '14px Segoe UI';
+            for (let i = Math.floor(view.xMin / xStep) * xStep; i <= view.xMax; i += xStep) {
+                if (Math.abs(i) < xStep / 10) continue;
+                const pos = toCanvasCoords(i, 0);
+                ctx.fillText(i.toPrecision(3).replace(/\.?0+$/, ''), pos.x, origin.y + 20);
+            }
+            for (let i = Math.floor(view.yMin / yStep) * yStep; i <= view.yMax; i += yStep) {
+                if (Math.abs(i) < yStep / 10) continue;
+                const pos = toCanvasCoords(0, i);
+                ctx.fillText(i.toPrecision(3).replace(/\.?0+$/, ''), origin.x - 25, pos.y);
+            }
+            ctx.fillText('0', origin.x - 15, origin.y + 15);
+            ctx.font = 'bold 16px Segoe UI';
+            ctx.fillText('x', width - 20, origin.y - 20);
+            ctx.fillText('y', origin.x + 20, 20);
+        }
+
+        function drawLinearEquation(slope = m, intercept = b, color = '#10b981', lineWidth = 3) {
+            ctx.strokeStyle = color;
+            ctx.lineWidth = lineWidth;
+            ctx.beginPath();
+            
+            const leftY = slope * view.xMin + intercept;
+            const rightY = slope * view.xMax + intercept;
+            
+            const start = toCanvasCoords(view.xMin, leftY);
+            const end = toCanvasCoords(view.xMax, rightY);
+            
+            ctx.moveTo(start.x, start.y);
+            ctx.lineTo(end.x, end.y);
+            ctx.stroke();
+            
+            if (showIntercepts) {
+                const yInterceptPos = toCanvasCoords(0, b);
+                ctx.fillStyle = '#3b82f6';
+                ctx.beginPath();
+                ctx.arc(yInterceptPos.x, yInterceptPos.y, 6, 0, 2 * Math.PI);
+                ctx.fill();
+                
+                if (m !== 0) {
+                    const xIntercept = -b/m;
+                    const xInterceptPos = toCanvasCoords(xIntercept, 0);
+                    ctx.fillStyle = '#ef4444';
+                    ctx.beginPath();
+                    ctx.arc(xInterceptPos.x, xInterceptPos.y, 6, 0, 2 * Math.PI);
+                    ctx.fill();
+                }
+            }
+            
+            if (highlightSlope && m !== 0) {
+                const x1 = (view.xMin + view.xMax) / 2 - 0.5;
+                const y1 = slope * x1 + intercept;
+                const x2 = x1 + 1;
+                const y2 = slope * x2 + intercept;
+                
+                const p1 = toCanvasCoords(x1, y1);
+                const p2 = toCanvasCoords(x2, y1);
+                const p3 = toCanvasCoords(x2, y2);
+                
+                ctx.strokeStyle = 'rgba(245, 158, 11, 0.8)';
+                ctx.lineWidth = 2;
+                ctx.setLineDash([5, 5]);
+                
+                ctx.beginPath(); // Rise and Run triangle
+                ctx.moveTo(p1.x, p1.y);
+                ctx.lineTo(p2.x, p2.y);
+                ctx.lineTo(p3.x, p3.y);
+                ctx.stroke();
+                
+                ctx.setLineDash([]);
+                ctx.fillStyle = '#f59e0b';
+                ctx.font = 'bold 14px Segoe UI';
+                ctx.fillText('run = 1', (p1.x + p2.x) / 2, p1.y + 20);
+                ctx.fillText(`rise = ${slope.toFixed(1)}`, p2.x + 5, (p2.y + p3.y) / 2, 80);
+            }
+        }
+
+        function drawAnimatedPoint() {
+            if (!animatePoint) return;
+            
+            const y = m * pointX + b;
+            const point = toCanvasCoords(pointX, y);
+            
+            ctx.fillStyle = '#fbbf24';
+            ctx.beginPath();
+            ctx.arc(point.x, point.y, 8, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            document.getElementById('pointValue').textContent = `(${pointX.toFixed(1)}, ${y.toFixed(1)})`;
+        }
+        
+        // --- Core Logic ---
+        function calculateProperties() {
+            let xInterceptText;
+            if (Math.abs(m) < 1e-9) { // Check for m being effectively zero
+                xInterceptText = Math.abs(b) < 1e-9 ? 'Infinite' : 'None';
+            } else {
+                xInterceptText = (-b / m).toFixed(2);
+            }
+
+            document.getElementById('currentEquation').textContent = `y = ${m.toFixed(1)}x ${b < 0 ? '-' : '+'} ${Math.abs(b).toFixed(1)}`;
+            document.getElementById('slopeValue').textContent = m.toFixed(1);
+            document.getElementById('interceptValue').textContent = b.toFixed(1);
+            document.getElementById('xInterceptValue').textContent = xInterceptText;
+        }
+
+        function draw() {
+            requestAnimationFrame(() => {
+                drawCoordinateSystem();
+                drawLinearEquation();
+                drawAnimatedPoint();
+                calculateProperties();
+            });
+        }
+
+        function animate() {
+            if (!animatePoint) {
+                if(animationId) cancelAnimationFrame(animationId);
+                animationId = null;
+                return;
+            }
+            if (prefersReducedMotion) {
+                animatePoint = false;
+                draw();
+                return;
+            }
+            
+            const xRange = view.xMax - view.xMin;
+            pointX += xRange / 200; // Move across the screen in ~3.3 seconds
+            if (pointX > view.xMax) pointX = view.xMin;
+
+            draw();
+            animationId = requestAnimationFrame(animate);
+        }
+
+        function setView(newView, shouldDraw = true) {
+            Object.assign(view, newView);
+            if(shouldDraw) draw();
+        }
+
+        // --- Demo Functions ---
+        function resetDemoState() {
+            narrator.stop();
+            if (animationId) cancelAnimationFrame(animationId);
+            animationId = null;
+            
+            showIntercepts = false;
+            animatePoint = false;
+            highlightSlope = false;
+            pointX = view.xMin;
+        }
+
+        async function playCompleteStory() {
+            setActiveButton(0);
+            resetDemoState();
+            
+            await narrator.speak("Welcome to the story of linear equations! We'll explore how they work, step-by-step.");
+            setView({ xMin: -10, xMax: 10, yMin: -10, yMax: 10 });
+            m = 1; b = 0; updateSliders(); draw();
+            await narrator.speak("This is the simplest line, y equals x. For every step right, we go one step up. The slope is 1, and it passes through the origin.", 500);
+            
+            b = 3; updateSliders(); draw();
+            await narrator.speak("Now, let's change the y-intercept to 3. The entire line shifts up, crossing the y-axis at 3.", 500);
+            
+            m = 2; updateSliders(); draw();
+            await narrator.speak("Let's make the slope 2. The line is now steeper. For every one step right, we go two steps up.", 500);
+            
+            m = -0.5; updateSliders(); draw();
+            await narrator.speak("A negative slope means the line goes down to the right. This represents a decreasing relationship.", 500);
+            
+            showIntercepts = true; draw();
+            await narrator.speak("The blue dot is the y-intercept, and the red is the x-intercept. These are key points on our line.", 500);
+            
+            await narrator.speak("Finally, let's see a real-world example: a taxi fare.", 500);
+            setView({ xMin: 0, xMax: 10, yMin: 0, yMax: 600 });
+            m = 50; b = 100; updateSliders(); draw();
+            await narrator.speak("Imagine a fare is �1 base fee, plus 50 pence per kilometer. The cost is y equals 50x plus 100. Linear equations are everywhere!", 500);
+
+            await wait(2000);
+            showBasicLine();
+            await narrator.speak("You've completed the story! Now you can experiment with the sliders yourself.", 500);
+        }
+
+        function showBasicLine() {
+            setActiveButton(1);
+            resetDemoState();
+            setView({ xMin: -10, xMax: 10, yMin: -10, yMax: 10 }, false);
+            m = 2; b = 1; 
+            updateSliders();
+            draw();
+            narrator.speak("This is a basic line. Use the sliders to change its slope and y-intercept.");
+        }
+
+        function showSlopeDemo() {
+            setActiveButton(2);
+            resetDemoState();
+            setView({ xMin: -10, xMax: 10, yMin: -10, yMax: 10 }, false);
+            m = 1.5; b = -2;
+            highlightSlope = true;
+            updateSliders();
+            draw();
+            narrator.speak("The orange triangle shows the 'rise over run'. See how it changes as you adjust the slope.");
+        }
+
+        function showInterceptDemo() {
+            setActiveButton(3);
+            resetDemoState();
+            setView({ xMin: -10, xMax: 10, yMin: -10, yMax: 10 }, false);
+            m = -1; b = 4;
+            showIntercepts = true;
+            updateSliders();
+            draw();
+            narrator.speak("The colored dots mark the x and y intercepts. Watch how they move as you change the line.");
+        }
+
+        async function showRealWorldDemo() {
+            setActiveButton(4);
+            resetDemoState();
+            
+            setView({ xMin: 0, xMax: 300, yMin: 0, yMax: 50 });
+            m = 0.1;
+            b = 20;
+            updateSliders();
+            animatePoint = true;
+            pointX = view.xMin;
+            animate();
+            
+            await narrator.speak("Imagine a phone plan: �20 per month, plus 10 pence per minute of calls. The moving dot shows the total cost as minutes used increase.");
+        }
+
+        // --- Helpers ---
+        function setActiveButton(index) {
+            document.querySelectorAll('.demo-btn').forEach((btn, i) => {
+                btn.classList.toggle('active', i === index);
+            });
+        }
+
+        function updateSliders() {
+            const mSlider = document.getElementById('mSlider');
+            const bSlider = document.getElementById('bSlider');
+            
+            document.getElementById('mValue').textContent = m.toFixed(2);
+            document.getElementById('bValue').textContent = b.toFixed(2);
+            
+            mSlider.value = Math.max(parseFloat(mSlider.min), Math.min(parseFloat(mSlider.max), m));
+            bSlider.value = Math.max(parseFloat(bSlider.min), Math.min(parseFloat(bSlider.max), b));
+        }
+
+        // --- Validation ---
+        function validateSceneComponents() {
+            console.group("Validation: Scene Components");
+            let errors = 0;
+            const check = (condition, msg) => { if (!condition) { console.error(msg); errors++; } };
+            check(document.getElementById('graphCanvas'), "Missing: #graphCanvas");
+            check(Math.abs(m - parseFloat(document.getElementById('mSlider').value)) < 5 || Math.abs(m) > 5, `Logic Error: 'm' mismatch`);
+            console.log(`Validation finished with ${errors} errors.`);
+            console.groupEnd();
+            return errors === 0;
+        }
+
+        function validateLayout() {
+            console.group("Validation: Layout");
+            let warnings = 0;
+            const check = (condition, msg) => { if (!condition) { console.warn(msg); warnings++; } };
+            check(document.body.scrollWidth <= window.innerWidth + 2, "Layout Error: Horizontal scrollbar detected.");
+            const infoRect = document.getElementById('infoDisplay').getBoundingClientRect();
+            check(infoRect.bottom < window.innerHeight, "Layout Warning: Info display may be clipped vertically.");
+            console.log(`Layout validation finished with ${warnings} warnings.`);
+            console.groupEnd();
+            return warnings === 0;
+        }
+
+        // --- Event Listeners ---
+        document.getElementById('mSlider').addEventListener('input', (e) => {
+            m = parseFloat(e.target.value);
+            document.getElementById('mValue').textContent = m.toFixed(1);
+            draw();
+        });
+
+        document.getElementById('bSlider').addEventListener('input', (e) => {
+            b = parseFloat(e.target.value);
+            document.getElementById('bValue').textContent = b.toFixed(1);
+            draw();
+        });
+
+        document.getElementById('mute-btn').addEventListener('click', () => narrator.toggle());
+
+        window.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                animatePoint = !animatePoint;
+                if(animatePoint) animate();
+            } else if (e.code === 'ArrowLeft' || e.code === 'ArrowRight') {
+                if (document.activeElement.type === 'range') {
+                    // Browser handles this natively
+                    return; 
+                }
+            }
+        });
+
+        const debouncedResize = debounce(() => {
+            initCanvas();
+            draw();
+            validateLayout();
+        }, 150);
+        window.addEventListener('resize', debouncedResize);
+
+        window.addEventListener('load', () => {
+            initCanvas();
+            updateSliders();
+            draw();
+            validateSceneComponents();
+            validateLayout();
+            narrator.speak("Welcome! Click a demonstration or use the sliders to begin exploring linear equations.", 500);
+        });
+
+        speechSynthesis.addEventListener('voiceschanged', () => {
+            // Voices are now loaded
+        });
+    </script>
+</body>
+</html> 
