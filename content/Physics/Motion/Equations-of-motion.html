@@ -2333,6 +2333,23 @@
             }
         });
 
+        // Global cleanup function for when page is unloaded
+        window.stopAllAudio = function() {
+            if (currentTeacher) {
+                currentTeacher.destroy();
+                currentTeacher = null;
+            }
+            if (window.speechSynthesis) {
+                window.speechSynthesis.cancel();
+            }
+            stopCurrentDemo();
+            isPlaying = false;
+        };
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', stopAllAudio);
+        window.addEventListener('unload', stopAllAudio);
+
         // Event listeners
         document.getElementById('equation-selector').addEventListener('change', updateEquationDisplay);
         
