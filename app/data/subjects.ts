@@ -339,6 +339,17 @@ export const subjects: Subject[] = [
           '11.4_Range_of_Hearing.html',
           '11.5_Applications_of_UltraSound.html'
         ]
+      },
+      {
+        id: 'electricity',
+        name: 'Electricity',
+        path: 'content/Physics/Electricity',
+        files: [
+          'Electric Current & Potential Difference.html',
+          'Circuit Diagram & Ohm\'s Law.html',
+          'Resistance & Resistor Combinations.html',
+          'Heating Effect & Electric Power.html',
+        ]
       }
     ]
   }
