@@ -350,6 +350,41 @@ export const subjects: Subject[] = [
           'Resistance & Resistor Combinations.html',
           'Heating Effect & Electric Power.html',
         ]
+      },
+      {
+        id: 'human-eye-and-colourful-world',
+        name: 'Human Eye and Colourful World',
+        path: 'content/Physics/Human Eye and colourful world',
+        files: [
+          'The Human Eye.html',
+          'DEFECTS OF VISION AND THEIR CORRECTION.html',
+          'REFRACTION OF LIGHT THROUGH A PRISM.html',
+          'DISPERSION OF WHITE LIGHT BY A GLASS PRISM ASS PRISMASS PRISM.html',
+          'Atmospheric refraction.html',
+          'Scattering Light.html'
+        ]
+      },
+      {
+        id: 'light-refraction',
+        name: 'Light Refraction',
+        path: 'content/Physics/Light Refraction',
+        files: [
+          'Reflection of light.html',
+          'Spherical mirrors.html',
+          'Refraction glass slab.html',
+          'Refraction.html'
+        ]
+      },
+      {
+        id: 'magnetic-effect-of-electric-current',
+        name: 'Magnetic Effect of Electric Current',
+        path: 'content/Physics/Magnetic Effect of Electric Current',
+        files: [
+          'Magnetic Effect.html',
+          'MAGNETIC FIELD DUE TO A CURRENT-CARRYING ARRYING CONDUCTOR.html',
+          'FORCE ON A CURRENT-CARRYING CONDUCTOR IN A MAGNETIC FIELD.html',
+          'Domestic Circuit.html'
+        ]
       }
     ]
   }
