@@ -14,7 +14,8 @@ export default function Home() {
   const subjects = allSubjects.filter(subject => 
     subject.id !== 'english-book-beehive' && 
     subject.id !== 'english-word-expression' &&
-    subject.id !== 'english-word-expression-1'
+    subject.id !== 'english-word-expression-1' &&
+    subject.id !== 'english-first-flight'
   );
   
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
@@ -49,6 +50,12 @@ export default function Home() {
         setSelectedChapter(null);
         setSelectedTopic(null);
         return;
+      } else if (chapter.id === 'english-first-flight-book') {
+        // Redirect to the First Flight book subject
+        setSelectedSubject('english-first-flight');
+        setSelectedChapter(null);
+        setSelectedTopic(null);
+        return;
       }
     }
 
@@ -73,7 +80,8 @@ export default function Home() {
     // Special handling for English book subjects
     if (selectedSubject === 'english-book-beehive' || 
         selectedSubject === 'english-word-expression' || 
-        selectedSubject === 'english-word-expression-1') {
+        selectedSubject === 'english-word-expression-1' ||
+        selectedSubject === 'english-first-flight') {
       setSelectedSubject('english');
       setSelectedChapter(null);
       setSelectedTopic(null);
@@ -483,7 +491,10 @@ export default function Home() {
               title={selectedChapter.name} 
               subtitle={
                 // Special handling for English book subjects - show "Chapters" instead of topics
-                (selectedSubject === 'english-book-beehive' || selectedSubject === 'english-word-expression') ? 
+                (selectedSubject === 'english-book-beehive' || 
+                 selectedSubject === 'english-word-expression' || 
+                 selectedSubject === 'english-word-expression-1' ||
+                 selectedSubject === 'english-first-flight') ? 
                 `${selectedChapter.files.length} Chapters` : 
                 `${selectedChapter.files.length} ${selectedChapter.files.length === 1 ? 'topic' : 'topics'}`
               }

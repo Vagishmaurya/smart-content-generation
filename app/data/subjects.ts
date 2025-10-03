@@ -259,22 +259,25 @@ export const subjects: Subject[] = [
         id: 'english-beehive-book',
         name: '📘 Beehive',
         path: '',
-        files: [],
-        youtube: 'https://youtu.be/tYnkfIadmKI?si=puUtnWHJBQANRSl9'
+        files: []
       },
       {
         id: 'english-word-expression-1-book',
         name: '📕 Word Expression 1',
         path: '',
-        files: [],
-        youtube: 'https://youtu.be/tYnkfIadmKI?si=puUtnWHJBQANRSl9'
+        files: []
       },
       {
         id: 'english-word-expression-book',
         name: '📗 Word Expression 2',
         path: '',
-        files: [],
-        youtube: 'https://youtu.be/tYnkfIadmKI?si=puUtnWHJBQANRSl9'
+        files: []
+      },
+      {
+        id: 'english-first-flight-book',
+        name: '✈️ First Flight',
+        path: '',
+        files: []
       }
     ]
   },
@@ -392,6 +395,44 @@ export const subjects: Subject[] = [
         id: 'beehive-if-i-were-you',
         name: 'Ch 9: If I Were You',
         path: 'content/English/BEEHIVE/9_if-i-were-you-lesson/if-i-were-you-lesson',
+        files: ['index.html']
+      }
+    ]
+  },
+  {
+    id: 'english-first-flight',
+    name: 'English: First Flight',
+    description: 'NCERT Class 10 English First Flight Textbook',
+    icon: '✈️',
+    chapters: [
+      {
+        id: 'first-flight-nelson-mandela',
+        name: 'Ch 2: Nelson Mandela',
+        path: 'content/English/The First Flight/2_nelson-mandela-long-walk-to-freedom/nelson-mandela-long-walk-to-freedom',
+        files: ['index.html']
+      },
+      {
+        id: 'first-flight-two-stories-about-flying',
+        name: 'Ch 3: Two Stories About Flying',
+        path: 'content/English/The First Flight/3_Ttwo-stories-about-flying/two-stories-about-flying',
+        files: ['index.html']
+      },
+      {
+        id: 'first-flight-madam-rides-the-bus',
+        name: 'Ch 7: Madam Rides the Bus',
+        path: 'content/English/The First Flight/7_madam-rides-the-bus-lesson/madam-rides-the-bus-lesson',
+        files: ['index.html']
+      },
+      {
+        id: 'first-flight-the-sermon',
+        name: 'Ch 8: The Sermon at Benares',
+        path: 'content/English/The First Flight/8_sermon-at-benares-lesson/sermon-at-benares-lesson',
+        files: ['index.html']
+      },
+      {
+        id: 'first-flight-the-proposal',
+        name: 'Ch 9: The Proposal',
+        path: 'content/English/The First Flight/9_the-proposal-lesson/the-proposal-lesson',
         files: ['index.html']
       }
     ]

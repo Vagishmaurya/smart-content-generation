@@ -17,6 +17,8 @@ export default function Header({ title, subtitle, onBack, centered = false }: He
     displayTitle = '📕 English: Word Expression 1';
   } else if (title === 'English: Word Expression 2') {
     displayTitle = '📗 English: Word Expression 2';
+  } else if (title === 'English: First Flight') {
+    displayTitle = '✈️ English: First Flight';
   }
   
   return (
