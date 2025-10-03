@@ -67,11 +67,14 @@ export default function ChapterCard({ chapter, subjectId, onClick }: ChapterCard
         {subjectId === 'english' ? (
           // For English books, don't show file count
           chapter.id === 'english-beehive-book' ? '📘 Book' : 
-          chapter.id === 'english-word-expression-book' ? '📕 Book' : 
+          chapter.id === 'english-word-expression-1-book' ? '📕 Book' : 
+          chapter.id === 'english-word-expression-book' ? '📗 Book' : 
           'Book'
         ) : (
           // For book subjects, show "Chapter" instead of "files" for English books
-          (subjectId === 'english-book-beehive' || subjectId === 'english-word-expression') ? 
+          (subjectId === 'english-book-beehive' || 
+           subjectId === 'english-word-expression' || 
+           subjectId === 'english-word-expression-1') ? 
           'Chapter' : 
           // For all other subjects, show the original file count
           `${chapter.files.length} ${chapter.files.length === 1 ? 'file' : 'files'}`

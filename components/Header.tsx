@@ -13,8 +13,10 @@ export default function Header({ title, subtitle, onBack, centered = false }: He
   
   if (title === 'English: Beehive') {
     displayTitle = '📘 English: Beehive';
+  } else if (title === 'English: Word Expression 1') {
+    displayTitle = '📕 English: Word Expression 1';
   } else if (title === 'English: Word Expression 2') {
-    displayTitle = '📕 English: Word Expression 2';
+    displayTitle = '📗 English: Word Expression 2';
   }
   
   return (

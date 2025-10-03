@@ -13,7 +13,8 @@ export default function Home() {
   // Filter out the English book subjects from the main menu
   const subjects = allSubjects.filter(subject => 
     subject.id !== 'english-book-beehive' && 
-    subject.id !== 'english-word-expression'
+    subject.id !== 'english-word-expression' &&
+    subject.id !== 'english-word-expression-1'
   );
   
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
@@ -36,8 +37,14 @@ export default function Home() {
         setSelectedChapter(null);
         setSelectedTopic(null);
         return;
+      } else if (chapter.id === 'english-word-expression-1-book') {
+        // Redirect to the Word Expression 1 book subject
+        setSelectedSubject('english-word-expression-1');
+        setSelectedChapter(null);
+        setSelectedTopic(null);
+        return;
       } else if (chapter.id === 'english-word-expression-book') {
-        // Redirect to the Word Expression book subject
+        // Redirect to the Word Expression 2 book subject
         setSelectedSubject('english-word-expression');
         setSelectedChapter(null);
         setSelectedTopic(null);
@@ -64,7 +71,9 @@ export default function Home() {
   
   const handleBackToSubjects = () => {
     // Special handling for English book subjects
-    if (selectedSubject === 'english-book-beehive' || selectedSubject === 'english-word-expression') {
+    if (selectedSubject === 'english-book-beehive' || 
+        selectedSubject === 'english-word-expression' || 
+        selectedSubject === 'english-word-expression-1') {
       setSelectedSubject('english');
       setSelectedChapter(null);
       setSelectedTopic(null);

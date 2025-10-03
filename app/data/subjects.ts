@@ -263,11 +263,74 @@ export const subjects: Subject[] = [
         youtube: 'https://youtu.be/tYnkfIadmKI?si=puUtnWHJBQANRSl9'
       },
       {
-        id: 'english-word-expression-book',
-        name: '📕 Word Expression 2',
+        id: 'english-word-expression-1-book',
+        name: '📕 Word Expression 1',
         path: '',
         files: [],
         youtube: 'https://youtu.be/tYnkfIadmKI?si=puUtnWHJBQANRSl9'
+      },
+      {
+        id: 'english-word-expression-book',
+        name: '📗 Word Expression 2',
+        path: '',
+        files: [],
+        youtube: 'https://youtu.be/tYnkfIadmKI?si=puUtnWHJBQANRSl9'
+      }
+    ]
+  },
+  {
+    id: 'english-word-expression-1',
+    name: 'English: Word Expression 1',
+    description: 'Supplementary English Reader 1',
+    icon: '📕',
+    chapters: [
+      {
+        id: 'word-exp1-the-fun-they-had',
+        name: 'Ch 1: The Fun They Had',
+        path: 'content/English/Word Expression 1/1_the_fun_they_had/future-cars-lesson',
+        files: ['index.html']
+      },
+      {
+        id: 'word-exp1-the-sound-of-music',
+        name: 'Ch 2: The Sound of Music',
+        path: 'content/English/Word Expression 1/2_The_sound_of_music/music-lesson',
+        files: ['index.html']
+      },
+      {
+        id: 'word-exp1-the-little-girl',
+        name: 'Ch 3: The Little Girl',
+        path: 'content/English/Word Expression 1/3_The_little_girl/little-girl-lesson',
+        files: ['index.html']
+      },
+      {
+        id: 'word-exp1-beautiful-mind',
+        name: 'Ch 4: A Truly Beautiful Mind',
+        path: 'content/English/Word Expression 1/4_A_truly_beautiful_mind/unit4-lesson',
+        files: ['index.html']
+      },
+      {
+        id: 'word-exp1-snake-mirror',
+        name: 'Ch 5: The Snake and the Mirror',
+        path: 'content/English/Word Expression 1/5_The_snake_and_the_mirror/snake-chapter',
+        files: ['index.html']
+      },
+      {
+        id: 'word-exp1-my-childhood',
+        name: 'Ch 6: My Childhood',
+        path: 'content/English/Word Expression 1/6_My_childhood/unit-6-lesson',
+        files: ['index.html']
+      },
+      {
+        id: 'word-exp1-reach-for-the-top',
+        name: 'Ch 7: Reach for the Top',
+        path: 'content/English/Word Expression 1/7_Reach_for_the_Top/unit7-lesson',
+        files: ['index.html']
+      },
+      {
+        id: 'word-exp1-kathmandu',
+        name: 'Ch 8: Kathmandu',
+        path: 'content/English/Word Expression 1/8_kathmandu/kathmandu-lesson',
+        files: ['index.html']
       }
     ]
   },
