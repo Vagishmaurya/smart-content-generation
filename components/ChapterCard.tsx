@@ -63,7 +63,19 @@ export default function ChapterCard({ chapter, subjectId, onClick }: ChapterCard
         animate={{ opacity: hovered ? 1 : 0.7 }}
         transition={{ duration: 0.3 }}
       >
-        {chapter.files.length} {chapter.files.length === 1 ? 'file' : 'files'}
+        {/* Special handling for English main subject - don't show files count */}
+        {subjectId === 'english' ? (
+          // For English books, don't show file count
+          chapter.id === 'english-beehive-book' ? '📘 Book' : 
+          chapter.id === 'english-word-expression-book' ? '📕 Book' : 
+          'Book'
+        ) : (
+          // For book subjects, show "Chapter" instead of "files" for English books
+          (subjectId === 'english-book-beehive' || subjectId === 'english-word-expression') ? 
+          'Chapter' : 
+          // For all other subjects, show the original file count
+          `${chapter.files.length} ${chapter.files.length === 1 ? 'file' : 'files'}`
+        )}
       </motion.p>
     </motion.div>
   );

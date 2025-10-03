@@ -8,6 +8,15 @@ type HeaderProps = {
 };
 
 export default function Header({ title, subtitle, onBack, centered = false }: HeaderProps) {
+  // Special handling for English book titles
+  let displayTitle = title;
+  
+  if (title === 'English: Beehive') {
+    displayTitle = '📘 English: Beehive';
+  } else if (title === 'English: Word Expression 2') {
+    displayTitle = '📕 English: Word Expression 2';
+  }
+  
   return (
     <motion.header 
       className={`py-6 px-4 md:px-8 mb-8 flex items-center ${centered ? 'justify-center' : ''}`}
@@ -45,7 +54,7 @@ export default function Header({ title, subtitle, onBack, centered = false }: He
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          {title}
+          {displayTitle}
         </motion.h1>
         
         {subtitle && (

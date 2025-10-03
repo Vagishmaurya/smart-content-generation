@@ -12,6 +12,7 @@ export type Chapter = {
   path: string;
   files: string[];
   youtube?: string;
+  chapters?: Chapter[];  // For nested chapters
 };
 
 export const subjects: Subject[] = [
@@ -255,21 +256,141 @@ export const subjects: Subject[] = [
     icon: '📚',
     chapters: [
       {
+        id: 'english-beehive-book',
+        name: '📘 Beehive',
+        path: '',
+        files: [],
+        youtube: 'https://youtu.be/tYnkfIadmKI?si=puUtnWHJBQANRSl9'
+      },
+      {
+        id: 'english-word-expression-book',
+        name: '📕 Word Expression 2',
+        path: '',
+        files: [],
+        youtube: 'https://youtu.be/tYnkfIadmKI?si=puUtnWHJBQANRSl9'
+      }
+    ]
+  },
+  {
+    id: 'english-book-beehive',
+    name: 'English: Beehive',
+    description: 'NCERT Class 9 English Beehive Textbook',
+    icon: '📘',
+    chapters: [
+      {
+        id: 'beehive-the-fun-they-had',
+        name: 'Ch 1: The Fun They Had',
+        path: 'content/English/BEEHIVE/1_the-fun-they-had-lesson/the-fun-they-had-lesson',
+        files: ['index.html']
+      },
+      {
+        id: 'beehive-the-sound-of-music',
+        name: 'Ch 2: The Sound of Music',
+        path: 'content/English/BEEHIVE/2_The-sound-of-music-lesson/the-sound-of-music-lesson',
+        files: ['index.html']
+      },
+      {
+        id: 'beehive-the-little-girl',
+        name: 'Ch 3: The Little Girl',
+        path: 'content/English/BEEHIVE/3_the-little-girl-lesson/the-little-girl-lesson',
+        files: ['index.html']
+      },
+      {
+        id: 'beehive-a-truly-beautiful-mind',
+        name: 'Ch 4: A Truly Beautiful Mind',
+        path: 'content/English/BEEHIVE/4_A-truly-beautiful-mind-lesson/a-truly-beautiful-mind-lesson',
+        files: ['index.html']
+      },
+      {
+        id: 'beehive-the-snake-and-the-mirror',
+        name: 'Ch 5: The Snake and the Mirror',
+        path: 'content/English/BEEHIVE/5_the-snake-and-the-mirror-lesson/the-snake-and-the-mirror-lesson',
+        files: ['index.html']
+      },
+      {
+        id: 'beehive-my-childhood',
+        name: 'Ch 6: My Childhood',
+        path: 'content/English/BEEHIVE/6_My-childhood-lesson/my-childhood-lesson',
+        files: ['index.html']
+      },
+      {
+        id: 'beehive-reach-for-the-top',
+        name: 'Ch 7: Reach for the Top',
+        path: 'content/English/BEEHIVE/7_reach-for-the-top-lesson/reach-for-the-top-lesson',
+        files: ['index.html']
+      },
+      {
+        id: 'beehive-kathmandu',
+        name: 'Ch 8: Kathmandu',
+        path: 'content/English/BEEHIVE/8_kathmandu-lesson/kathmandu-lesson',
+        files: ['index.html']
+      },
+      {
+        id: 'beehive-if-i-were-you',
+        name: 'Ch 9: If I Were You',
+        path: 'content/English/BEEHIVE/9_if-i-were-you-lesson/if-i-were-you-lesson',
+        files: ['index.html']
+      }
+    ]
+  },
+  {
+    id: 'english-word-expression',
+    name: 'English: Word Expression 2',
+    description: 'Supplementary English Reader',
+    icon: '📕',
+    chapters: [
+      {
         id: 'a-letter-to-god',
-        name: 'A Letter to God',
-        path: 'content/English/A_letter_to_god',
+        name: 'Ch 1: A Letter to God',
+        path: 'content/English/Word Expression 2/A_letter_to_god',
         files: ['index.html']
       },
       {
         id: 'nelson-mandela',
-        name: 'Nelson Mandela',
-        path: 'content/English/Nelson_Mandela',
+        name: 'Ch 2: Nelson Mandela',
+        path: 'content/English/Word Expression 2/Nelson_Mandela',
+        files: ['index.html']
+      },
+      {
+        id: 'anne-frank',
+        name: 'Ch 3: Anne Frank',
+        path: 'content/English/Word Expression 2/anne-frank-lesson/anne-frank-lesson',
         files: ['index.html']
       },
       {
         id: 'flying-stories',
-        name: 'Flying Stories',
-        path: 'content/English/Flying Stories',
+        name: 'Ch 4: Flying Stories',
+        path: 'content/English/Word Expression 2/Flying Stories',
+        files: ['index.html']
+      },
+      {
+        id: 'glimpses-of-india',
+        name: 'Ch 5: Glimpses of India',
+        path: 'content/English/Word Expression 2/glimpses-of-india/glimpses-of-india',
+        files: ['index.html']
+      },
+      {
+        id: 'mijbil-the-otter',
+        name: 'Ch 6: Mijbil the Otter',
+        path: 'content/English/Word Expression 2/mijbil-the-otter/mijbil-the-otter',
+        files: ['index.html']
+      },
+      {
+        id: 'sermon-at-benaras',
+        name: 'Ch 7: Sermon at Benares',
+        path: 'content/English/Word Expression 2/sermon-at-benaras-lesson/sermon-at-benaras-lesson',
+        files: ['index.html']
+      },
+      {
+        id: 'madam-rides-the-bus',
+        name: 'Ch 8: Madam Rides the Bus',
+        path: 'content/English/Word Expression 2/madam-rides-the-bus-lesson/madam-rides-the-bus-lesson',
+        files: ['index.html']
+      },
+      {
+        id: 'the-proposal',
+        name: 'Ch 9: The Proposal',
+        path: 'content/English/Word Expression 2/chapter-9-the-proposal/chapter-9-the-proposal',
         files: ['index.html']
       }
     ]

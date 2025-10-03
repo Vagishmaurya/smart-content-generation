@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { subjects } from './data/subjects';
+import { subjects as allSubjects } from './data/subjects';
 import SubjectCard from '../components/SubjectCard';
 import ChapterCard from '../components/ChapterCard';
 import ThreeBackground from '../components/ThreeBackground';
@@ -10,6 +10,12 @@ import Header from '../components/Header';
 import { Chapter } from './data/subjects';
 
 export default function Home() {
+  // Filter out the English book subjects from the main menu
+  const subjects = allSubjects.filter(subject => 
+    subject.id !== 'english-book-beehive' && 
+    subject.id !== 'english-word-expression'
+  );
+  
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
   const [selectedChapter, setSelectedChapter] = useState<Chapter | null>(null);
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
@@ -22,6 +28,23 @@ export default function Home() {
   };
   
   const handleChapterClick = (chapter: Chapter) => {
+    // Special handling for English books navigation
+    if (selectedSubject === 'english') {
+      if (chapter.id === 'english-beehive-book') {
+        // Redirect to the Beehive book subject
+        setSelectedSubject('english-book-beehive');
+        setSelectedChapter(null);
+        setSelectedTopic(null);
+        return;
+      } else if (chapter.id === 'english-word-expression-book') {
+        // Redirect to the Word Expression book subject
+        setSelectedSubject('english-word-expression');
+        setSelectedChapter(null);
+        setSelectedTopic(null);
+        return;
+      }
+    }
+
     setSelectedChapter(chapter);
     // If chapter has a youtube link, automatically select it
     if (chapter.youtube) {
@@ -40,6 +63,14 @@ export default function Home() {
   };
   
   const handleBackToSubjects = () => {
+    // Special handling for English book subjects
+    if (selectedSubject === 'english-book-beehive' || selectedSubject === 'english-word-expression') {
+      setSelectedSubject('english');
+      setSelectedChapter(null);
+      setSelectedTopic(null);
+      return;
+    }
+    
     setSelectedSubject(null);
     setSelectedChapter(null);
     setSelectedTopic(null);
@@ -122,7 +153,8 @@ export default function Home() {
     }
   };
   
-  const currentSubject = subjects.find(subject => subject.id === selectedSubject);
+  // Use all subjects for current selection to ensure we can find the book subjects too
+  const currentSubject = allSubjects.find(subject => subject.id === selectedSubject);
   const chapters = currentSubject?.chapters || [];
   
   // Dynamic navbar colors based on subject
@@ -358,7 +390,12 @@ export default function Home() {
           <div className="pt-20">
             <Header 
               title={currentSubject?.name || ''} 
-              subtitle={`${chapters.length} ${chapters.length === 1 ? 'chapter' : 'chapters'}`}
+              subtitle={
+                // Special handling for English subject - say "Books" instead of "chapters"
+                selectedSubject === 'english' ? 
+                `${chapters.length} Books` : 
+                `${chapters.length} ${chapters.length === 1 ? 'chapter' : 'chapters'}`
+              }
               onBack={handleBackToSubjects}
             />
           
@@ -435,7 +472,12 @@ export default function Home() {
           <div className="pt-20">
             <Header 
               title={selectedChapter.name} 
-              subtitle={`${selectedChapter.files.length} ${selectedChapter.files.length === 1 ? 'topic' : 'topics'}`}
+              subtitle={
+                // Special handling for English book subjects - show "Chapters" instead of topics
+                (selectedSubject === 'english-book-beehive' || selectedSubject === 'english-word-expression') ? 
+                `${selectedChapter.files.length} Chapters` : 
+                `${selectedChapter.files.length} ${selectedChapter.files.length === 1 ? 'topic' : 'topics'}`
+              }
               onBack={handleBackToChapters}
             />
           
